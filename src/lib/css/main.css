@@ -1,0 +1,9 @@
+body {
+    margin: 0;
+    box-sizing: content-box;
+}
+
+:root {
+    --dark-red: #540028;
+    --light-red: #a1004d;
+}
