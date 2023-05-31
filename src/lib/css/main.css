@@ -1,9 +1,8 @@
 body {
-    margin: 0;
-    box-sizing: content-box;
+	margin: 0;
 }
 
 :root {
-    --dark-red: #540028;
-    --light-red: #a1004d;
+	--very-dark-pink: #540028;
+	--dark-pink: #a1004d;
 }

@@ -33,7 +33,7 @@
 
 <style>
 	.logo {
-		height: 2.5rem;
+		height: 2rem;
 		padding: 0.625rem;
 		text-align: center;
 	}
@@ -43,13 +43,15 @@
 	}
 
 	.header {
-		background-color: var(--dark-red);
+		background-color: var(--very-dark-pink);
 		color: #fff;
+		position: sticky;
+		width: 100%;
 	}
 
 	.h1 {
 		margin: 0;
-		background: var(--light-red);
+		background: var(--dark-pink);
 		text-align: center;
 		padding: 0 0.75rem;
 		font-size: 1.5rem;
@@ -99,6 +101,7 @@
 
 	.nav-link::before {
 		content: '✦';
+		margin-right: 0.4rem;
 	}
 
 	.skip-to-main-button {
@@ -114,7 +117,7 @@
 		clip: auto;
 		display: flex;
 		align-items: center;
-		background-color: var(--r-primary);
+		background-color: var(--dark-pink);
 		color: #fff;
 		padding: 1em;
 	}
@@ -128,6 +131,16 @@
 
 	.h1::before {
 		margin-top: -4px;
+	}
+
+	main {
+		padding: 0.5rem;
+	}
+
+	@media (min-width: 576px) {
+		.logo {
+			height: 2.5rem;
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
