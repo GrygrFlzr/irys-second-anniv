@@ -1,5 +1,7 @@
 <script>
 	import '$lib/css/main.css';
+
+	let navLinksVisible = false;
 </script>
 
 <header class="header">
@@ -13,7 +15,15 @@
 	</h1>
 
 	<nav class="nav">
-		<button class="nav-button"> ☰ </button>
+		<button class="nav-button" on:click={() => (navLinksVisible = !navLinksVisible)}>☰</button>
+		<div class="nav-links" class:navLinkActive={navLinksVisible}>
+			<a href="/" class="nav-link">Home</a>
+			<a href="/achievements" class="nav-link">Achievements</a>
+			<a href="/art" class="nav-link">Art Gallery</a>
+			<a href="/songs" class="nav-link">Songs</a>
+			<a href="/appreciation" class="nav-link">Appreciation</a>
+			<a href="/about" class="nav-link">About Us</a>
+		</div>
 	</nav>
 </header>
 
@@ -49,7 +59,9 @@
 	}
 
 	.nav {
-		height: 3.75rem;
+		display: flex;
+		flex-direction: column;
+		/*height: 3.75rem;*/
 	}
 
 	.nav-button {
@@ -59,6 +71,34 @@
 		font-size: 1.7rem;
 		padding: 0.625rem;
 		cursor: pointer;
+		width: fit-content;
+	}
+
+	.nav-links {
+		display: none;
+		flex-direction: column;
+	}
+
+	.navLinkActive {
+		display: flex;
+	}
+
+	.nav-link {
+		display: block;
+		background: var(--light-red);
+		border: none;
+		color: #fff;
+		font-size: 1.3rem;
+		padding: 0.4rem;
+		border-radius: 1rem;
+		text-decoration: none;
+		min-width: 10rem;
+		width: fit-content;
+		margin: 0.5rem;
+	}
+
+	.nav-link::before {
+		content: '✦';
 	}
 
 	.skip-to-main-button {
@@ -120,6 +160,20 @@
 
 		.h1::after {
 			border-left: 0;
+		}
+
+		.nav {
+			flex-direction: row;
+			align-items: center;
+		}
+
+		.nav-button {
+			display: none;
+		}
+
+		.nav-links {
+			display: flex;
+			flex-direction: row;
 		}
 	}
 </style>
