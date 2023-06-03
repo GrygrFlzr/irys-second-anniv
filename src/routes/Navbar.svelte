@@ -6,11 +6,8 @@
 	<button class="nav-button" on:click={() => (navLinksVisible = !navLinksVisible)}>☰</button>
 
 	<div class="nav-links" class:navLinkActive={navLinksVisible}>
-		<a href="/" class="nav-link">Home</a>
-		<a href="/achievements" class="nav-link">Achievements</a>
-		<a href="/art" class="nav-link">Art Gallery</a>
-		<a href="/songs" class="nav-link">Songs</a>
-		<a href="/appreciation" class="nav-link">Appreciation</a>
+		<a href="/" class="nav-link">Timeline</a>
+		<a href="/art" class="nav-link">Fan Art</a>
 		<a href="/about" class="nav-link">About Us</a>
 	</div>
 </nav>
@@ -49,9 +46,8 @@
 		padding: 0.4rem;
 		border-radius: 1rem;
 		text-decoration: none;
-		min-width: 10rem;
-		width: fit-content;
-		margin: 0.5rem;
+		width: 90%;
+		margin: 0 auto 0.5rem;
 	}
 
 	.nav-link::before {
@@ -73,6 +69,12 @@
 			display: flex;
 			flex-direction: row;
 			padding: 0.25rem 0;
+		}
+
+		.nav-link {
+			min-width: 10rem;
+			width: fit-content;
+			margin: 0.5rem;
 		}
 	}
 </style>
