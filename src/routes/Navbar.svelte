@@ -1,4 +1,6 @@
 <script>
+	import NavLink from './NavLink.svelte';
+
 	let navLinksVisible = false;
 </script>
 
@@ -6,9 +8,9 @@
 	<button class="nav-button" on:click={() => (navLinksVisible = !navLinksVisible)}>☰</button>
 
 	<div class="nav-links" class:navLinkActive={navLinksVisible}>
-		<a href="/" class="nav-link">Timeline</a>
-		<a href="/art" class="nav-link">Fan Art</a>
-		<a href="/about" class="nav-link">About Us</a>
+		<NavLink href="/">Timeline</NavLink>
+		<NavLink href="/art">Fan Art</NavLink>
+		<NavLink href="/about">About Us</NavLink>
 	</div>
 </nav>
 
@@ -29,30 +31,18 @@
 	}
 
 	.nav-links {
-		display: none;
+		display: flex;
+		max-height: 0;
+		overflow: hidden;
 		flex-direction: column;
+		transition: max-height 0.15s ease-out;
+
+		/** arbitrary big number for transition */
+		--max-height-for-transition: 500px;
 	}
 
 	.navLinkActive {
-		display: flex;
-	}
-
-	.nav-link {
-		display: block;
-		background: var(--dark-pink);
-		border: none;
-		color: #fff;
-		font-size: 1.3rem;
-		padding: 0.4rem;
-		border-radius: 1rem;
-		text-decoration: none;
-		width: 90%;
-		margin: 0 auto 0.5rem;
-	}
-
-	.nav-link::before {
-		content: '✦';
-		margin-right: 0.4rem;
+		max-height: var(--max-height-for-transition);
 	}
 
 	@media (min-width: 768px) {
@@ -66,15 +56,9 @@
 		}
 
 		.nav-links {
-			display: flex;
+			max-height: var(--max-height-for-transition);
 			flex-direction: row;
 			padding: 0.25rem 0;
-		}
-
-		.nav-link {
-			min-width: 10rem;
-			width: fit-content;
-			margin: 0.5rem;
 		}
 	}
 </style>
