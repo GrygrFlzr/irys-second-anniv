@@ -32,6 +32,8 @@
 		color: #fff;
 		position: sticky;
 		width: 100%;
+		top: 0;
+		z-index: 500;
 	}
 
 	.h1 {

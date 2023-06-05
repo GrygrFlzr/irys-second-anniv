@@ -35,13 +35,13 @@
 		max-height: 0;
 		overflow: hidden;
 		flex-direction: column;
-		transition: max-height 0.15s ease-out;
 
 		/** arbitrary big number for transition */
 		--max-height-for-transition: 500px;
 	}
 
 	.navLinkActive {
+		transition: max-height 1s ease-out;
 		max-height: var(--max-height-for-transition);
 	}
 
