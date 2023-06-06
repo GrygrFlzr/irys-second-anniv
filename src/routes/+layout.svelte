@@ -11,12 +11,12 @@
 
 <style>
 	main {
-		padding: 0.5rem;
+		padding: 0rem;
 	}
 
 	@media (min-width: 768px) {
 		main {
-			padding: 1rem;
+			padding: 0rem;
 		}
 	}
 </style>
