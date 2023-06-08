@@ -17,7 +17,7 @@
 				<h3>{item.date}</h3>
 				<p>{item.content}</p>
 			</div>
-			<div class="timeline-image">
+			<div class="timeline-img-container">
 				<img class="timeline-img" src={item.photo} alt="some test about IRyS" />
 			</div>
 		</div>
@@ -27,41 +27,42 @@
 <!-- Reference from https://www.youtube.com/watch?v=TcYSRI1JFQE -->
 
 <style>
-	/* Line for the timeline      border-left: 2px solid #ccc;  */
 	.timeline {
-		margin: 50px 10px 50px 200px;
+		margin: 1rem;
 		padding: 0 20px 0 30px;
 	}
+	/* Line for the timeline      border-left: 2px solid #ccc;  */
+
 	.timeline-item {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		background-color: rgba(255, 255, 255, 0.5);
+		display: grid;
+		background-color: rgba(255, 255, 255, 0.7);
 		padding: 20px 25px;
 		border-radius: 50px;
 		position: relative;
 		height: auto;
 		margin-bottom: 100px;
-		margin-right: 5em;
+		line-height: 1.5;
+		justify-items: center;
 	}
+
 	.timeline-extra {
 		flex: 2;
 		margin: 10px;
 		padding: 20px;
 		color: #59084a;
 	}
-	.timeline-image {
+
+	.timeline-img-container {
 		flex: 1;
 	}
 	.timeline-img {
-		width: auto;
 		height: 150px;
-		margin: auto 50px;
 		border-style: solid;
 		border-width: 2px;
 		border-color: grey;
 		border-radius: 30px;
-		float: right;
+		max-width: 100%;
+		object-fit: contain;
 	}
 	/* Dot beside the timeline 
 .timeline-item::before{
@@ -75,42 +76,53 @@
     position:absolute;
     left: -39px;
 }*/
-	div {
-		display: inline-block;
-	}
-	div h2 {
+
+	h2 {
 		margin: 10px;
 		text-transform: uppercase;
-		font-family: Arial, Helvetica, sans-serif;
 		font-size: large;
 	}
-	div h3 {
+	h3 {
 		margin: 10px;
-		font-family: poppins;
 		font-size: medium;
 	}
-	div p {
+	p {
 		margin: 0;
-		font-family: poppins;
 		padding: 10px 0px;
 		font-size: medium;
 	}
 
-	@media (max-width: 768px) {
-		@media (orientation: portrait) {
-			.timeline-item {
-				flex-direction: column;
-			}
-		}
-
-		div h2 {
-			font-size: xxx-large;
-		}
-		div h3 {
-			font-size: xxx-large;
-		}
-		div p {
-			font-size: xx-large;
+	@media (orientation: portrait) {
+		.timeline-item {
+			flex-direction: column;
 		}
 	}
+
+	@media (min-width: 1024px) {
+		.timeline {
+			margin: 50px 10px 50px 100px;
+			padding: 0 20px 0 30px;
+		}
+
+		.timeline-item {
+			margin-right: 5em;
+			grid-template-columns: 3fr 2fr;
+		}
+
+		.timeline-img-container {
+			margin: auto 1rem;
+		}
+	}
+
+	@media (min-width: 1400px) {
+		.timeline {
+			margin-left: 200px;
+		}
+
+		.timeline-img-container {
+			margin: auto 2rem;
+		}
+	}
+
+	/** TODO: considering adding dark mode and make timeline-item black  */
 </style>

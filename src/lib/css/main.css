@@ -1,8 +1,19 @@
 body {
 	margin: 0;
+	background: #600150;
+	background-image: var(--background-image, url('/timeline-bg.jpg'));
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+	font-family: 'Jura', sans-serif;
+	box-sizing: border-box;
 }
 
 :root {
 	--very-dark-pink: #540028;
 	--dark-pink: #a1004d;
+}
+
+* {
+	box-sizing: border-box;
 }

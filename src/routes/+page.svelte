@@ -62,27 +62,17 @@
 	];
 </script>
 
-<body>
-	<div class="content">
-		<div class="achievements">
-			<h1 class="timeHeader">Achievements/Major Events</h1>
-		</div>
-		<div>
-			<Timeline {data} />
-			<TimelineContent {data} />
-		</div>
+<div class="content">
+	<div class="achievements">
+		<h1 class="timeHeader">Achievements/Major Events</h1>
 	</div>
-</body>
+	<div>
+		<Timeline {data} />
+		<TimelineContent {data} />
+	</div>
+</div>
 
 <style>
-	body {
-		background: #600150;
-		background-image: url('timeline-bg.jpg');
-		background-repeat: no-repeat;
-		background-size: cover;
-		background-attachment: fixed;
-		width: fit-content;
-	}
 	.content {
 		background: rgba(0, 0, 0, 0);
 		backdrop-filter: blur(5px);

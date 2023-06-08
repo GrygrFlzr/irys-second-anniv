@@ -18,13 +18,12 @@
 
 <style>
 	.logo {
-		height: 2rem;
 		padding: 0.625rem;
 		text-align: center;
 	}
 
 	.logo-img {
-		height: 100%;
+		height: 2rem;
 	}
 
 	.header {
@@ -43,6 +42,7 @@
 		display: flex;
 		flex-direction: column;
 		--white-border: 4px solid #fff;
+		font-weight: 700;
 	}
 
 	.skip-to-main-button {
@@ -75,7 +75,7 @@
 	}
 
 	@media (min-width: 576px) {
-		.logo {
+		.logo-img {
 			height: 2.5rem;
 		}
 	}
