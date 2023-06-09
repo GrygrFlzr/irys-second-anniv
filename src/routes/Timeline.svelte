@@ -46,6 +46,7 @@
 		background: #600150;
 		overflow: hidden;
 		transition: all 500ms ease-in-out;
+		z-index: 1000;
 	}
 	.sidebar:hover {
 		width: 100px;
