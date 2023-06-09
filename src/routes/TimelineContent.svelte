@@ -35,6 +35,7 @@
 
 	.timeline-item {
 		display: grid;
+		grid-template-columns: 1fr;
 		background-color: rgba(255, 255, 255, 0.7);
 		padding: 20px 25px;
 		border-radius: 50px;
@@ -46,15 +47,11 @@
 	}
 
 	.timeline-extra {
-		flex: 2;
 		margin: 10px;
 		padding: 20px;
 		color: #59084a;
 	}
 
-	.timeline-img-container {
-		flex: 1;
-	}
 	.timeline-img {
 		height: 150px;
 		border-style: solid;
@@ -92,12 +89,6 @@
 		font-size: medium;
 	}
 
-	@media (orientation: portrait) {
-		.timeline-item {
-			flex-direction: column;
-		}
-	}
-
 	@media (min-width: 1024px) {
 		.timeline {
 			margin: 50px 10px 50px 100px;
@@ -105,8 +96,8 @@
 		}
 
 		.timeline-item {
-			margin-right: 5em;
 			grid-template-columns: 3fr 2fr;
+			margin-right: 5em;
 		}
 
 		.timeline-img-container {
