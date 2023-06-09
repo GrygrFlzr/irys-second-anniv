@@ -6,7 +6,11 @@
 <header class="header">
 	<a class="skip-to-main-button" href="#main"> Skip to main content </a>
 	<div class="logo">
-		<img class="logo-img" src="/logo-solid.png" alt="logo of IRyS' second anniversary project" />
+		<img
+			class="logo-img"
+			src="/img/logo-solid.png"
+			alt="logo of IRyS' second anniversary project"
+		/>
 	</div>
 
 	<h1 class="h1">

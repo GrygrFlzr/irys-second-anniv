@@ -1,7 +1,12 @@
+@font-face {
+	font-family: 'Jura';
+	src: local('Jura'), url('/fonts/Jura-VariableFont_wght.ttf');
+}
+
 body {
 	margin: 0;
 	background: #600150;
-	background-image: var(--background-image, url('/timeline-bg.jpg'));
+	background-image: var(--background-image, url('/img/timeline-bg.jpg'));
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-attachment: fixed;
