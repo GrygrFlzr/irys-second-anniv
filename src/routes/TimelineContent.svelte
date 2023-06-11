@@ -1,27 +1,88 @@
 <script>
+  import { each, element } from "svelte/internal";
+  import { browser } from "$app/environment";
+
 	export let data = [
 		{
+			year: 'yearholder1',
 			date: 'placeholder1',
 			title: 'placeholder2',
-			photo: '',
+			photo: '/img/logo-solid.png',
 			content: 'placeholder3'
 		}
 	];
+	const years = ['2021','2022','2023'];
+	/*let sectionElement;
+	window.addEventListener(
+		"load",
+		(event) => {
+			sectionElement = document.getElementById(`sectionID`);
+
+			createObserver();
+		}
+
+	);
+	function createObserver(){
+		let observer;
+		
+		let options = {
+		root: document.querySelector("#scrollArea"),
+		rootMargin: "0px",
+		threshold: 0.5,
+		};
+		observer = new IntersectionObserver(handleIntersect, options);
+	}
+	function handleIntersect(entries, observer){
+
+	}*/
+	
+	/**
+   * @type {any}
+   */
+	let scroll;
+	$: innerHeight = 0;
+	/* Reference https://alvarotrigo.com/blog/css-animations-scroll/*/
+	function reveal(){
+		var revealsections = document.querySelectorAll(".reveal-section")
+		for(var i=0; i < revealsections.length; i++){
+			var sectionTop = revealsections[i].getBoundingClientRect().top;
+			var sectionVisible = 150;
+			if( sectionTop < innerHeight - sectionVisible){
+				revealsections[i].classList.add("active");
+			} 
+			else{
+				revealsections[i].classList.remove("active");
+			}
+		}
+	}
+	if(browser){
+		window.addEventListener("scroll", reveal);
+	}
+
 </script>
 
+<svelte:window bind:scrollY={scroll} bind:innerHeight />
 <section class="timeline">
-	{#each data as item, i}
-		<div class="timeline-item" id="{i}_id">
-			<div class="timeline-extra">
-				<h2>{item.title}</h2>
-				<h3>{item.date}</h3>
-				<p>{item.content}</p>
-			</div>
-			<div class="timeline-img-container">
-				<img class="timeline-img" src={item.photo} alt="some test about IRyS" />
-			</div>
-		</div>
+	{#each years as year, i}
+		<p class="year-divider">{year}</p>
+		{#each data as item, i}
+			{#if item.year === year}
+			<section class="timeline-section reveal-section active">
+				<div class="timeline-item" id="{i}_id">
+					<div class="timeline-extra">
+						<h2>{item.title}</h2>
+						<h3>{item.date}, {item.year}</h3>
+						<p>{item.content}</p>
+					</div>
+					<div class="timeline-img-container">
+						<img class="timeline-img" src={item.photo} alt="some test about IRyS" />
+					</div>
+				</div>
+			</section>
+			{/if}
+		{/each}
 	{/each}
+	
 </section>
 
 <!-- Reference from https://www.youtube.com/watch?v=TcYSRI1JFQE -->
@@ -31,8 +92,30 @@
 		margin: 1rem;
 		padding: 0 20px 0 30px;
 	}
+	.year-divider{
+		color: #ddd;
+		font-size: 22px;
+		padding-bottom: 20px;
+		text-decoration: underline;
+		text-underline-position: under;
+	}
+	.timeline section{
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		min-height: 100vh;
+	}
 	/* Line for the timeline      border-left: 2px solid #ccc;  */
-
+	.reveal-section{
+		position: relative;
+		transform: translateY(150px);
+		opacity: 0;
+		transition: 1s all ease;
+	}
+	.active{
+		transform: translateY(0);
+		opacity: 1;
+	}
 	.timeline-item {
 		display: grid;
 		grid-template-columns: 1fr;
