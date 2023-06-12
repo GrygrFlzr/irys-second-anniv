@@ -13,7 +13,6 @@
 
 	let observingCount = 0;
 	let inView = new Set();
-	let mounted = false;
 
 	/**
 	 * @type {ReturnType<typeof setTimeout> | undefined}
@@ -24,10 +23,6 @@
 	 * @type {IntersectionObserver | undefined}
 	 */
 	let observer;
-
-	onMount(() => {
-		mounted = true;
-	});
 
 	onDestroy(() => {
 		clearTimeout(scrollThrottleTimeout);
@@ -67,7 +62,7 @@
 	 * @param {IntersectionObserverEntry[]} entries
 	 */
 	function observerCallback(entries) {
-		const isInitial = entries.length === observingCount;
+		// const isInitial = entries.length === observingCount;
 		entries.forEach((entry) => {
 			if (!(entry.target instanceof HTMLElement) || !entry.target.dataset.id) {
 				return;
@@ -76,9 +71,9 @@
 			const index = data.findIndex((i) => i.id === id);
 			if (entry.isIntersecting) {
 				inView.add(index);
-				if (!isInitial) {
-					selectedIndex = index;
-				}
+				// if (!isInitial) {
+				// 	selectedIndex = index;
+				// }
 			} else {
 				inView.delete(index);
 			}
@@ -128,7 +123,6 @@
 		event.preventDefault();
 		if (!scrollThrottleTimeout) {
 			selectedIndex = newIndex;
-			return;
 		}
 
 		clearTimeout(scrollThrottleTimeout);
@@ -239,6 +233,7 @@
 		.timeline-item {
 			grid-template-columns: 3fr 2fr;
 			margin-right: 5em;
+			margin-bottom: 100px;
 		}
 
 		.timeline-img-container {
