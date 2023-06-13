@@ -12,6 +12,7 @@
 <style>
 	main {
 		padding: 0.5rem;
+		margin-top: var(--header-height);
 	}
 
 	@media (min-width: 768px) {
