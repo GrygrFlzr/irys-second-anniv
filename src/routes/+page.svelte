@@ -1,6 +1,6 @@
 <script>
-	import TimelineContent from './timelineContent.svelte';
-	import Timeline from './timeline.svelte';
+	import TimelineContent from './TimelineContent.svelte';
+	import Timeline from './Timeline.svelte';
 	// Can probably have a different file hold the data / Use the database
 	// *IMPORTANT* DATA IS REQUIRED TO BE SORTED BY YEAR/DATE ACCORDINGLY (OTHERWISE IT WIRED AND STUFF)
 	const data = [
