@@ -17,6 +17,13 @@ body {
 :root {
 	--very-dark-pink: #540028;
 	--dark-pink: #a1004d;
+	--header-height: 4rem;
+}
+
+@media (min-width: 768px) {
+	:root {
+		--header-height: 10rem;
+	}
 }
 
 * {

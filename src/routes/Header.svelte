@@ -1,29 +1,41 @@
 <script>
 	import '$lib/css/main.css';
 	import Navbar from './Navbar.svelte';
+
+	let scrollY = 0;
 </script>
 
 <header class="header">
 	<a class="skip-to-main-button" href="#main"> Skip to main content </a>
-	<div class="logo">
-		<img
-			class="logo-img"
-			src="/img/logo-solid.png"
-			alt="logo of IRyS' second anniversary project"
-		/>
-	</div>
+	<div class="scroll-fold" class:scroll-unfold={scrollY <= 120}>
+		<div class="logo">
+			<img
+				class="logo-img"
+				src="/img/logo-solid.png"
+				alt="logo of IRyS' second anniversary project"
+			/>
+		</div>
 
-	<h1 class="h1">
-		<div class="title">THE PANDORA LOGS OF HOPE</div>
-	</h1>
+		<h1 class="h1">
+			<div class="title">THE PANDORA LOGS OF HOPE</div>
+		</h1>
+	</div>
 
 	<Navbar />
 </header>
+
+<svelte:window bind:scrollY />
 
 <style>
 	.logo {
 		padding: 0.625rem;
 		text-align: center;
+	}
+
+	.scroll-fold {
+		max-height: 0;
+		padding: 0;
+		overflow: hidden;
 	}
 
 	.logo-img {
@@ -33,8 +45,11 @@
 	.header {
 		background-color: var(--very-dark-pink);
 		color: #fff;
-		position: sticky;
+		/** don't use sticky here. The scroll-fold transition will cause it to sometimes fold and unfold repeatably */
+		position: fixed;
 		width: 100%;
+		top: 0;
+		z-index: 500;
 	}
 
 	.h1 {
@@ -67,23 +82,6 @@
 		padding: 1em;
 	}
 
-	.h1::before,
-	.h1::after {
-		content: '';
-		border: var(--white-border);
-		border-width: 2px;
-	}
-
-	.h1::before {
-		margin-top: -4px;
-	}
-
-	@media (min-width: 576px) {
-		.logo-img {
-			height: 2.5rem;
-		}
-	}
-
 	@media (prefers-reduced-motion: reduce) {
 		.skip-to-main-button {
 			transition: none;
@@ -91,6 +89,18 @@
 	}
 
 	@media (min-width: 768px) {
+		.scroll-fold {
+			transition: max-height 0.15s;
+		}
+
+		.scroll-unfold {
+			max-height: 10rem;
+		}
+
+		.logo {
+			height: 2.5rem;
+		}
+
 		.h1 {
 			padding: 0 3%;
 			display: flex;
@@ -102,6 +112,9 @@
 
 		.h1::before,
 		.h1::after {
+			content: '';
+			border: var(--white-border);
+			margin-top: -4px;
 			position: initial;
 			width: auto;
 			flex-grow: 1;

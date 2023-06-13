@@ -11,7 +11,7 @@
 
 <style>
 	main {
-		padding: 0rem;
+		margin-top: var(--header-height);
 	}
 
 	@media (min-width: 768px) {
