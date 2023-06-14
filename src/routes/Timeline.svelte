@@ -3,15 +3,14 @@
 
 	export let data = [
 		{
-			year: 'yearholder1',
-			date: 'placeholder1',
+			date: new Date(),
 			title: 'placeholder2',
 			photo: '',
 			content: 'placeholder3'
 		}
 	];
 
-	const years = ['2021', '2022', '2023'];
+	const years = [2021, 2022, 2023];
 
 	/**
 	 * @param {string} id
@@ -60,7 +59,7 @@
 				<p>{year}</p>
 				<div class="links">
 					{#each data as content, i}
-						{#if content.year === year}
+						{#if content.date.getFullYear() === year}
 							<div class="content-jump">
 								<!--<button on:click={() => scrolltoElement(`${x}_${i}_id`)}>{content.title}</button>-->
 							</div>
