@@ -58,6 +58,9 @@
 	}
 
 	// https://stackoverflow.com/a/3552493
+	/**
+	 * @param {number | Date | undefined} date
+	 */
 	function formatDate(date) {
 		let ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
 		let mo = new Intl.DateTimeFormat('en', { month: 'long' }).format(date);

@@ -6,7 +6,7 @@
 	export let data;
 
 	let processedData = data.data.sort((a, b) => {
-		a.date.valueOf() - b.date.valueOf();
+		return a.date.valueOf() - b.date.valueOf();
 	});
 </script>
 

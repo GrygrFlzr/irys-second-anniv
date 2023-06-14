@@ -23,7 +23,7 @@ export async function load() {
     }
 
     data.sort((a, b) => {
-        a.date.valueOf() - b.date.valueOf()
+        return a.date.valueOf() - b.date.valueOf();
     });
 
     return {
