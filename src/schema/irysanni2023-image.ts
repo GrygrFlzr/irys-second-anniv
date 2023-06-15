@@ -1,7 +1,11 @@
 import { CollectionConfig } from 'payload/types';
 
-export const ImageStor: CollectionConfig = {
-  slug: 'irysanni2023-imagestor',
+const Image: CollectionConfig = {
+  slug: 'IRySAnni2023-Image',
+  labels: {
+		singular: "Image",
+		plural: "Images",  
+  },
   upload: {
     staticURL: '/img',
     staticDir: 'irysanni2023-image-storage',
@@ -39,6 +43,9 @@ export const ImageStor: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
+      defaultValue: 'This is an image.'
     },
   ],
 };
+
+export default Image;

@@ -1,7 +1,11 @@
 import { CollectionConfig } from 'payload/types';
 
-export const TimelineMilestones: CollectionConfig = {
-	slug: 'irysanni2023-timeline-milestone',
+const TimelineMilestone: CollectionConfig = {
+	slug: 'IRySAnni2023-Timeline-Milestone',
+	labels: {
+		singular: "Timeline Milestone",
+		plural: "Timeline Milestones",  
+	},
 	fields: [
 		{
 			name: 'date',
@@ -9,7 +13,7 @@ export const TimelineMilestones: CollectionConfig = {
 			required: true,
 		},
 		{
-			title: 'title',
+			name: 'title',
 			type: 'text',
 			required: true,
 		},
@@ -17,7 +21,7 @@ export const TimelineMilestones: CollectionConfig = {
 			name: 'photo',
 			type: 'upload',
 			required: true,
-            relationTo: 'irysanni2023-imagestore',
+            relationTo: 'IRySAnni2023-Image',
             filterOptions: {
                 mimeType: { 
                     or: [
@@ -30,8 +34,10 @@ export const TimelineMilestones: CollectionConfig = {
 		},
         {
 			name: 'content',
-			type: 'rich-text',
+			type: 'richText',
 			required: true,
 		}
 	],
 };
+
+export default TimelineMilestone;
