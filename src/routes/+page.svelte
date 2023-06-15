@@ -1,6 +1,7 @@
 <script>
 	import TimelineContent from './TimelineContent.svelte';
 	import Timeline from './Timeline.svelte';
+	import Hero from './Hero.svelte';
 	// Can probably have a different file hold the data / Use the database
 	// *IMPORTANT* DATA IS REQUIRED TO BE SORTED BY YEAR/DATE ACCORDINGLY (OTHERWISE IT WIRED AND STUFF)
 	const data = [
@@ -79,10 +80,12 @@
 	];
 </script>
 
+<Hero />
+
 <div class="background-img">
 	<div class="content">
-		<div class="achievements">
-			<h1 class="timeHeader">Achievements/Major Events</h1>
+		<div class="achievements sr-only">
+			<h2 class="timeHeader">Achievements/Major Events</h2>
 		</div>
 		<Timeline {data} />
 		<div>
@@ -118,5 +121,17 @@
 		text-align: center;
 		margin: auto;
 		padding: 15px 15px;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border-width: 0;
 	}
 </style>

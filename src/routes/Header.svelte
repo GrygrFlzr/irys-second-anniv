@@ -97,7 +97,7 @@
 			max-height: 10rem;
 		}
 
-		.logo {
+		.logo-img {
 			height: 2.5rem;
 		}
 

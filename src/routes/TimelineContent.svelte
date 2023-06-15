@@ -1,6 +1,5 @@
 <script>
-  import { each, element } from "svelte/internal";
-  import { browser } from "$app/environment";
+	import { browser } from '$app/environment';
 
 	export let data = [
 		{
@@ -11,7 +10,7 @@
 			content: 'placeholder3'
 		}
 	];
-	const years = ['2021','2022','2023'];
+	const years = ['2021', '2022', '2023'];
 	/*let sectionElement;
 	window.addEventListener(
 		"load",
@@ -35,30 +34,28 @@
 	function handleIntersect(entries, observer){
 
 	}*/
-	
+
 	/**
-   * @type {any}
-   */
+	 * @type {any}
+	 */
 	let scroll;
 	$: innerHeight = 0;
 	/* Reference https://alvarotrigo.com/blog/css-animations-scroll/*/
-	function reveal(){
-		var revealsections = document.querySelectorAll(".reveal-section")
-		for(var i=0; i < revealsections.length; i++){
+	function reveal() {
+		var revealsections = document.querySelectorAll('.reveal-section');
+		for (var i = 0; i < revealsections.length; i++) {
 			var sectionTop = revealsections[i].getBoundingClientRect().top;
 			var sectionVisible = 150;
-			if( sectionTop < innerHeight - sectionVisible){
-				revealsections[i].classList.add("active");
-			} 
-			else{
-				revealsections[i].classList.remove("active");
+			if (sectionTop < innerHeight - sectionVisible) {
+				revealsections[i].classList.add('active');
+			} else {
+				revealsections[i].classList.remove('active');
 			}
 		}
 	}
-	if(browser){
-		window.addEventListener("scroll", reveal);
+	if (browser) {
+		window.addEventListener('scroll', reveal);
 	}
-
 </script>
 
 <svelte:window bind:scrollY={scroll} bind:innerHeight />
@@ -67,22 +64,21 @@
 		<p class="year-divider">{year}</p>
 		{#each data as item, i}
 			{#if item.year === year}
-			<section class="timeline-section reveal-section active">
-				<div class="timeline-item" id="{i}_id">
-					<div class="timeline-extra">
-						<h2>{item.title}</h2>
-						<h3>{item.date}, {item.year}</h3>
-						<p>{item.content}</p>
+				<section class="timeline-section">
+					<div class="timeline-item reveal-section active" id="{i}_id">
+						<div class="timeline-extra">
+							<h3>{item.title}</h3>
+							<div class="date">{item.date}, {item.year}</div>
+							<p>{item.content}</p>
+						</div>
+						<div class="timeline-img-container">
+							<img class="timeline-img" src={item.photo} alt="some test about IRyS" />
+						</div>
 					</div>
-					<div class="timeline-img-container">
-						<img class="timeline-img" src={item.photo} alt="some test about IRyS" />
-					</div>
-				</div>
-			</section>
+				</section>
 			{/if}
 		{/each}
 	{/each}
-	
 </section>
 
 <!-- Reference from https://www.youtube.com/watch?v=TcYSRI1JFQE -->
@@ -92,27 +88,29 @@
 		margin: 1rem;
 		padding: 0 20px 0 30px;
 	}
-	.year-divider{
+	.year-divider {
 		color: #ddd;
 		font-size: 22px;
 		padding-bottom: 20px;
 		text-decoration: underline;
 		text-underline-position: under;
+		scroll-snap-align: start;
 	}
-	.timeline section{
+	.timeline section {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 		min-height: 100vh;
+		scroll-snap-align: start;
 	}
 	/* Line for the timeline      border-left: 2px solid #ccc;  */
-	.reveal-section{
+	.reveal-section {
 		position: relative;
 		transform: translateY(150px);
 		opacity: 0;
 		transition: 1s all ease;
 	}
-	.active{
+	.active {
 		transform: translateY(0);
 		opacity: 1;
 	}
@@ -157,14 +155,15 @@
     left: -39px;
 }*/
 
-	h2 {
+	h3 {
 		margin: 10px;
 		text-transform: uppercase;
 		font-size: large;
 	}
-	h3 {
+	.date {
 		margin: 10px;
 		font-size: medium;
+		font-weight: bold;
 	}
 	p {
 		margin: 0;

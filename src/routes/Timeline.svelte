@@ -24,13 +24,13 @@
 	 * @type {number}
 	 */
 	let y = 0;
-	let wrapperOffset = 0;
+	let wrapperY = 0;
 	let scrollHeight = 1;
 	let throttling = false;
 	let windowInnerHeight = 0;
 
-	$: scrollHeightBelow = scrollHeight - wrapperOffset - 100;
-	$: calcOffset = wrapperOffset - windowInnerHeight / 2;
+	$: scrollHeightBelow = scrollHeight - wrapperY;
+	$: calcOffset = wrapperY - windowInnerHeight / 2;
 	$: diamondY = Math.max(0, ((y - calcOffset) / scrollHeightBelow) * 100);
 
 	onMount(() => {
@@ -48,12 +48,20 @@
 			throttling = false;
 		});
 	}
+
+	/**
+	 *
+	 * @param {HTMLElement} node
+	 */
+	function checkSidebarY(node) {
+		wrapperY = node.getBoundingClientRect().top + screenY;
+	}
 </script>
 
 <svelte:window bind:scrollY={y} on:resize={handleResize} bind:innerHeight={windowInnerHeight} />
 
 <div class="sidebar" id="timeline-sidebar">
-	<div class="wrapper" bind:offsetHeight={wrapperOffset}>
+	<div class="wrapper" use:checkSidebarY>
 		<span class="diamond" style:top="calc({diamondY}% - 8px)">&#9830</span>
 		{#each years as year}
 			<div class="year">
