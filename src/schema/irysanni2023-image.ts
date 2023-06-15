@@ -1,16 +1,16 @@
 import { CollectionConfig } from 'payload/types';
 
 const Image: CollectionConfig = {
-  slug: 'IRySAnni2023-Image',
-  labels: {
-		singular: "Image",
-		plural: "Images",  
-  },
-  upload: {
-    staticURL: '/img',
-    staticDir: 'irysanni2023-image-storage',
-    // Revisit below if we need to resize images.
-    /*
+	slug: 'IRySAnni2023-Image',
+	labels: {
+		singular: 'Image',
+		plural: 'Images'
+	},
+	upload: {
+		staticURL: '/img',
+		staticDir: 'irysanni2023-image-storage',
+		// Revisit below if we need to resize images.
+		/*
     imageSizes: [
       {
         name: 'thumbnail',
@@ -37,15 +37,15 @@ const Image: CollectionConfig = {
     ],
     adminThumbnail: 'thumbnail',
     */
-    mimeTypes: ['image/*'],
-  },
-  fields: [
-    {
-      name: 'alt',
-      type: 'text',
-      defaultValue: 'This is an image.'
-    },
-  ],
+		mimeTypes: ['image/*']
+	},
+	fields: [
+		{
+			name: 'alt',
+			type: 'text',
+			defaultValue: 'This is an image.'
+		}
+	]
 };
 
 export default Image;
