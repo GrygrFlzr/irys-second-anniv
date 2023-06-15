@@ -1,14 +1,43 @@
 <script>
 	import { onMount } from 'svelte';
 	import HeroImage from './HeroImage.svelte';
+	import ScrollHint from './ScrollHint.svelte';
 
 	let showTitle = false;
+	let showPoem = false;
+	let offScreen = true;
 
 	onMount(() => {
 		setTimeout(() => {
 			showTitle = true;
 		}, 500);
+
+		setTimeout(() => {
+			showPoem = true;
+		}, 1500);
 	});
+
+	/**
+	 * @param {HTMLElement} ele
+	 */
+	function autoScroll(ele) {
+		const matchMedia = window.matchMedia('(min-width: 1500px)');
+		if (!matchMedia.matches) {
+			return;
+		}
+		const timeout = setInterval(() => {
+			ele.scrollBy({ top: 10, behavior: 'smooth' });
+		}, 50);
+		if (ele.scrollTop + ele.clientHeight >= ele.scrollHeight) {
+			clearInterval(timeout);
+		}
+
+		return {
+			destroy() {
+				clearInterval(timeout);
+			}
+		};
+	}
 </script>
 
 <div class="hero-section">
@@ -23,16 +52,42 @@
 			<p>Project: Hope began on xx</p>
 			<p>Some epic description about the timeline / chuuni text This is her journey.</p>
 		</div>
+
+		<ScrollHint />
 	{/if}
+
+	<div class="poem" class:show={showPoem} class:poem-offscreen={offScreen} use:autoScroll>
+		<p>
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			cCpoem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem
+		</p>
+
+		<p>
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem cCpoem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem cCpoem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem
+		</p>
+	</div>
 </div>
 
 <style>
 	.hero-section {
 		padding-top: 15vh;
-		height: 100vh;
+		min-height: 100vh;
 		background-color: #242424;
 		color: #fff;
 		scroll-snap-align: start;
+		position: relative;
 	}
 
 	.hero-image {
@@ -54,5 +109,46 @@
 	.sub-title {
 		font-size: 24px;
 		text-align: center;
+	}
+
+	.poem {
+		padding: 2rem 10%;
+		opacity: 0;
+		transition: all 150ms ease-in-out;
+		color: rgba(255, 255, 255, 0.5);
+	}
+
+	.show {
+		opacity: 1;
+	}
+
+	@media (min-width: 1500px) {
+		.poem {
+			position: absolute;
+			right: 1rem;
+			top: 0;
+			width: 25%;
+			padding: 1rem;
+			scrollbar-width: thin;
+			overflow-y: scroll;
+			height: calc(100vh - 12rem);
+		}
+
+		.poem-offscreen {
+			padding-top: 70vh;
+		}
+
+		.poem::-webkit-scrollbar {
+			width: 0.5rem;
+		}
+
+		.poem:hover::-webkit-scrollbar-track {
+			background: #3d3d3d;
+		}
+
+		.poem::-webkit-scrollbar-thumb {
+			background-color: #888;
+			border-radius: 0.5rem;
+		}
 	}
 </style>
