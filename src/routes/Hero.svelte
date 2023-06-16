@@ -5,7 +5,6 @@
 
 	let showTitle = false;
 	let showPoem = false;
-	let offScreen = true;
 
 	onMount(() => {
 		setTimeout(() => {
@@ -56,7 +55,7 @@
 		<ScrollHint />
 	{/if}
 
-	<div class="poem" class:show={showPoem} class:poem-offscreen={offScreen} use:autoScroll>
+	<div class="poem" class:show={showPoem} use:autoScroll>
 		<p>
 			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
 			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
@@ -132,9 +131,6 @@
 			scrollbar-width: thin;
 			overflow-y: scroll;
 			height: calc(100vh - 12rem);
-		}
-
-		.poem-offscreen {
 			padding-top: 70vh;
 		}
 
