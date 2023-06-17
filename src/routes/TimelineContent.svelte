@@ -2,6 +2,7 @@
 	import { each, element } from 'svelte/internal';
 	import { browser } from '$app/environment';
 	import { createEditor } from 'slate';
+	import { Slate, Editable, withSvelte } from 'svelte-slate';
 
 	import type { TimelineData } from '$lib/js/Types';
 
@@ -14,6 +15,7 @@
 			content: createEditor()
 		}
 	];
+
 	const years = [2021, 2022, 2023];
 	/*let sectionElement;
 	window.addEventListener(
@@ -59,14 +61,16 @@
 	}
 
 	// https://stackoverflow.com/a/3552493
-	/**
-	 * @param {number | Date | undefined} date
-	 */
 	function formatDate(date: Date) {
 		let ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
 		let mo = new Intl.DateTimeFormat('en', { month: 'long' }).format(date);
 		let da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
 		return `${mo} ${da}, ${ye}`;
+	}
+
+	function createNewSlateEditor() {
+		let editor = withSvelte(createEditor());
+		return editor;
 	}
 </script>
 
@@ -81,10 +85,15 @@
 						<div class="timeline-extra">
 							<h2>{item.title}</h2>
 							<h3>{formatDate(item.date)}</h3>
-							<p>{item.content}</p>
+							<!-- <p>{item.content}</p> -->
+							<div>
+								<Slate editor={createNewSlateEditor()} value={item.content}>
+									<Editable readOnly={true} />
+								</Slate>
+							</div>
 						</div>
 						<div class="timeline-img-container">
-							<img class="timeline-img" src={item.src} alt="some test about IRyS" />
+							<img class="timeline-img" src={item.images.at(0)?.src} alt="some test about IRyS" />
 						</div>
 					</div>
 				</section>

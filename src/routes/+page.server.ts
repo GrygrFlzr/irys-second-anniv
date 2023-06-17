@@ -2,7 +2,7 @@ import testdata from '$lib/testdata/timeline-test-data.json';
 
 import fetchAllFromCMS from '$lib/js/FetchFromCMS';
 //import getImaginaryProxyImageURL from '$lib/js/ImaginaryImageProxyTools';
-import type { TimelineData, Image } from '$lib/js/Types';
+import type { TimelineData, Image, TimelineDataObj } from '$lib/js/Types';
 
 /** @type {import('./$types').PageServerLoad} */
 // TODO: Write up to actual CMS as opposed to testdata.
@@ -26,14 +26,10 @@ async function loadStaticTestData() {
 	};
 }
 
-function getImageObject(cmsImageData: any): Image {
+function getImageObject(cmsImage: any): Image {
 	return {
-		src: getImaginaryProxyImageURL(
-			cmsImageData.background_image.url,
-			cmsImageData.background_image.width,
-			cmsImageData.background_image.height
-		),
-		alt: cmsImageData.background_image.alt
+		src: getImaginaryProxyImageURL(cmsImage.url, cmsImage.width, cmsImage.height),
+		alt: cmsImage.alt
 	};
 }
 
@@ -47,13 +43,14 @@ function getImaginaryProxyImageURL(
 	return src;
 }
 
+// TODO: move to dotfiles
 const cmsRestUrl = 'http://localhost:3000/api/';
 const eventSlug = 'events';
-async function loadDataFromCMS(): Promise<Array<TimelineData>> {
+async function loadDataFromCMS(): Promise<TimelineDataObj> {
 	let data = await fetchAllFromCMS(`${cmsRestUrl}/${eventSlug}`);
-	let retData = data.docs.map((element: any) => {
+	let retData = data.map((element: any) => {
 		return {
-			date: element.date,
+			date: new Date(element.date),
 			title: element.title,
 			background_image: getImageObject(element.background_image),
 			images: element.images.map((i: any) => getImageObject(i)),
@@ -65,7 +62,9 @@ async function loadDataFromCMS(): Promise<Array<TimelineData>> {
 		return a.date.valueOf() - b.date.valueOf();
 	});
 
-	return retData;
+	return {
+		data: retData
+	};
 }
 
 //export { loadStaticTestData as load };

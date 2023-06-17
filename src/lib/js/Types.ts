@@ -5,6 +5,12 @@ type Image = {
 	alt: string;
 };
 
+// because Sveltekit cannot fathom the fact that people would like to return arrays
+// instead of objects containing one damn array
+type TimelineDataObj = {
+	data: Array<TimelineData>;
+};
+
 type TimelineData = {
 	date: Date;
 	title: string;
@@ -13,4 +19,4 @@ type TimelineData = {
 	content: Node;
 };
 
-export type { Image, TimelineData };
+export type { Image, TimelineData, TimelineDataObj };
