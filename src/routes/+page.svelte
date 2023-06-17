@@ -1,13 +1,12 @@
-<script>
+<script lang="ts">
 	import TimelineContent from './TimelineContent.svelte';
 	import Timeline from './Timeline.svelte';
+	import type { TimelineData } from '$lib/js/Types';
 	// Can probably have a different file hold the data / Use the database
 	// *IMPORTANT* DATA IS REQUIRED TO BE SORTED BY YEAR/DATE ACCORDINGLY (OTHERWISE IT WIRED AND STUFF)
-	export let data;
 
-	let processedData = data.data.sort((a, b) => {
-		return a.date.valueOf() - b.date.valueOf();
-	});
+	// Prefilled by server data; assuming the data is sorted by server side code.
+	export let data: Array<TimelineData>;
 </script>
 
 <div class="background-img">
@@ -15,9 +14,9 @@
 		<div class="achievements">
 			<h1 class="timeHeader">Achievements/Major Events</h1>
 		</div>
-		<Timeline data={processedData} />
+		<Timeline {data} />
 		<div>
-			<TimelineContent data={processedData} />
+			<TimelineContent {data} />
 		</div>
 	</div>
 </div>

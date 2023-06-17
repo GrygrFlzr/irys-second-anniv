@@ -1,13 +1,17 @@
-<script>
+<script lang="ts">
 	import { each, element } from 'svelte/internal';
 	import { browser } from '$app/environment';
+	import { createEditor } from 'slate';
 
-	export let data = [
+	import type { TimelineData } from '$lib/js/Types';
+
+	export let data: Array<TimelineData> = [
 		{
 			date: new Date(),
 			title: 'placeholder2',
-			photo: '/img/logo-solid.png',
-			content: 'placeholder3'
+			background_image: undefined,
+			images: [],
+			content: createEditor()
 		}
 	];
 	const years = [2021, 2022, 2023];
@@ -35,10 +39,7 @@
 
 	}*/
 
-	/**
-	 * @type {any}
-	 */
-	let scroll;
+	let scroll: number;
 	$: innerHeight = 0;
 	/* Reference https://alvarotrigo.com/blog/css-animations-scroll/*/
 	function reveal() {
@@ -61,7 +62,7 @@
 	/**
 	 * @param {number | Date | undefined} date
 	 */
-	function formatDate(date) {
+	function formatDate(date: Date) {
 		let ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
 		let mo = new Intl.DateTimeFormat('en', { month: 'long' }).format(date);
 		let da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
@@ -83,7 +84,7 @@
 							<p>{item.content}</p>
 						</div>
 						<div class="timeline-img-container">
-							<img class="timeline-img" src={item.photo} alt="some test about IRyS" />
+							<img class="timeline-img" src={item.src} alt="some test about IRyS" />
 						</div>
 					</div>
 				</section>

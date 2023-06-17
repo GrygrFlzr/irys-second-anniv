@@ -35,5 +35,9 @@
 		"node": ">=18",
 		"pnpm": "^8.0.0"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"slate": "^0.94.1",
+		"svelte-slate": "^0.1.82"
+	}
 }

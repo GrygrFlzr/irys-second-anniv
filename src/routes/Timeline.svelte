@@ -1,12 +1,15 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
+	import type { TimelineData } from '$lib/js/Types';
+	import { createEditor } from 'slate';
 
-	export let data = [
+	export let data: Array<TimelineData> = [
 		{
 			date: new Date(),
 			title: 'placeholder2',
-			photo: '',
-			content: 'placeholder3'
+			background_image: undefined,
+			images: [],
+			content: createEditor()
 		}
 	];
 
@@ -19,9 +22,7 @@
 		element?.scrollIntoView({ behavior: 'smooth' });
 	}
 	*/
-	/**
-	 * @type {number}
-	 */
+
 	let y = 0;
 	let wrapperOffset = 0;
 	let scrollHeight = 1;
