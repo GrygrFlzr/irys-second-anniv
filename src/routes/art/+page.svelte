@@ -1,6 +1,8 @@
 <script>
 	import ArtGallery from './ArtGallery.svelte';
 
+    import { fade, fly } from "svelte/transition";
+
 	// Test data for art contributions
 	const data = [
 		{
@@ -40,20 +42,38 @@
 			images: ['/img/art/art-9.png']
 		}
 	];
+
+    const headerAppearDuration = 500;
+    const contentsAppearDuration = 400;
+
+    const descriptionDelayDuration = 400;
+    const contentsDelayDuration = 700;
+
+    const headerTransitionFadeOffset = 24;
+    const contentsTransitionFadeOffset = 24;
+
 </script>
 
 <div class="background">
 	<div class="content">
 		<div class="header-group">
-			<div class="header-title">Anniversary Messages and Fanart</div>
-			<div class="header-desc">
-				A collection of messages and art from IRyStocrats around the world, for IRyS' 2nd
-				Anniversary.
+			<div class="header-title" in:fade="{{duration:headerAppearDuration}}">
+                <div in:fly="{{duration:headerAppearDuration, y:headerTransitionFadeOffset}}">
+                    Anniversary Messages and Fanart
+                </div>
+            </div>
+			<div class="header-desc" in:fade="{{duration:headerAppearDuration}}">
+                <div in:fly="{{duration:headerAppearDuration, delay: descriptionDelayDuration, y:headerTransitionFadeOffset}}">
+                    A collection of messages and art from IRyStocrats around the world, for IRyS' 2nd
+                    Anniversary.
+                </div>
 			</div>
 		</div>
 
-		<div class="gallery-container">
-			<ArtGallery {data} />
+		<div class="gallery-container" in:fade="{{duration:contentsAppearDuration, delay:contentsDelayDuration}}">
+            <div in:fly="{{duration:contentsAppearDuration, delay:contentsDelayDuration, y:contentsTransitionFadeOffset}}">
+                <ArtGallery {data} />
+            </div>
 		</div>
 	</div>
 </div>
