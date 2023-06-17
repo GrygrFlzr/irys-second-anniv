@@ -3,6 +3,8 @@ import type { Element } from 'slate';
 type Image = {
 	src: string;
 	alt: string;
+	height: number;
+	width: number;
 };
 
 // because Sveltekit cannot fathom the fact that people would like to return arrays

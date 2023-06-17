@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import SimpleImageGallery from '$lib/components/SimpleImageGallery.svelte';
 	import SimpleSlateRenderer from '$lib/components/SimpleSlateRenderer.svelte';
-
 	import type { TimelineData } from '$lib/js/Types';
 
 	export let data: Array<TimelineData> = [
@@ -82,7 +82,7 @@
 							<SimpleSlateRenderer slateElements={item.content} />
 						</div>
 						<div class="timeline-img-container">
-							<img class="timeline-img" src={item.images.at(0)?.src} alt="some test about IRyS" />
+							<SimpleImageGallery images={item.images} galleryID="imageGallery_{i}" />
 						</div>
 					</div>
 				</section>

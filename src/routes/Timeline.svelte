@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { TimelineData } from '$lib/js/Types';
-	import { createEditor } from 'slate';
 
 	export let data: Array<TimelineData> = [
 		{

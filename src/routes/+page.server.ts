@@ -26,10 +26,18 @@ async function loadStaticTestData() {
 	};
 }
 
-function getImageObject(cmsImage: any): Image {
+function getImageObject(cmsImageObj: any): Image {
+	let cmsImage;
+	if ('image' in cmsImageObj) {
+		cmsImage = cmsImageObj.image;
+	} else {
+		cmsImage = cmsImageObj;
+	}
 	return {
 		src: getImaginaryProxyImageURL(cmsImage.url, cmsImage.width, cmsImage.height),
-		alt: cmsImage.alt
+		alt: cmsImage.alt,
+		height: cmsImage.height,
+		width: cmsImage.width
 	};
 }
 
@@ -55,7 +63,7 @@ async function loadDataFromCMS(): Promise<TimelineDataObj> {
 			background_image: element.background_image
 				? getImageObject(element.background_image)
 				: undefined,
-			images: element.images.map((i: any) => getImageObject(i)),
+			images: element.images.map((img: any) => getImageObject(img)),
 			content: element.content
 		};
 	});

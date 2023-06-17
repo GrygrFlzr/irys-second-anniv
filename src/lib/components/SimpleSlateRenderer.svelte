@@ -40,37 +40,34 @@
 		>
 			{elem.text}
 		</span>
+	{:else if elem.type === 'link'}
+		<a href={elem.url} target={elem.newTab ? '_blank' : '_self'}>
+			<svelte:self slateElements={elem.children} />
+		</a>
+	{:else if elem.type === 'ul'}
+		<ul>
+			<svelte:self slateElements={elem.children} />
+		</ul>
+	{:else if elem.type === 'ol'}
+		<ol>
+			<svelte:self slateElements={elem.children} />
+		</ol>
+	{:else if elem.type === 'li'}
+		<li>
+			<svelte:self slateElements={elem.children} />
+		</li>
+	{:else if elem.type === 'indent'}
+		<div class="indent">
+			<svelte:self slateElements={elem.children} />
+		</div>
+	{:else if elem.type === 'blockquote'}
+		<blockquote>
+			<svelte:self slateElements={elem.children} />
+		</blockquote>
 	{:else}
-		<!-- TODO: non-leaf elements -->
-		{#if elem.type === 'link'}
-			<a href={elem.url} target={elem.newTab ? '_blank' : '_self'}>
-				<svelte:self slateElements={elem.children} />
-			</a>
-		{:else if elem.type === 'ul'}
-			<ul>
-				<svelte:self slateElements={elem.children} />
-			</ul>
-		{:else if elem.type === 'ol'}
-			<ol>
-				<svelte:self slateElements={elem.children} />
-			</ol>
-		{:else if elem.type === 'li'}
-			<li>
-				<svelte:self slateElements={elem.children} />
-			</li>
-		{:else if elem.type === 'indent'}
-			<div class="indent">
-				<svelte:self slateElements={elem.children} />
-			</div>
-		{:else if elem.type === 'blockquote'}
-			<blockquote>
-				<svelte:self slateElements={elem.children} />
-			</blockquote>
-		{:else}
-			<p>
-				<svelte:self slateElements={elem.children} />
-			</p>
-		{/if}
+		<p>
+			<svelte:self slateElements={elem.children} />
+		</p>
 	{/if}
 {/each}
 
