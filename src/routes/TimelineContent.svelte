@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { each, element } from 'svelte/internal';
 	import { browser } from '$app/environment';
-	import { createEditor } from 'slate';
-	import { Slate, Editable, withSvelte } from 'svelte-slate';
+	import SimpleSlateRenderer from '$lib/components/SimpleSlateRenderer.svelte';
 
 	import type { TimelineData } from '$lib/js/Types';
 
@@ -12,7 +10,7 @@
 			title: 'placeholder2',
 			background_image: undefined,
 			images: [],
-			content: createEditor()
+			content: []
 		}
 	];
 
@@ -67,11 +65,6 @@
 		let da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
 		return `${mo} ${da}, ${ye}`;
 	}
-
-	function createNewSlateEditor() {
-		let editor = withSvelte(createEditor());
-		return editor;
-	}
 </script>
 
 <svelte:window bind:scrollY={scroll} bind:innerHeight />
@@ -86,11 +79,7 @@
 							<h2>{item.title}</h2>
 							<h3>{formatDate(item.date)}</h3>
 							<!-- <p>{item.content}</p> -->
-							<div>
-								<Slate editor={createNewSlateEditor()} value={item.content}>
-									<Editable readOnly={true} />
-								</Slate>
-							</div>
+							<SimpleSlateRenderer slateElements={item.content} />
 						</div>
 						<div class="timeline-img-container">
 							<img class="timeline-img" src={item.images.at(0)?.src} alt="some test about IRyS" />

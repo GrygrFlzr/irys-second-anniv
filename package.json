@@ -37,7 +37,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"slate": "^0.94.1",
-		"svelte-slate": "^0.1.82"
+		"slate": "^0.94.1"
 	}
 }

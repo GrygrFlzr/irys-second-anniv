@@ -1,4 +1,4 @@
-import type { Node } from 'slate';
+import type { Element } from 'slate';
 
 type Image = {
 	src: string;
@@ -16,7 +16,7 @@ type TimelineData = {
 	title: string;
 	background_image?: Image;
 	images: Array<Image>;
-	content: Node;
+	content: Array<Element>;
 };
 
 export type { Image, TimelineData, TimelineDataObj };

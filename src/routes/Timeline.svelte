@@ -9,7 +9,7 @@
 			title: 'placeholder2',
 			background_image: undefined,
 			images: [],
-			content: createEditor()
+			content: []
 		}
 	];
 

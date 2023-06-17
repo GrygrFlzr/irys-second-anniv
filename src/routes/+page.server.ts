@@ -2,7 +2,7 @@ import testdata from '$lib/testdata/timeline-test-data.json';
 
 import fetchAllFromCMS from '$lib/js/FetchFromCMS';
 //import getImaginaryProxyImageURL from '$lib/js/ImaginaryImageProxyTools';
-import type { TimelineData, Image, TimelineDataObj } from '$lib/js/Types';
+import type { Image, TimelineDataObj } from '$lib/js/Types';
 
 /** @type {import('./$types').PageServerLoad} */
 // TODO: Write up to actual CMS as opposed to testdata.
@@ -52,7 +52,9 @@ async function loadDataFromCMS(): Promise<TimelineDataObj> {
 		return {
 			date: new Date(element.date),
 			title: element.title,
-			background_image: getImageObject(element.background_image),
+			background_image: element.background_image
+				? getImageObject(element.background_image)
+				: undefined,
 			images: element.images.map((i: any) => getImageObject(i)),
 			content: element.content
 		};
