@@ -1,12 +1,19 @@
 <script>
 	import ArtGalleryItem from './ArtGalleryItem.svelte';
+
+	export let data = [
+		{
+			contributor: 'contributor_0',
+			images: ['/img/art/art-1.png']
+		}
+	];
 </script>
 
 <div class="content">
 	<div class="items-container">
-		<ArtGalleryItem />
-		<ArtGalleryItem />
-		<ArtGalleryItem />
+		{#each data as item}
+			<ArtGalleryItem {...item} />
+		{/each}
 	</div>
 </div>
 
@@ -19,5 +26,6 @@
 	.items-container {
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 	}
 </style>

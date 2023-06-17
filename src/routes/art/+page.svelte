@@ -1,5 +1,45 @@
 <script>
 	import ArtGallery from './ArtGallery.svelte';
+
+	// Test data for art contributions
+	const data = [
+		{
+			contributor: 'contributor_1',
+			images: ['/img/art/art-1.png', '/img/art/art-2.png']
+		},
+		{
+			contributor: 'contributor_2',
+			images: ['/img/art/art-2.png']
+		},
+		{
+			contributor: 'contributor_3',
+			images: ['/img/art/art-3.png']
+		},
+		{
+			contributor: 'contributor_4',
+			images: ['/img/art/art-4.png']
+		},
+		{
+			contributor: 'contributor_5',
+			images: ['/img/art/art-5.png']
+		},
+		{
+			contributor: 'contributor_6',
+			images: ['/img/art/art-6.png']
+		},
+		{
+			contributor: 'contributor_7',
+			images: ['/img/art/art-7.png']
+		},
+		{
+			contributor: 'contributor_8',
+			images: ['/img/art/art-8.png']
+		},
+		{
+			contributor: 'contributor_9',
+			images: ['/img/art/art-9.png']
+		}
+	];
 </script>
 
 <div class="background">
@@ -13,7 +53,7 @@
 		</div>
 
 		<div class="gallery-container">
-			<ArtGallery />
+			<ArtGallery {data} />
 		</div>
 	</div>
 </div>
