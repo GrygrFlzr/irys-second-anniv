@@ -43,8 +43,8 @@ async function loadDataFromCMS(): Promise<TimelineDataObj> {
 		return {
 			date: new Date(element.date),
 			title: element.title,
-			background_image: element.background_image
-				? getImageObject(element.background_image)
+			backgroundImage: element.backgroundImage
+				? getImageObject(element.backgroundImage)
 				: undefined,
 			images: element.images.map((img: any) => getImageObject(img)),
 			content: element.content

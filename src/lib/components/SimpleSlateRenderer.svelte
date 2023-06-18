@@ -4,7 +4,7 @@
 	import type { Element } from 'slate';
 	import { Text } from 'slate';
 
-	export let slateElements: Array<SSRElement | SSRLinkElement | SSRText>;
+	export let richTextElements: Array<Element>;
 
 	type SSRText = Text & {
 		bold: boolean;
@@ -15,7 +15,7 @@
 
 	type SSRElement = Element & {
 		type: string;
-		children: Array<SSRElement | SSRLinkElement | SSRText>;
+		children: Array<SSRElement | SSRText>;
 	};
 
 	type SSRLinkElement = SSRElement & {
@@ -23,6 +23,21 @@
 		url: string;
 		newTab: boolean;
 	};
+
+	// Not 100% sure if this aggressive type checking is required.
+	let slateElements = richTextElements.map((element: Element) => {
+		if (Object.hasOwn(element, 'type')) {
+			return element as SSRElement;
+		} else if (Object.hasOwn(element, 'text')) {
+			return element as unknown as SSRText;
+		} else {
+			throw new Error(`Unexpected element ${element}, does not conform to SSRText or SSRElement.`);
+		}
+	});
+
+	function toSSRLinkElement(elem: SSRElement) {
+		return elem as SSRLinkElement;
+	}
 </script>
 
 {#each slateElements as elem}
@@ -41,7 +56,10 @@
 			{elem.text}
 		</span>
 	{:else if elem.type === 'link'}
-		<a href={elem.url} target={elem.newTab ? '_blank' : '_self'}>
+		<a
+			href={toSSRLinkElement(elem).url}
+			target={toSSRLinkElement(elem).newTab ? '_blank' : '_self'}
+		>
 			<svelte:self slateElements={elem.children} />
 		</a>
 	{:else if elem.type === 'ul'}

@@ -79,7 +79,7 @@
 							<h2>{item.title}</h2>
 							<h3>{formatDate(item.date)}</h3>
 							<div class="milestone-content">
-								<SimpleSlateRenderer slateElements={item.content} />
+								<SimpleSlateRenderer richTextElements={item.content} />
 							</div>
 						</div>
 						<div class="timeline-img-container">
