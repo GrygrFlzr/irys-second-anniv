@@ -42,6 +42,7 @@
 <style>
 	.pswp-gallery {
 		display: grid;
+		gap: 0.75rem;
 	}
 
 	.single-image-gallery {

@@ -61,7 +61,7 @@
 					{#each data as content, i}
 						{#if content.date.getFullYear() === year}
 							<div class="content-jump">
-								<!--<button on:click={() => scrolltoElement(`${x}_${i}_id`)}>{content.title}</button>-->
+								<!--<button on:click={() => scrolltoElement(`${x}_id_${i}`)}>{content.title}</button>-->
 							</div>
 						{/if}
 					{/each}

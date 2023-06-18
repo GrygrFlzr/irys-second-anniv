@@ -1,29 +1,22 @@
-import testdata from '$lib/testdata/timeline-test-data.json';
+import process from 'node:process';
 
 import fetchAllFromCMS from '$lib/js/FetchFromCMS';
-//import getImaginaryProxyImageURL from '$lib/js/ImaginaryImageProxyTools';
+import getImaginaryProxyImageURL from '$lib/js/ImaginaryImageProxyTools';
 import type { Image, TimelineDataObj } from '$lib/js/Types';
 
-/** @type {import('./$types').PageServerLoad} */
-// TODO: Write up to actual CMS as opposed to testdata.
-async function loadStaticTestData() {
-	let data = [];
-	for (var i = 0; i < testdata.length; i++) {
-		data.push({
-			date: new Date(testdata[i].timestamp * 1000),
-			title: testdata[i].title,
-			photo: testdata[i].photo,
-			content: testdata[i].content
-		});
+import dotenv from 'dotenv';
+
+if (process.env.NODE_ENV !== 'production') {
+	dotenv.config({ path: `.env.local` });
+	dotenv.config();
+}
+
+function getProxyImageURL(src: string, width: number, height: number, quality = 90): string {
+	if (process.env.BYPASS_IMAGINARY_PROXY) {
+		return src;
+	} else {
+		return getImaginaryProxyImageURL(src, width, height, quality);
 	}
-
-	data.sort((a, b) => {
-		return a.date.valueOf() - b.date.valueOf();
-	});
-
-	return {
-		data: data
-	};
 }
 
 function getImageObject(cmsImageObj: any): Image {
@@ -34,25 +27,15 @@ function getImageObject(cmsImageObj: any): Image {
 		cmsImage = cmsImageObj;
 	}
 	return {
-		src: getImaginaryProxyImageURL(cmsImage.url, cmsImage.width, cmsImage.height),
+		src: getProxyImageURL(cmsImage.url, cmsImage.width, cmsImage.height),
 		alt: cmsImage.alt,
 		height: cmsImage.height,
 		width: cmsImage.width
 	};
 }
 
-// Stub function for test because i cant be arsed to set up the imaginery proxy.
-function getImaginaryProxyImageURL(
-	src: string,
-	width: number,
-	height: number,
-	quality = 90
-): string {
-	return src;
-}
-
 // TODO: move to dotfiles
-const cmsRestUrl = 'http://localhost:3000/api/';
+const cmsRestUrl = process.env.CMS_REST_API_URL;
 const eventSlug = 'events';
 async function loadDataFromCMS(): Promise<TimelineDataObj> {
 	let data = await fetchAllFromCMS(`${cmsRestUrl}/${eventSlug}`);
@@ -77,5 +60,4 @@ async function loadDataFromCMS(): Promise<TimelineDataObj> {
 	};
 }
 
-//export { loadStaticTestData as load };
 export { loadDataFromCMS as load };

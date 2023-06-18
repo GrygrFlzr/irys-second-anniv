@@ -74,12 +74,13 @@
 		{#each data as item, i}
 			{#if item.date.getFullYear() === year}
 				<section class="timeline-section reveal-section active">
-					<div class="timeline-item" id="{i}_id">
+					<div class="timeline-item" id="id_{i}">
 						<div class="timeline-extra">
 							<h2>{item.title}</h2>
 							<h3>{formatDate(item.date)}</h3>
-							<!-- <p>{item.content}</p> -->
-							<SimpleSlateRenderer slateElements={item.content} />
+							<div class="milestone-content">
+								<SimpleSlateRenderer slateElements={item.content} />
+							</div>
 						</div>
 						<div class="timeline-img-container">
 							<SimpleImageGallery images={item.images} galleryID="imageGallery_{i}" />
@@ -132,7 +133,7 @@
 		height: auto;
 		margin-bottom: 100px;
 		line-height: 1.5;
-		justify-items: center;
+		justify-items: left;
 	}
 
 	.timeline-extra {
@@ -141,15 +142,6 @@
 		color: #59084a;
 	}
 
-	.timeline-img {
-		height: 150px;
-		border-style: solid;
-		border-width: 2px;
-		border-color: grey;
-		border-radius: 30px;
-		max-width: 100%;
-		object-fit: contain;
-	}
 	/* Dot beside the timeline 
 .timeline-item::before{
     content: '';
@@ -176,6 +168,10 @@
 		margin: 0;
 		padding: 10px 0px;
 		font-size: medium;
+	}
+
+	.milestone-content {
+		margin: 10px;
 	}
 
 	@media (min-width: 1024px) {
