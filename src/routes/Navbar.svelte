@@ -5,7 +5,13 @@
 </script>
 
 <nav class="nav">
-	<button class="nav-button" on:click={() => (navLinksVisible = !navLinksVisible)}>☰</button>
+	<button class="nav-button" on:click={() => (navLinksVisible = !navLinksVisible)} title="menu">
+		<svg viewBox="0 0 24 24" width="24" aria-hidden="true">
+			{#each [4, 12, 20] as y}
+				<rect x="0" {y} width="30" height="2" fill="currentColor" />
+			{/each}
+		</svg>
+	</button>
 
 	<div class="nav-links" class:navLinkActive={navLinksVisible}>
 		<NavLink href="/">Timeline</NavLink>
@@ -25,7 +31,7 @@
 		border: none;
 		color: #fff;
 		font-size: 1.7rem;
-		padding: 0.625rem;
+		padding: 0.625rem 1rem;
 		cursor: pointer;
 		width: fit-content;
 	}
