@@ -1,7 +1,5 @@
 import type { CollectionConfig, PayloadRequest } from 'payload/types';
-import {
-	Project, Event, EventsMedia, Guild,
-} from '../payload-types';
+import { Project, Event, EventMedia, Guild } from '../payload-types';
 import revalidatePath from '../lib/revalidatePath';
 import { languages } from '../payload.config';
 import checkRole from '../lib/checkRole';
@@ -10,7 +8,7 @@ const Events: CollectionConfig = {
 	slug: 'events',
 	labels: {
 		singular: 'Event',
-		plural: 'Events',
+		plural: 'Events'
 	},
 	access: {
 		read: async () => true,
@@ -35,24 +33,26 @@ const Events: CollectionConfig = {
 			const submission = await req.payload.findByID({
 				collection: 'submissions',
 				id,
-				depth: 2,
+				depth: 2
 			});
 			const staffList = ((submission.project as Project).organizer as Guild).staff;
 			return staffList?.includes(req.user.id);
-		},
+		}
 	},
 	hooks: {
 		afterDelete: [
-			async ({ req, doc }: { req: PayloadRequest, doc: Event }) => {
+			async ({ req, doc }: { req: PayloadRequest; doc: Event }) => {
 				// Delete any images connected to this event
-				await Promise.all(doc.images.map(async (media) => {
-					await req.payload.delete({
-						collection: 'event-media',
-						id: (media.image as EventsMedia | undefined)?.id ?? media.image as string,
-						overrideAccess: true,
-					});
-				}));
-			},
+				await Promise.all(
+					doc.images.map(async (media) => {
+						await req.payload.delete({
+							collection: 'event-media',
+							id: (media.image as EventMedia | undefined)?.id ?? (media.image as string),
+							overrideAccess: true
+						});
+					})
+				);
+			}
 		],
 		afterChange: [
 			async ({ req, doc }) => {
@@ -60,7 +60,7 @@ const Events: CollectionConfig = {
 					const project: Project = await req.payload.findByID({
 						collection: 'projects',
 						id: doc.project,
-						depth: 0,
+						depth: 0
 					});
 					const tasks = languages.map(async (language) => {
 						await revalidatePath(`${language}/projects/${project.slug}`);
@@ -74,8 +74,8 @@ const Events: CollectionConfig = {
 
 					await Promise.all(tasks);
 				}
-			},
-		],
+			}
+		]
 	},
 	fields: [
 		{
@@ -83,17 +83,17 @@ const Events: CollectionConfig = {
 			type: 'relationship',
 			relationTo: 'projects',
 			required: true,
-			index: true,
+			index: true
 		},
 		{
 			name: 'date',
 			type: 'date',
-			required: true,
+			required: true
 		},
 		{
 			name: 'title',
 			type: 'text',
-			required: true,
+			required: true
 		},
 		{
 			name: 'images',
@@ -103,15 +103,15 @@ const Events: CollectionConfig = {
 				{
 					name: 'image',
 					type: 'upload',
-					relationTo: 'event-media',
-				},
-			],
+					relationTo: 'event-media'
+				}
+			]
 		},
 		{
-			name: 'background_image',
+			name: 'backgroundImage',
 			type: 'upload',
 			required: false,
-			relationTo: 'event-media',
+			relationTo: 'event-media'
 		},
 		{
 			name: 'content',
@@ -119,10 +119,10 @@ const Events: CollectionConfig = {
 			required: true,
 			admin: {
 				elements: ['link', 'blockquote', 'ul', 'ol', 'indent'],
-				leaves: ['bold', 'italic', 'underline', 'strikethrough'],
-			},
-		},
-	],
+				leaves: ['bold', 'italic', 'underline', 'strikethrough']
+			}
+		}
+	]
 };
 
 export default Events;
