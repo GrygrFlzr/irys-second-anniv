@@ -1,44 +1,20 @@
-<script>
-	import { each, element } from 'svelte/internal';
+<script lang="ts">
 	import { browser } from '$app/environment';
 
 	export let data = [
 		{
 			date: new Date(),
 			title: 'placeholder2',
-			photo: '/img/logo-solid.png',
+			photo: '',
 			content: 'placeholder3'
 		}
 	];
+
 	const years = [2021, 2022, 2023];
-	/*let sectionElement;
-	window.addEventListener(
-		"load",
-		(event) => {
-			sectionElement = document.getElementById(`sectionID`);
+	
+	
+	let scroll = 0;
 
-			createObserver();
-		}
-
-	);
-	function createObserver(){
-		let observer;
-		
-		let options = {
-		root: document.querySelector("#scrollArea"),
-		rootMargin: "0px",
-		threshold: 0.5,
-		};
-		observer = new IntersectionObserver(handleIntersect, options);
-	}
-	function handleIntersect(entries, observer){
-
-	}*/
-
-	/**
-	 * @type {any}
-	 */
-	let scroll;
 	$: innerHeight = 0;
 	/* Reference https://alvarotrigo.com/blog/css-animations-scroll/*/
 	function reveal() {
@@ -58,9 +34,6 @@
 	}
 
 	// https://stackoverflow.com/a/3552493
-	/**
-	 * @param {number | Date | undefined} date
-	 */
 	function formatDate(date) {
 		let ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
 		let mo = new Intl.DateTimeFormat('en', { month: 'long' }).format(date);
@@ -71,24 +44,26 @@
 
 <svelte:window bind:scrollY={scroll} bind:innerHeight />
 <section class="timeline">
-	{#each years as year, i}
-		<p class="year-divider">{year}</p>
-		{#each data as item, i}
-			{#if item.date.getFullYear() === year}
-				<section class="timeline-section reveal-section active">
-					<div class="timeline-item" id="{i}_id">
-						<div class="timeline-extra">
-							<h2>{item.title}</h2>
-							<h3>{formatDate(item.date)}</h3>
-							<p>{item.content}</p>
+	{#each years as year, x}
+		<section class="year-divider">
+			<p class="year-css" id="contentyear_{x}">{year}</p>
+			{#each data as item, i}
+				{#if item.date.getFullYear() === year}
+					<section class="timeline-section reveal-section active">
+						<div class="timeline-item" id="id_{i}">
+							<div class="timeline-extra">
+								<h2>{item.title}</h2>
+								<h3>{formatDate(item.date)}</h3>
+								<p>{item.content}</p>
+							</div>
+							<div class="timeline-img-container">
+								<img class="timeline-img" src={item.photo} alt="some test about IRyS" />
+							</div>
 						</div>
-						<div class="timeline-img-container">
-							<img class="timeline-img" src={item.photo} alt="some test about IRyS" />
-						</div>
-					</div>
-				</section>
-			{/if}
-		{/each}
+					</section>
+				{/if}
+			{/each}
+		</section>
 	{/each}
 </section>
 
@@ -99,7 +74,7 @@
 		margin: 1rem;
 		padding: 0 20px 0 30px;
 	}
-	.year-divider {
+	.year-css {
 		color: #ddd;
 		font-size: 22px;
 		padding-bottom: 20px;
@@ -133,7 +108,7 @@
 		height: auto;
 		margin-bottom: 100px;
 		line-height: 1.5;
-		justify-items: center;
+		justify-items: left;
 	}
 
 	.timeline-extra {
