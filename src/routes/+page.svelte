@@ -1,7 +1,7 @@
 <script lang="ts">
 	import TimelineContent from './TimelineContent.svelte';
 	import Timeline from './Timeline.svelte';
-	import type { TimelineData, TimelineDataObj } from '$lib/js/Types';
+	import type { TimelineData, TimelineDataObj } from '$lib/types/Types';
 	// Can probably have a different file hold the data / Use the database
 	// *IMPORTANT* DATA IS REQUIRED TO BE SORTED BY YEAR/DATE ACCORDINGLY (OTHERWISE IT WIRED AND STUFF)
 

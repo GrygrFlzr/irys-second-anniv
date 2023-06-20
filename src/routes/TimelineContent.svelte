@@ -2,7 +2,7 @@
 	import { browser } from '$app/environment';
 	import SimpleImageGallery from '$lib/components/SimpleImageGallery.svelte';
 	import SimpleSlateRenderer from '$lib/components/SimpleSlateRenderer.svelte';
-	import type { TimelineData } from '$lib/js/Types';
+	import type { TimelineData } from '$lib/types/Types';
 
 	export let data: Array<TimelineData> = [
 		{

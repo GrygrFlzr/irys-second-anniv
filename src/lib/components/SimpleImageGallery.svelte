@@ -4,7 +4,7 @@
 	import PhotoSwipeLightbox from 'photoswipe/lightbox';
 	import 'photoswipe/style.css';
 
-	import type { Image } from '$lib/js/Types';
+	import type { Image } from '$lib/types/Types';
 
 	export let galleryID: string;
 	export let images: Array<Image>;

@@ -1,46 +1,17 @@
 <!-- Adapted from https://payloadcms.com/docs/fields/rich-text#generating-html -->
 
 <script lang="ts">
-	import type { Element } from 'slate';
+	import type { RichtextElement, RichtextLinkElement, RichtextTextElement } from '$lib/types/Types';
 	import { Text } from 'slate';
 
-	export let richTextElements: Array<Element>;
+	export let richTextElements: Array<RichtextElement | RichtextTextElement>;
 
-	type SSRText = Text & {
-		bold: boolean;
-		italic: boolean;
-		underline: boolean;
-		strikethrough: boolean;
-	};
-
-	type SSRElement = Element & {
-		type: string;
-		children: Array<SSRElement | SSRText>;
-	};
-
-	type SSRLinkElement = SSRElement & {
-		linkType: string;
-		url: string;
-		newTab: boolean;
-	};
-
-	// Not 100% sure if this aggressive type checking is required.
-	let slateElements = richTextElements.map((element: Element) => {
-		if (Object.hasOwn(element, 'type')) {
-			return element as SSRElement;
-		} else if (Object.hasOwn(element, 'text')) {
-			return element as unknown as SSRText;
-		} else {
-			throw new Error(`Unexpected element ${element}, does not conform to SSRText or SSRElement.`);
-		}
-	});
-
-	function toSSRLinkElement(elem: SSRElement) {
-		return elem as SSRLinkElement;
+	function toRichtextLinkElement(elem: RichtextElement) {
+		return elem as RichtextLinkElement;
 	}
 </script>
 
-{#each slateElements as elem}
+{#each richTextElements as elem}
 	{#if Text.isText(elem)}
 		<!-- 
             Ideally we'd use sematic html elements here but since multiple styles
@@ -57,8 +28,8 @@
 		</span>
 	{:else if elem.type === 'link'}
 		<a
-			href={toSSRLinkElement(elem).url}
-			target={toSSRLinkElement(elem).newTab ? '_blank' : '_self'}
+			href={toRichtextLinkElement(elem).url}
+			target={toRichtextLinkElement(elem).newTab ? '_blank' : '_self'}
 		>
 			<svelte:self slateElements={elem.children} />
 		</a>
