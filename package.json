@@ -37,7 +37,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"dotenv": "^16.3.1",
 		"photoswipe": "^5.3.7",
 		"slate": "^0.94.1"
 	}

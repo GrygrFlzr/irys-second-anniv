@@ -1,15 +1,9 @@
 import process from 'node:process';
 
+import { env } from '$env/dynamic/private';
 import fetchAllFromCMS from '$lib/js/FetchFromCMS';
 import getImaginaryProxyImageURL from '$lib/js/ImaginaryImageProxyTools';
 import type { Image, TimelineDataObj } from '$lib/js/Types';
-
-import dotenv from 'dotenv';
-
-if (process.env.NODE_ENV !== 'production') {
-	dotenv.config({ path: `.env.local` });
-	dotenv.config();
-}
 
 function getProxyImageURL(src: string, width: number, height: number, quality = 90): string {
 	if (process.env.BYPASS_IMAGINARY_PROXY) {
@@ -35,7 +29,7 @@ function getImageObject(cmsImageObj: any): Image {
 }
 
 // TODO: move to dotfiles
-const cmsRestUrl = process.env.CMS_REST_API_URL;
+const cmsRestUrl = env.CMS_REST_API_URL;
 const eventSlug = 'events';
 async function loadDataFromCMS(): Promise<TimelineDataObj> {
 	let data = await fetchAllFromCMS(`${cmsRestUrl}/${eventSlug}`);
