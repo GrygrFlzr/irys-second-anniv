@@ -13,7 +13,7 @@
 
 	const years = [2021, 2022, 2023];
 
-	// For Lighting up the timeline bubble when item is on screen
+	// For Lighting up the timeline bubble and foldout content when content is on screen
 	let active = false;
 	let border = false;
 	if(browser){
@@ -23,15 +23,16 @@
 			entries.forEach((entry) => {
 				const currentIndex = Array.prototype.indexOf.call(items, entry.target);
 				const timelineBubble = document.getElementById(`content_${currentIndex}`);
+				const foldoutContent = document.getElementById(`foldout-content${currentIndex}`)
 				timelineBubble?.classList.toggle("active", entry.isIntersecting);
-				
+				foldoutContent?.classList.toggle("active", entry.isIntersecting);
 			})
 		}, 
 		{
-			threshold: 0.9
+			threshold: 0.5
 		}
 		)
-		items.forEach((item, index) => {
+		items.forEach((item) => {
 			observer.observe(item)
 		})
 	}
@@ -44,8 +45,6 @@
 			entries.forEach((entry) => {
 				if(entry.isIntersecting){
 					const currentIndex = Array.prototype.indexOf.call(contentYear, entry.target);
-
-					console.log(entry.boundingClientRect.top + window.pageYOffset);
 
 					diamondY = Math.max(0, (((y - (entry.boundingClientRect.top + window.pageYOffset))  / (entry.boundingClientRect.height)) * 100));
 					
@@ -60,6 +59,45 @@
 		})
 	}
 
+	// For the toggle button to disappear/ Foldout
+
+	/**
+   * @type {HTMLDivElement | null}
+   */
+   let foldout;
+	/**
+   * @type {HTMLDivElement}
+   */
+	let toggleid;
+	
+	/**
+   * @type {HTMLDivElement}
+   */
+	let timeline;
+	let foldoutopen = false;
+	function handleFoldoutOpen(){
+		foldoutopen = true;
+		toggleid?.classList.toggle("active");
+		foldout?.classList.toggle("active");
+		timeline?.classList.toggle("active");
+		document.body.addEventListener('click', handleMenuClose);
+	}
+	
+	function handleMenuClose(){
+		foldoutopen = false;
+		toggleid?.classList.toggle("active");
+		foldout?.classList.toggle("active");
+		timeline?.classList.toggle("active");
+		document.body.removeEventListener('click', handleMenuClose);
+	}
+	
+	/**
+   * @param {string} id
+   */
+	function scrolltoElement(id) {
+		const element = document.getElementById(id);
+		element?.scrollIntoView({ behavior: 'smooth' });
+	}
 	/**
 	 * @type {number}
 	 */
@@ -84,6 +122,7 @@
 		scrollHeight = document.documentElement.scrollHeight;
 		scrollTop = document.documentElement.scrollTop;
 
+		// For the timeline to do the collapse thing
 		window.addEventListener('scroll',function(e){
 			for(let i=0; i<years.length; i++){
 				var element1 = document.getElementById(`contentyear_${i}`)?.getBoundingClientRect().top;
@@ -102,6 +141,8 @@
 				}
 			}
 		})
+	
+		
 	});
 
 	function handleResize() {
@@ -126,7 +167,26 @@
 
 <svelte:window bind:scrollY={y} on:resize={handleResize} bind:innerHeight={windowInnerHeight} />
 
-<div class="sidebar" id="timeline-sidebar">
+<div class="toggle" bind:this={toggleid} class:active>
+	<button type="button" class="arrow glow" id="toggle_button" on:click|stopPropagation={handleFoldoutOpen}>&#8250</button>
+</div>
+<div class="foldout" class:active bind:this={foldout} >
+	{#each years as year}
+		<section>
+			<h2 class="foldout-year">{year}</h2>
+			{#each data as content, i}
+				{#if content.date.getFullYear() === year}
+					<div class="foldout-content" class:active id="foldout-content{i}"  on:click|preventDefault={() => scrolltoElement(`id_${i}`)}>
+						<p class="content-title">{content.title}</p>
+					</div>
+				{/if}
+			{/each}
+		</section>
+	{/each}
+</div>
+
+
+<div class="sidebar" class:active bind:this={timeline}>
 	<div class="wrapper" use:checkSidebarY>
 		<span class="diamond" style:top="calc({diamondY}% + 32px)">&#9830</span>
 		{#each years as year, x}
@@ -147,7 +207,101 @@
 </div>
 
 <!-- Reference https://www.youtube.com/watch?v=BHskAsXVey8 -->
+<!-- Glow Reference https://www.w3schools.com/howto/howto_css_glowing_text.asp-->
 <style>
+	.toggle{
+		position: sticky;
+		top: 40%;
+		left: 0px;
+		width: 30px;
+		height: auto;
+		background: transparent;
+		cursor: pointer;
+		transition: 0.2s;
+	}
+	.toggle.active{
+		transform: translateX(-30px);
+	}
+	.arrow{
+		background: transparent;
+		border: none;
+		padding-left: 16px;
+	}
+	.glow {
+		font-size: 50px;
+		color: #fff;
+		text-align: center;
+		animation: glow 1s ease-in-out infinite alternate;
+	}
+	@keyframes glow {
+	from {
+		text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+	}
+	
+	to {
+		text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+	}
+	}
+	.foldout{
+		position: sticky;
+		float: left;
+		display:flex;
+		flex-direction: column;
+		justify-content: space-between;
+		top: 5%;
+		left: 0px;
+		width: 250px;
+		height: 95vh;
+		transform: translateX(-300px);
+		background: #e5e5e5;
+		transition: 0.5s;
+	}
+	/*Styling Scrollbar for Firefox*/
+	.foldout.active{
+		transform: translateX(0px);
+		overflow-y: scroll;
+		scrollbar-width: thin;
+		scrollbar-color: #b90b8c #e5e5e5;
+	}
+	/*Styling Scrollbar For Chrome, Edge and Safari*/
+	.foldout::-webkit-scrollbar{
+		width: 10px;
+	}
+	.foldout::-webkit-scrollbar-track{
+		background: #e5e5e5;
+	}
+	.foldout::-webkit-scrollbar-thumb{
+		background-color: #b90b8c;
+		border-radius: 20px;
+		border: 3px solid #e5e5e5;
+	}
+
+	.foldout-year{
+		margin: 0;
+		padding: 8px;
+	}
+	.foldout-content{
+		background: #d9d9d9;
+		margin: 0;
+		padding: 15px;
+		height:auto;
+	}
+	.foldout-content.active{
+		background: #b90b8c;
+		transition: 0.3s;
+	}
+	.foldout-content:hover{
+		background: #116116;
+		cursor:pointer;
+		transition: 0.5s;
+	}
+	.content-title{
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		height:auto;
+		width:auto;
+	}
 	.year::before {
 		content: '';
 		display: block;
@@ -176,15 +330,18 @@
 		position: sticky;
 		float: left;
 		top: 150px;
-		left: 0px;
+		left: 300px;
 		bottom: 0;
 		margin: 0 0 0 25px;
 		width: 18px;
 		padding-top: 25px;
-
+		transform: translateX(-250px);
 		background: transparent;
 		transition: all 500ms ease-in-out;
 		z-index: 1000;
+	}
+	.sidebar.active{
+		transform: translateX(-500px);
 	}
 	.diamond {
 		top: 0px;
