@@ -39,7 +39,7 @@ function getImageObject(cmsImageObj: any): Image {
 // TODO: move to dotfiles
 const cmsRestUrl = env.CMS_REST_API_URL;
 const eventSlug = 'events';
-const projectSlug = '';
+const projectSlug = env.IRYS_2ND_ANNIV_PROJECT_SLUG;
 async function loadDataFromCMS(): Promise<TimelineDataObj> {
 	// TODO: modify to only grab events from a specific project, pull in the qs lib for readability
 	let query = qs.stringify(
