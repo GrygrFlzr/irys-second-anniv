@@ -1,17 +1,11 @@
-import process from 'node:process';
-
 import { env } from '$env/dynamic/private';
 import fetchAllFromCMS from '$lib/js/FetchFromCMS';
 import getImaginaryProxyImageURL from '$lib/js/ImaginaryImageProxyTools';
-import type {
-	Image,
-	RichtextElement,
-	RichtextTextElement,
-	TimelineDataObj
-} from '$lib/types/Types';
 import type { Event } from '$lib/types/HefCmsTypes';
-
+import type { Image, RichtextElement, RichtextTextElement, TimelineData } from '$lib/types/Types';
+import process from 'node:process';
 import qs from 'qs';
+import type { PageServerLoad } from './$types';
 
 function getProxyImageURL(src: string, width: number, height: number, quality = 90): string {
 	if (process.env.BYPASS_IMAGINARY_PROXY) {
@@ -40,9 +34,9 @@ function getImageObject(cmsImageObj: any): Image {
 const cmsRestUrl = env.CMS_REST_API_URL;
 const eventSlug = 'events';
 const projectSlug = env.IRYS_2ND_ANNIV_PROJECT_SLUG;
-async function loadDataFromCMS(): Promise<TimelineDataObj> {
+export const load = async function loadDataFromCMS() {
 	// TODO: modify to only grab events from a specific project, pull in the qs lib for readability
-	let query = qs.stringify(
+	const query = qs.stringify(
 		{
 			where: {
 				'project.slug': {
@@ -52,8 +46,8 @@ async function loadDataFromCMS(): Promise<TimelineDataObj> {
 		},
 		{ addQueryPrefix: true }
 	);
-	let data = await fetchAllFromCMS<Event>(`${cmsRestUrl}/api/${eventSlug}?${query}`);
-	let retData = data.map((element: Event) => {
+	const data = await fetchAllFromCMS<Event>(`${cmsRestUrl}/api/${eventSlug}?${query}`);
+	const retData: TimelineData[] = data.map((element: Event) => {
 		return {
 			date: new Date(element.date),
 			title: element.title,
@@ -76,13 +70,11 @@ async function loadDataFromCMS(): Promise<TimelineDataObj> {
 		};
 	});
 
-	retData.sort((a: any, b: any) => {
+	retData.sort((a, b) => {
 		return a.date.valueOf() - b.date.valueOf();
 	});
 
 	return {
 		data: retData
 	};
-}
-
-export { loadDataFromCMS as load };
+} satisfies PageServerLoad;

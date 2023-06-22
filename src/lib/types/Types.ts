@@ -7,12 +7,6 @@ type Image = {
 	width: number;
 };
 
-// because Sveltekit cannot fathom the fact that people would like to return arrays
-// instead of objects containing one damn array
-type TimelineDataObj = {
-	data: Array<TimelineData>;
-};
-
 type TimelineData = {
 	date: Date;
 	title: string;
@@ -39,11 +33,4 @@ type RichtextTextElement = Text & {
 	strikethrough: boolean;
 };
 
-export type {
-	Image,
-	TimelineData,
-	TimelineDataObj,
-	RichtextElement,
-	RichtextTextElement,
-	RichtextLinkElement
-};
+export type { Image, TimelineData, RichtextElement, RichtextTextElement, RichtextLinkElement };
