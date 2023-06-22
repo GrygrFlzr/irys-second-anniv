@@ -1,22 +1,26 @@
 <!-- Adapted from: https://photoswipe.com/svelte-image-gallery/ -->
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import PhotoSwipeLightbox from 'photoswipe/lightbox';
 	import 'photoswipe/style.css';
 
 	import type { Image } from '$lib/types/Types';
 
-	export let galleryID: string;
 	export let images: Array<Image>;
 
-	onMount(() => {
-		let lightbox = new PhotoSwipeLightbox({
-			gallery: '#' + galleryID,
+	function photoSwipeAction(ele: HTMLElement) {
+		const lightbox = new PhotoSwipeLightbox({
+			gallery: ele,
 			children: 'a',
 			pswpModule: () => import('photoswipe')
 		});
 		lightbox.init();
-	});
+
+		return {
+			destroy() {
+				lightbox.destroy();
+			}
+		};
+	}
 </script>
 
 <div
@@ -24,7 +28,7 @@
 	class:single-image-gallery={images.length === 1}
 	class:double-image-gallery={images.length === 2}
 	class:grid-image-gallery={images.length >= 3}
-	id={galleryID}
+	use:photoSwipeAction
 >
 	{#each images as image}
 		<a

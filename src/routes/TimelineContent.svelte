@@ -83,7 +83,7 @@
 							</div>
 						</div>
 						<div class="timeline-img-container">
-							<SimpleImageGallery images={item.images} galleryID="imageGallery_{i}" />
+							<SimpleImageGallery images={item.images} />
 						</div>
 					</div>
 				</section>
