@@ -3,13 +3,12 @@ import fetchAllFromCMS from '$lib/js/FetchFromCMS';
 import getImaginaryProxyImageURL from '$lib/js/ImaginaryImageProxyTools';
 import type { Event } from '$lib/types/HefCmsTypes';
 import type { Image, RichtextElement, RichtextTextElement, TimelineData } from '$lib/types/Types';
-import process from 'node:process';
 import qs from 'qs';
 import type { PageServerLoad } from './$types';
 
 function getProxyImageURL(src: string, width: number, height: number, quality = 90): string {
-	if (process.env.BYPASS_IMAGINARY_PROXY) {
-		return src;
+	if (env.BYPASS_IMAGINARY_PROXY) {
+		return new URL(src, env.CMS_REST_API_URL).toString();
 	} else {
 		return getImaginaryProxyImageURL(src, width, height, quality);
 	}
@@ -57,13 +56,15 @@ export const load = async function loadDataFromCMS() {
 			images: element.images.map((img: any) => getImageObject(img)),
 			// Not 100% sure if this aggressive type checking is required.
 			content: element.content.map((element: { [k: string]: unknown }) => {
-				if (Object.hasOwn(element, 'type')) {
+				if (Object.hasOwn(element, 'type') || Object.hasOwn(element, 'children')) {
 					return element as unknown as RichtextElement;
 				} else if (Object.hasOwn(element, 'text')) {
 					return element as unknown as RichtextTextElement;
 				} else {
 					throw new Error(
-						`Unexpected element ${element}, does not conform to RichtextElement or RichtextTextElement.`
+						`Unexpected element "${JSON.stringify(
+							element
+						)}", does not conform to RichtextElement or RichtextTextElement.`
 					);
 				}
 			})

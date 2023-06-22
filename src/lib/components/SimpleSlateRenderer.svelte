@@ -31,31 +31,31 @@
 			href={toRichtextLinkElement(elem).url}
 			target={toRichtextLinkElement(elem).newTab ? '_blank' : '_self'}
 		>
-			<svelte:self slateElements={elem.children} />
+			<svelte:self richTextElements={elem.children} />
 		</a>
 	{:else if elem.type === 'ul'}
 		<ul>
-			<svelte:self slateElements={elem.children} />
+			<svelte:self richTextElements={elem.children} />
 		</ul>
 	{:else if elem.type === 'ol'}
 		<ol>
-			<svelte:self slateElements={elem.children} />
+			<svelte:self richTextElements={elem.children} />
 		</ol>
 	{:else if elem.type === 'li'}
 		<li>
-			<svelte:self slateElements={elem.children} />
+			<svelte:self richTextElements={elem.children} />
 		</li>
 	{:else if elem.type === 'indent'}
 		<div class="indent">
-			<svelte:self slateElements={elem.children} />
+			<svelte:self richTextElements={elem.children} />
 		</div>
 	{:else if elem.type === 'blockquote'}
 		<blockquote>
-			<svelte:self slateElements={elem.children} />
+			<svelte:self richTextElements={elem.children} />
 		</blockquote>
 	{:else}
 		<p>
-			<svelte:self slateElements={elem.children} />
+			<svelte:self richTextElements={elem.children} />
 		</p>
 	{/if}
 {/each}
