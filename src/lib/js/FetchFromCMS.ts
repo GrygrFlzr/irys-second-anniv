@@ -1,7 +1,7 @@
 const numObjsPerRequest = 100;
 const objDepth = 5;
 
-// TODO: implement authenication, if required
+// TODO: implement authentication, if required
 async function fetchAllFromCMS<T>(cmsUrl: string | URL): Promise<Array<T>> {
 	let data: Array<T> = [];
 	let urlObj = new URL(cmsUrl);
