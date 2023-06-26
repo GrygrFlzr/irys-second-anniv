@@ -29,12 +29,10 @@ function getImageObject(cmsImageObj: any): Image {
 	};
 }
 
-// TODO: move to dotfiles
 const cmsRestUrl = env.CMS_REST_API_URL;
 const eventSlug = 'events';
 const projectSlug = env.IRYS_2ND_ANNIV_PROJECT_SLUG;
 export const load = async function loadDataFromCMS() {
-	// TODO: modify to only grab events from a specific project, pull in the qs lib for readability
 	const query = qs.stringify(
 		{
 			where: {
@@ -45,7 +43,8 @@ export const load = async function loadDataFromCMS() {
 		},
 		{ addQueryPrefix: true }
 	);
-	const data = await fetchAllFromCMS<Event>(`${cmsRestUrl}/api/${eventSlug}?${query}`);
+	const formattedUrl = `${cmsRestUrl}${cmsRestUrl.endsWith("/") ? "" : "/"}api/${eventSlug}${query}`;
+	const data = await fetchAllFromCMS<Event>(formattedUrl);
 	const retData: TimelineData[] = data.map((element: Event) => {
 		return {
 			date: new Date(element.date),

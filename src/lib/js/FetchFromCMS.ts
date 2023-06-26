@@ -10,6 +10,7 @@ async function fetchAllFromCMS<T>(cmsUrl: string | URL): Promise<Array<T>> {
 
 	let hasAllData = false;
 	do {
+		console.log(cmsUrl);
 		let response = await fetch(cmsUrl, {
 			headers: {
 				'X-RateLimit-Bypass': process.env.PAYLOAD_BYPASS_RATE_LIMIT_KEY ?? ''
