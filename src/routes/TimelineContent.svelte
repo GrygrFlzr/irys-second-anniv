@@ -77,15 +77,16 @@
 	.year-css {
 		color: #ddd;
 		font-size: 22px;
+		margin-left: 60px;
 		padding-bottom: 20px;
 		text-decoration: underline;
 		text-underline-position: under;
 	}
-	.timeline section {
+	.timeline-section {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		min-height: 100vh;
+		min-height: 100svh;
 	}
 	/* Line for the timeline      border-left: 2px solid #ccc;  */
 	.reveal-section {
@@ -106,7 +107,7 @@
 		border-radius: 50px;
 		position: relative;
 		height: auto;
-		margin-bottom: 100px;
+		margin: 0px 0px 100px 60px;
 		line-height: 1.5;
 		justify-items: left;
 	}
@@ -156,8 +157,8 @@
 
 	@media (min-width: 1024px) {
 		.timeline {
-			margin: 50px 10px 50px 100px;
-			padding: 0 20px 0 30px;
+			margin: 0px 10px 0px 100px;
+			padding: 50px 20px 0 30px;
 		}
 
 		.timeline-item {

@@ -10,13 +10,14 @@
 	});
 </script>
 
+
 <div class="background-img">
 	<div class="content">
-		<div class="achievements">
+		<div class="achievements blur">
 			<h1 class="timeHeader">Achievements/Major Events</h1>
 		</div>
 		<Timeline data={processedData} />
-		<div>
+		<div class="blur">
 			<TimelineContent data={processedData} />
 		</div>
 	</div>
@@ -33,10 +34,11 @@
 
 	.content {
 		background: rgba(0, 0, 0, 0);
-		backdrop-filter: blur(5px);
 		padding-top: 1em;
 	}
-
+	.blur{
+		backdrop-filter: blur(5px);
+	}
 	.achievements {
 		background-color: #300029;
 		margin: 0px 20px 10px;

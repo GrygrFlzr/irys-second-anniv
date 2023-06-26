@@ -29,7 +29,7 @@
 			})
 		}, 
 		{
-			threshold: 0.5
+			threshold: 0
 		}
 		)
 		items.forEach((item) => {
@@ -45,7 +45,7 @@
 			entries.forEach((entry) => {
 				if(entry.isIntersecting){
 					const currentIndex = Array.prototype.indexOf.call(contentYear, entry.target);
-
+					currentYearIndex = currentIndex + 1;
 					diamondY = Math.max(0, (((y - (entry.boundingClientRect.top + window.pageYOffset))  / (entry.boundingClientRect.height)) * 100));
 					
 				}
@@ -91,6 +91,7 @@
 		document.body.removeEventListener('click', handleMenuClose);
 	}
 	
+	//Allows the user to scroll into the timeline content on click
 	/**
    * @param {string} id
    */
@@ -98,6 +99,7 @@
 		const element = document.getElementById(id);
 		element?.scrollIntoView({ behavior: 'smooth' });
 	}
+
 	/**
 	 * @type {number}
 	 */
@@ -108,15 +110,19 @@
 	let scrollTop = 0;
 	let throttling = false;
 	let windowInnerHeight = 0;
-	
+	/**
+	 * @type {number | undefined}
+	 */
+	let headerHeight;
 	/**
    * @type {number}
    */
 	$: currentYear = years[0];
-
+	$: currentYearIndex = 0;
+	$: currentYearDiamond = currentYearIndex * 23;
 	$: scrollHeightBelow = scrollHeight - wrapperOffset - 100;
 	$: calcOffset = wrapperOffset - windowInnerHeight / 2;
-	
+
 
 	onMount(() => {
 		scrollHeight = document.documentElement.scrollHeight;
@@ -124,6 +130,10 @@
 
 		// For the timeline to do the collapse thing
 		window.addEventListener('scroll',function(e){
+			// For the foldout to adjust the height based on whether the header collapses
+			const HHeight = document.getElementById("header-id")?.offsetHeight;
+			headerHeight = HHeight;
+			// ---------------------------------------------------------------------------- //
 			for(let i=0; i<years.length; i++){
 				var element1 = document.getElementById(`contentyear_${i}`)?.getBoundingClientRect().top;
 				try{
@@ -170,9 +180,9 @@
 <div class="toggle" bind:this={toggleid} class:active>
 	<button type="button" class="arrow glow" id="toggle_button" on:click|stopPropagation={handleFoldoutOpen}>&#8250</button>
 </div>
-<div class="foldout" class:active bind:this={foldout} >
+<div class="foldout" style:top="calc({headerHeight}px)" class:active bind:this={foldout} >
 	{#each years as year}
-		<section>
+		<section class="foldout-wrapper">
 			<h2 class="foldout-year">{year}</h2>
 			{#each data as content, i}
 				{#if content.date.getFullYear() === year}
@@ -188,7 +198,7 @@
 
 <div class="sidebar" class:active bind:this={timeline}>
 	<div class="wrapper" use:checkSidebarY>
-		<span class="diamond" style:top="calc({diamondY}% + 32px)">&#9830</span>
+		<span class="diamond" style:top="calc({diamondY}% + {currentYearDiamond}px)">&#9830</span>
 		{#each years as year, x}
 			<div class="year" id="timelineyear_{x}">
 				<p>{year}</p>
@@ -210,7 +220,7 @@
 <!-- Glow Reference https://www.w3schools.com/howto/howto_css_glowing_text.asp-->
 <style>
 	.toggle{
-		position: sticky;
+		position: fixed;
 		top: 40%;
 		left: 0px;
 		width: 30px;
@@ -218,6 +228,7 @@
 		background: transparent;
 		cursor: pointer;
 		transition: 0.2s;
+		z-index: 300;
 	}
 	.toggle.active{
 		transform: translateX(-30px);
@@ -243,15 +254,13 @@
 	}
 	}
 	.foldout{
-		position: sticky;
-		float: left;
+		position:fixed;
 		display:flex;
 		flex-direction: column;
 		justify-content: space-between;
-		top: 5%;
-		left: 0px;
+		top: 63.8px;
 		width: 250px;
-		height: 95vh;
+		height: 95svh;
 		transform: translateX(-300px);
 		background: #e5e5e5;
 		transition: 0.5s;
@@ -259,6 +268,7 @@
 	/*Styling Scrollbar for Firefox*/
 	.foldout.active{
 		transform: translateX(0px);
+		z-index: 1001;
 		overflow-y: scroll;
 		scrollbar-width: thin;
 		scrollbar-color: #b90b8c #e5e5e5;

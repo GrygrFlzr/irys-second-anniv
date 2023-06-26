@@ -5,7 +5,7 @@
 	let scrollY = 0;
 </script>
 
-<header class="header">
+<header class="header" id="header-id">
 	<a class="skip-to-main-button" href="#main"> Skip to main content </a>
 	<div class="scroll-fold" class:scroll-unfold={scrollY <= 120}>
 		<div class="logo">
