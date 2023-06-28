@@ -169,7 +169,7 @@
 	}
 	@media (min-width: 769px){
 		.timeline{
-			margin: 0px 20px 0px 50px;
+			margin: 0px 0px 0px 135px;
 			padding: 50px 30px 0px 30px;
 		}
 	}

@@ -427,11 +427,12 @@
 		.content-title{
 			font-size: 1.25em;
 		}
-	}
-	@media (min-width: 1024px) {
 		.foldout{
 			width:200px;
 		}
+	}
+	@media (min-width: 1024px) {
+
 	}
 	@media (min-width: 1400px) {
 
