@@ -129,25 +129,23 @@
 		scrollTop = document.documentElement.scrollTop;
 
 		// For the timeline to do the collapse thing
-		window.addEventListener('scroll',function(e){
+		window.addEventListener('scroll',function(){
 			// For the foldout to adjust the height based on whether the header collapses
 			const HHeight = document.getElementById("header-id")?.offsetHeight;
 			headerHeight = HHeight;
 			// ---------------------------------------------------------------------------- //
 			for(let i=0; i<years.length; i++){
 				var element1 = document.getElementById(`contentyear_${i}`)?.getBoundingClientRect().top;
-				try{
-					var element2 = document.getElementById(`contentyear_${i+1}`)?.getBoundingClientRect().top;
-					if(y > (element1 + this.window.pageYOffset - (windowInnerHeight/1.5)) && y < (element2 + this.window.pageYOffset - (windowInnerHeight/1.5))){
+				var element2 = document.getElementById(`contentyear_${i+1}`)?.getBoundingClientRect().top;
+				if(element1 && element2){
+	
+					if(y > (element1 + this.window.pageYOffset - (windowInnerHeight/1.35)) && y < (element2 + this.window.pageYOffset - (windowInnerHeight/1.35))){
 						currentYear = years[i];
 					}
 					// For the last year
-					else if( y > (element1 + this.window.pageYOffset - (windowInnerHeight/1.5)) && typeof element2 === 'undefined'){
+					else if( y > (element1 + this.window.pageYOffset - (windowInnerHeight/1.35)) && typeof element2 === 'undefined'){
 						currentYear = years[years.length-1];
 					}
-				}
-				catch{
-					currentYear = years[i];
 				}
 			}
 		})
@@ -186,9 +184,9 @@
 			<h2 class="foldout-year">{year}</h2>
 			{#each data as content, i}
 				{#if content.date.getFullYear() === year}
-					<div class="foldout-content" class:active id="foldout-content{i}"  on:click|preventDefault={() => scrolltoElement(`id_${i}`)}>
+					<button class="foldout-content" class:active id="foldout-content{i}"  on:click|preventDefault={() => scrolltoElement(`id_${i}`)}>
 						<p class="content-title">{content.title}</p>
-					</div>
+					</button>
 				{/if}
 			{/each}
 		</section>
@@ -292,9 +290,12 @@
 	}
 	.foldout-content{
 		background: #d9d9d9;
+		border: transparent;
+		font-family: inherit;
 		margin: 0;
 		padding: 15px;
 		height:auto;
+		width:100%;
 	}
 	.foldout-content.active{
 		background: #b90b8c;
@@ -306,6 +307,7 @@
 		transition: 0.5s;
 	}
 	.content-title{
+		text-align: left;
 		text-overflow: ellipsis;
 		overflow: hidden;
 		white-space: nowrap;
@@ -360,9 +362,7 @@
 		position: absolute;
 		line-height: 1;
 	}
-	/*.sidebar:hover {
-		width: 100px;
-	}*/
+
 	.sidebar .wrapper {
 		width: 20px;
 		height: 100%;
@@ -380,24 +380,7 @@
 		padding: 0px 12px;
 		transition: all 300ms ease-in-out;
 	}
-	/*.sidebar .links .content-jump img{
-        display: inline-block;
-        width: 18px;
-        height: 18px;
-    }*/
-	/*button {
-		display: inline-block;
-		font-size: 15px;
-		margin-left: 10px;
-		background-color: transparent;
-		border: none;
-		width: 50px;
-		color: #e1cbd2;
-	}*/
-	/*.sidebar .links .content-jump:hover {
-		background: transparent;
-		cursor: pointer;
-	}*/
+
 	.content-jump {
 		border-left: 3px solid #ddd;
 		padding-left: 6px;
@@ -433,20 +416,23 @@
 		background-color: #b90b8c;
 		transition: all 500ms ease-in-out;
 	}
-	/*.content-jump:hover::before{
-        width: 18px;
-        transition: all 300ms ease-in-out;
-   }*/
-	/* Circle shape
-    .content-jump::before {
-		content: '';
-		display: block;
-		width: 10px;
-		height: 10px;
-		border-radius: 50%;
-		background-color: #000;
-		border: 3px solid #ddd;
-		position: absolute;
-		left: -8px;
-	}*/
+	@media (min-width: 481px){
+		
+	}
+	@media (min-width: 769px){
+		.content-title{
+			font-size: 1.25em;
+		}
+	}
+	@media (min-width: 1024px) {
+		.foldout{
+			width:200px;
+		}
+	}
+	@media (min-width: 1400px) {
+
+		.foldout{
+			width: 250px;
+		}
+	}
 </style>

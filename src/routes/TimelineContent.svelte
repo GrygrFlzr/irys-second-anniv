@@ -34,6 +34,7 @@
 	}
 
 	// https://stackoverflow.com/a/3552493
+	//Idk how to fix this lint error
 	function formatDate(date) {
 		let ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
 		let mo = new Intl.DateTimeFormat('en', { month: 'long' }).format(date);
@@ -154,11 +155,22 @@
 		padding: 10px 0px;
 		font-size: medium;
 	}
-
+	@media (min-width: 481px){
+		.timeline{
+			margin: 0px 20px 0px 50px;
+			padding: 50px 30px 0px 30px;
+		}
+	}
+	@media (min-width: 769px){
+		.timeline{
+			margin: 0px 20px 0px 50px;
+			padding: 50px 30px 0px 30px;
+		}
+	}
 	@media (min-width: 1024px) {
 		.timeline {
 			margin: 0px 10px 0px 100px;
-			padding: 50px 20px 0 30px;
+			padding: 50px 10px 0px 60px;
 		}
 
 		.timeline-item {

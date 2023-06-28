@@ -14,7 +14,7 @@
 <div class="background-img">
 	<div class="content">
 		<div class="achievements blur">
-			<h1 class="timeHeader">Achievements/Major Events</h1>
+			<h1 class="timeHeader">Oh you found me! Stream Idol</h1>
 		</div>
 		<Timeline data={processedData} />
 		<div class="blur">
@@ -51,5 +51,15 @@
 		text-align: center;
 		margin: auto;
 		padding: 15px 15px;
+	}
+	@media (max-width: 769px){
+		.timeHeader{
+			font-size: small;
+			padding: 0px;
+		}
+		.achievements{
+			padding: 0px;
+			margin: 0px;
+		}
 	}
 </style>
