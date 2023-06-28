@@ -155,10 +155,16 @@
 		padding: 10px 0px;
 		font-size: medium;
 	}
+	@media (min-width: 320px){
+		.timeline{
+			margin: 0px 10px 0px 40px;
+			padding: 30px 10px 0px 20px;
+		}
+	}
 	@media (min-width: 481px){
 		.timeline{
-			margin: 0px 20px 0px 50px;
-			padding: 50px 30px 0px 30px;
+			margin: 0px 20px 0px 40px;
+			padding: 50px 20px 0px 30px;
 		}
 	}
 	@media (min-width: 769px){

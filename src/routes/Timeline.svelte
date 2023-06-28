@@ -137,15 +137,19 @@
 			for(let i=0; i<years.length; i++){
 				var element1 = document.getElementById(`contentyear_${i}`)?.getBoundingClientRect().top;
 				var element2 = document.getElementById(`contentyear_${i+1}`)?.getBoundingClientRect().top;
-				if(element1 && element2){
+				// Can't really get rid of lint errors as element2 is supposed to be undefined for the last year
+				try{
 	
-					if(y > (element1 + this.window.pageYOffset - (windowInnerHeight/1.35)) && y < (element2 + this.window.pageYOffset - (windowInnerHeight/1.35))){
+					if(y > (element1 + this.window.pageYOffset - (windowInnerHeight/1.25)) && y < (element2 + this.window.pageYOffset - (windowInnerHeight/1.25))){
 						currentYear = years[i];
 					}
 					// For the last year
-					else if( y > (element1 + this.window.pageYOffset - (windowInnerHeight/1.35)) && typeof element2 === 'undefined'){
+					else if( y > (element1 + this.window.pageYOffset - (windowInnerHeight/1.25)) && typeof element2 === 'undefined'){
 						currentYear = years[years.length-1];
 					}
+				}
+				catch{
+					currentYear = years[i];
 				}
 			}
 		})
@@ -417,7 +421,7 @@
 		transition: all 500ms ease-in-out;
 	}
 	@media (min-width: 481px){
-		
+
 	}
 	@media (min-width: 769px){
 		.content-title{
