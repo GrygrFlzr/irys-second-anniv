@@ -58,7 +58,7 @@
 			<div class="year">
 				<p>{year}</p>
 				<div class="links">
-					{#each data as content, i}
+					{#each data as content}
 						{#if content.date.getFullYear() === year}
 							<div class="content-jump">
 								<!--<button on:click={() => scrolltoElement(`${x}_id_${i}`)}>{content.title}</button>-->

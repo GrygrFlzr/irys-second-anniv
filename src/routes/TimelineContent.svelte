@@ -69,7 +69,7 @@
 
 <svelte:window bind:scrollY={scroll} bind:innerHeight />
 <section class="timeline">
-	{#each years as year, i}
+	{#each years as year}
 		<p class="year-divider">{year}</p>
 		{#each data as item, i}
 			{#if item.date.getFullYear() === year}

@@ -25,8 +25,8 @@
 			class:bold={elem.bold}
 			class:italic={elem.italic}
 			class:underline={elem.underline}
-			class:strikethrough={elem.strikethrough}
-		>{elem.text}</span>
+			class:strikethrough={elem.strikethrough}>{elem.text}</span
+		>
 	{:else if elem.type === 'link'}
 		<a
 			href={toRichtextLinkElement(elem).url}

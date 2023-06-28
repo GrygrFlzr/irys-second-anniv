@@ -7,7 +7,7 @@ import qs from 'qs';
 import type { PageServerLoad } from './$types';
 
 function getProxyImageURL(src: string, width: number, height: number, quality = 90): string {
-	if (env.BYPASS_IMAGINARY_PROXY && env.BYPASS_IMAGINARY_PROXY === "true") {
+	if (env.BYPASS_IMAGINARY_PROXY && env.BYPASS_IMAGINARY_PROXY === 'true') {
 		return new URL(src, env.CMS_REST_API_URL).toString();
 	} else {
 		return getImaginaryProxyImageURL(src, width, height, quality);
@@ -43,7 +43,9 @@ export const load = async function loadDataFromCMS() {
 		},
 		{ addQueryPrefix: true }
 	);
-	const formattedUrl = `${cmsRestUrl}${cmsRestUrl.endsWith("/") ? "" : "/"}api/${eventSlug}${query}`;
+	const formattedUrl = `${cmsRestUrl}${
+		cmsRestUrl.endsWith('/') ? '' : '/'
+	}api/${eventSlug}${query}`;
 	const data = await fetchAllFromCMS<Event>(formattedUrl);
 	const retData: TimelineData[] = data.map((element: Event) => {
 		return {
