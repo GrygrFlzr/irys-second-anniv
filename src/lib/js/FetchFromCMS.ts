@@ -1,6 +1,8 @@
 const numObjsPerRequest = 100;
 const objDepth = 5;
 
+import { env } from '$env/dynamic/private';
+
 // TODO: implement authentication, if required
 async function fetchAllFromCMS<T>(cmsUrl: string | URL): Promise<Array<T>> {
 	let data: Array<T> = [];
@@ -13,7 +15,7 @@ async function fetchAllFromCMS<T>(cmsUrl: string | URL): Promise<Array<T>> {
 		console.log(cmsUrl);
 		let response = await fetch(cmsUrl, {
 			headers: {
-				'X-RateLimit-Bypass': process.env.PAYLOAD_BYPASS_RATE_LIMIT_KEY ?? ''
+				'X-RateLimit-Bypass': env.PAYLOAD_BYPASS_RATE_LIMIT_KEY ?? ''
 			} as Record<string, string>
 		});
 		let respData = await response.json();

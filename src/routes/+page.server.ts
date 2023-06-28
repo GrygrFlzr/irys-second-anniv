@@ -7,7 +7,7 @@ import qs from 'qs';
 import type { PageServerLoad } from './$types';
 
 function getProxyImageURL(src: string, width: number, height: number, quality = 90): string {
-	if (env.BYPASS_IMAGINARY_PROXY) {
+	if (env.BYPASS_IMAGINARY_PROXY && env.BYPASS_IMAGINARY_PROXY === "true") {
 		return new URL(src, env.CMS_REST_API_URL).toString();
 	} else {
 		return getImaginaryProxyImageURL(src, width, height, quality);

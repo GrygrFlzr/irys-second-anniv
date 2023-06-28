@@ -17,15 +17,16 @@
             Ideally we'd use sematic html elements here but since multiple styles
             can be applied at once the nesting would look a bit ridiculous so 
             only spans.
+
+			Also do not add a line break between {elem.text} and </span> because
+			it adds random whitespace to the generated output.
         -->
 		<span
 			class:bold={elem.bold}
 			class:italic={elem.italic}
 			class:underline={elem.underline}
 			class:strikethrough={elem.strikethrough}
-		>
-			{elem.text}
-		</span>
+		>{elem.text}</span>
 	{:else if elem.type === 'link'}
 		<a
 			href={toRichtextLinkElement(elem).url}

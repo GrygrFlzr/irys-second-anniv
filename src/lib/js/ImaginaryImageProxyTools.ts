@@ -3,6 +3,7 @@
 // Basically removes the additional actions, since we're only using
 // the imaginary proxy as a cache.
 
+import { env } from '$env/dynamic/private';
 import { createHmac } from 'node:crypto';
 
 export default function getImaginaryProxyImageURL(
@@ -25,7 +26,7 @@ export default function getImaginaryProxyImageURL(
 
 	const urlParam = encodeURIComponent(src.replace('localhost', 'host.docker.internal'));
 
-	const hmac = createHmac('sha256', process.env.IMAGINARY_SECRET!)
+	const hmac = createHmac('sha256', env.IMAGINARY_SECRET!)
 		.update('/resize')
 		// Yes, it needs to be sorted. See https://github.com/h2non/imaginary/issues/235#issuecomment-453833712
 		// And apparently go doesn't use %20 for spaces...
@@ -36,7 +37,7 @@ export default function getImaginaryProxyImageURL(
 		)
 		.digest('base64url');
 
-	return `${process.env.IMAGINARY_URL!}/resize'?${[...query, `url=${urlParam}`]
+	return `${env.IMAGINARY_URL!}/resize?${[...query, `url=${urlParam}`]
 		.sort()
 		.join('&')}&sign=${hmac}`;
 }
