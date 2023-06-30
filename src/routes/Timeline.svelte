@@ -417,12 +417,17 @@
 		background-color: #b90b8c;
 		transition: all 500ms ease-in-out;
 	}
-	@media (min-width: 481px) {
+	@media (min-width: 320px) {
+		.content-title {
+			font-size: 1.5em;
+		}
 	}
-	@media (min-width: 769px) {
+	@media (min-width: 481px) {
 		.content-title {
 			font-size: 1.25em;
 		}
+	}
+	@media (min-width: 769px) {
 		.foldout {
 			width: 200px;
 		}

@@ -15,7 +15,7 @@
 			<h1 class="timeHeader">Oh you found me! Stream Idol</h1>
 		</div>
 		<Timeline data={data.data} />
-		<div>
+		<div class="blur">
 			<TimelineContent data={data.data} />
 		</div>
 	</div>
