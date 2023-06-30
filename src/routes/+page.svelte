@@ -1,24 +1,22 @@
-<script>
-	import TimelineContent from './TimelineContent.svelte';
+<script lang="ts">
+	import type { PageData } from './$types';
 	import Timeline from './Timeline.svelte';
+	import TimelineContent from './TimelineContent.svelte';
 	// Can probably have a different file hold the data / Use the database
 	// *IMPORTANT* DATA IS REQUIRED TO BE SORTED BY YEAR/DATE ACCORDINGLY (OTHERWISE IT WIRED AND STUFF)
-	export let data;
 
-	let processedData = data.data.sort((a, b) => {
-		return a.date.valueOf() - b.date.valueOf();
-	});
+	// Prefilled by server data; assuming the data is sorted by server side code.
+	export let data: PageData;
 </script>
-
 
 <div class="background-img">
 	<div class="content">
 		<div class="achievements blur">
 			<h1 class="timeHeader">Oh you found me! Stream Idol</h1>
 		</div>
-		<Timeline data={processedData} />
+		<Timeline data={data.data} />
 		<div class="blur">
-			<TimelineContent data={processedData} />
+			<TimelineContent data={data.data} />
 		</div>
 	</div>
 </div>
@@ -36,7 +34,7 @@
 		background: rgba(0, 0, 0, 0);
 		padding-top: 1em;
 	}
-	.blur{
+	.blur {
 		backdrop-filter: blur(5px);
 	}
 	.achievements {
@@ -52,12 +50,12 @@
 		margin: auto;
 		padding: 15px 15px;
 	}
-	@media (max-width: 769px){
-		.timeHeader{
+	@media (max-width: 769px) {
+		.timeHeader {
 			font-size: small;
 			padding: 0px;
 		}
-		.achievements{
+		.achievements {
 			padding: 0px;
 			margin: 0px;
 		}

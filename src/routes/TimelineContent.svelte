@@ -1,18 +1,21 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import SimpleImageGallery from '$lib/components/SimpleImageGallery.svelte';
+	import SimpleSlateRenderer from '$lib/components/SimpleSlateRenderer.svelte';
+	import type { TimelineData } from '$lib/types/Types';
 
-	export let data = [
+	export let data: Array<TimelineData> = [
 		{
 			date: new Date(),
 			title: 'placeholder2',
-			photo: '',
-			content: 'placeholder3'
+			background_image: undefined,
+			images: [],
+			content: []
 		}
 	];
 
 	const years = [2021, 2022, 2023];
-	
-	
+
 	let scroll = 0;
 
 	$: innerHeight = 0;
@@ -34,8 +37,7 @@
 	}
 
 	// https://stackoverflow.com/a/3552493
-	//Idk how to fix this lint error
-	function formatDate(date) {
+	function formatDate(date: Date) {
 		let ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
 		let mo = new Intl.DateTimeFormat('en', { month: 'long' }).format(date);
 		let da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
@@ -55,10 +57,12 @@
 							<div class="timeline-extra">
 								<h2>{item.title}</h2>
 								<h3>{formatDate(item.date)}</h3>
-								<p>{item.content}</p>
+								<div class="milestone-content">
+									<SimpleSlateRenderer richTextElements={item.content} />
+								</div>
 							</div>
 							<div class="timeline-img-container">
-								<img class="timeline-img" src={item.photo} alt="some test about IRyS" />
+								<SimpleImageGallery images={item.images} />
 							</div>
 						</div>
 					</section>
@@ -119,15 +123,6 @@
 		color: #59084a;
 	}
 
-	.timeline-img {
-		height: 150px;
-		border-style: solid;
-		border-width: 2px;
-		border-color: grey;
-		border-radius: 30px;
-		max-width: 100%;
-		object-fit: contain;
-	}
 	/* Dot beside the timeline 
 .timeline-item::before{
     content: '';
@@ -155,24 +150,30 @@
 		padding: 10px 0px;
 		font-size: medium;
 	}
-	@media (min-width: 320px){
-		.timeline{
+
+	.milestone-content {
+		margin: 10px;
+	}
+
+	@media (min-width: 320px) {
+		.timeline {
 			margin: 0px 10px 0px 40px;
 			padding: 30px 10px 0px 20px;
 		}
 	}
-	@media (min-width: 481px){
-		.timeline{
+	@media (min-width: 481px) {
+		.timeline {
 			margin: 0px 20px 0px 40px;
 			padding: 50px 20px 0px 30px;
 		}
 	}
-	@media (min-width: 769px){
-		.timeline{
+	@media (min-width: 769px) {
+		.timeline {
 			margin: 0px 0px 0px 135px;
 			padding: 50px 30px 0px 30px;
 		}
 	}
+
 	@media (min-width: 1024px) {
 		.timeline {
 			margin: 0px 10px 0px 100px;
