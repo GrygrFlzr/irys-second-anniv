@@ -15,31 +15,9 @@
 	];
 
 	const years = [2021, 2022, 2023];
-	/*let sectionElement;
-	window.addEventListener(
-		"load",
-		(event) => {
-			sectionElement = document.getElementById(`sectionID`);
 
-			createObserver();
-		}
+	let scroll = 0;
 
-	);
-	function createObserver(){
-		let observer;
-		
-		let options = {
-		root: document.querySelector("#scrollArea"),
-		rootMargin: "0px",
-		threshold: 0.5,
-		};
-		observer = new IntersectionObserver(handleIntersect, options);
-	}
-	function handleIntersect(entries, observer){
-
-	}*/
-
-	let scroll: number;
 	$: innerHeight = 0;
 	/* Reference https://alvarotrigo.com/blog/css-animations-scroll/*/
 	function reveal() {
@@ -69,26 +47,28 @@
 
 <svelte:window bind:scrollY={scroll} bind:innerHeight />
 <section class="timeline">
-	{#each years as year}
-		<p class="year-divider">{year}</p>
-		{#each data as item, i}
-			{#if item.date.getFullYear() === year}
-				<section class="timeline-section reveal-section active">
-					<div class="timeline-item" id="id_{i}">
-						<div class="timeline-extra">
-							<h2>{item.title}</h2>
-							<h3>{formatDate(item.date)}</h3>
-							<div class="milestone-content">
-								<SimpleSlateRenderer richTextElements={item.content} />
+	{#each years as year, x}
+		<section class="year-divider">
+			<p class="year-css" id="contentyear_{x}">{year}</p>
+			{#each data as item, i}
+				{#if item.date.getFullYear() === year}
+					<section class="timeline-section reveal-section active">
+						<div class="timeline-item" id="id_{i}">
+							<div class="timeline-extra">
+								<h2>{item.title}</h2>
+								<h3>{formatDate(item.date)}</h3>
+								<div class="milestone-content">
+									<SimpleSlateRenderer richTextElements={item.content} />
+								</div>
+							</div>
+							<div class="timeline-img-container">
+								<SimpleImageGallery images={item.images} />
 							</div>
 						</div>
-						<div class="timeline-img-container">
-							<SimpleImageGallery images={item.images} />
-						</div>
-					</div>
-				</section>
-			{/if}
-		{/each}
+					</section>
+				{/if}
+			{/each}
+		</section>
 	{/each}
 </section>
 
@@ -99,18 +79,19 @@
 		margin: 1rem;
 		padding: 0 20px 0 30px;
 	}
-	.year-divider {
+	.year-css {
 		color: #ddd;
 		font-size: 22px;
+		margin-left: 60px;
 		padding-bottom: 20px;
 		text-decoration: underline;
 		text-underline-position: under;
 	}
-	.timeline section {
+	.timeline-section {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		min-height: 100vh;
+		min-height: 100svh;
 	}
 	/* Line for the timeline      border-left: 2px solid #ccc;  */
 	.reveal-section {
@@ -131,7 +112,7 @@
 		border-radius: 50px;
 		position: relative;
 		height: auto;
-		margin-bottom: 100px;
+		margin: 0px 0px 100px 60px;
 		line-height: 1.5;
 		justify-items: left;
 	}
@@ -174,10 +155,29 @@
 		margin: 10px;
 	}
 
+	@media (min-width: 320px) {
+		.timeline {
+			margin: 0px 10px 0px 40px;
+			padding: 30px 10px 0px 20px;
+		}
+	}
+	@media (min-width: 481px) {
+		.timeline {
+			margin: 0px 20px 0px 40px;
+			padding: 50px 20px 0px 30px;
+		}
+	}
+	@media (min-width: 769px) {
+		.timeline {
+			margin: 0px 0px 0px 135px;
+			padding: 50px 30px 0px 30px;
+		}
+	}
+
 	@media (min-width: 1024px) {
 		.timeline {
-			margin: 50px 10px 50px 100px;
-			padding: 0 20px 0 30px;
+			margin: 0px 10px 0px 100px;
+			padding: 50px 10px 0px 60px;
 		}
 
 		.timeline-item {

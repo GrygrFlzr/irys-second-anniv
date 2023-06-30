@@ -11,8 +11,8 @@
 
 <div class="background-img">
 	<div class="content">
-		<div class="achievements">
-			<h1 class="timeHeader">Achievements/Major Events</h1>
+		<div class="achievements blur">
+			<h1 class="timeHeader">Oh you found me! Stream Idol</h1>
 		</div>
 		<Timeline data={data.data} />
 		<div>
@@ -32,10 +32,11 @@
 
 	.content {
 		background: rgba(0, 0, 0, 0);
-		backdrop-filter: blur(5px);
 		padding-top: 1em;
 	}
-
+	.blur {
+		backdrop-filter: blur(5px);
+	}
 	.achievements {
 		background-color: #300029;
 		margin: 0px 20px 10px;
@@ -48,5 +49,15 @@
 		text-align: center;
 		margin: auto;
 		padding: 15px 15px;
+	}
+	@media (max-width: 769px) {
+		.timeHeader {
+			font-size: small;
+			padding: 0px;
+		}
+		.achievements {
+			padding: 0px;
+			margin: 0px;
+		}
 	}
 </style>
