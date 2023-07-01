@@ -8,11 +8,18 @@ type Image = {
 };
 
 type TimelineData = {
+	id: string;
 	date: Date;
 	title: string;
 	background_image?: Image;
 	images: Array<Image>;
 	content: Array<RichtextElement | RichtextTextElement>;
+};
+
+type YearlyTimelineData = {
+	year: number;
+	events: Array<TimelineData>;
+	id: string;
 };
 
 type RichtextElement = Element & {
@@ -33,4 +40,11 @@ type RichtextTextElement = Text & {
 	strikethrough: boolean;
 };
 
-export type { Image, TimelineData, RichtextElement, RichtextTextElement, RichtextLinkElement };
+export type {
+	Image,
+	TimelineData,
+	RichtextElement,
+	RichtextTextElement,
+	RichtextLinkElement,
+	YearlyTimelineData
+};

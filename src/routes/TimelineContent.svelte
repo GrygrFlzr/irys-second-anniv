@@ -1,72 +1,169 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import SimpleImageGallery from '$lib/components/SimpleImageGallery.svelte';
 	import SimpleSlateRenderer from '$lib/components/SimpleSlateRenderer.svelte';
-	import type { TimelineData } from '$lib/types/Types';
+	import type { YearlyTimelineData } from '$lib/types/Types';
 
-	export let data: Array<TimelineData> = [
-		{
-			date: new Date(),
-			title: 'placeholder2',
-			background_image: undefined,
-			images: [],
-			content: []
-		}
-	];
+	export let years: YearlyTimelineData[];
+	export let intersectingEvents: Record<string, boolean>;
+	export let diamondY: number;
+	export let currentYear: number;
 
-	const years = [2021, 2022, 2023];
+	let scrollY = 0;
+	let timelineItemObserver: IntersectionObserver;
+	let yearObserver: IntersectionObserver;
+	let currentIntersectingYear: Element;
+	let throttling = false;
+	let windowInnerHeight = 0;
 
-	let scroll = 0;
+	const ITEM_ID_PREFIX = 'id_';
+	const yearElements: Record<number, HTMLElement> = {};
+	const revealSections: Record<string, HTMLElement> = {};
 
 	$: innerHeight = 0;
+	$: if (currentIntersectingYear) {
+		const boundingClientRect = currentIntersectingYear.getBoundingClientRect();
+
+		diamondY = Math.max(
+			0,
+			((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100
+		);
+	}
+
 	/* Reference https://alvarotrigo.com/blog/css-animations-scroll/*/
 	function reveal() {
-		var revealsections = document.querySelectorAll('.reveal-section');
-		for (var i = 0; i < revealsections.length; i++) {
-			var sectionTop = revealsections[i].getBoundingClientRect().top;
-			var sectionVisible = 150;
-			if (sectionTop < innerHeight - sectionVisible) {
-				revealsections[i].classList.add('active');
+		for (const revealSection of Object.values(revealSections)) {
+			const revealSectionTop = revealSection.getBoundingClientRect().top;
+			const revealSectionVisible = 150;
+			if (revealSectionTop < innerHeight - revealSectionVisible) {
+				revealSection.classList.add('active');
 			} else {
-				revealsections[i].classList.remove('active');
+				revealSection.classList.remove('active');
 			}
 		}
-	}
-	if (browser) {
-		window.addEventListener('scroll', reveal);
 	}
 
 	// https://stackoverflow.com/a/3552493
 	function formatDate(date: Date) {
-		let ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
-		let mo = new Intl.DateTimeFormat('en', { month: 'long' }).format(date);
-		let da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
+		const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
+		const mo = new Intl.DateTimeFormat('en', { month: 'long' }).format(date);
+		const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
 		return `${mo} ${da}, ${ye}`;
+	}
+
+	function timelineTimeObserverAction(item: HTMLElement) {
+		timelineItemObserver ??= new IntersectionObserver(timelineItemObserverCallback, {
+			threshold: 0
+		});
+
+		timelineItemObserver.observe(item);
+
+		return {
+			destroy() {
+				timelineItemObserver.unobserve(item);
+			}
+		};
+	}
+
+	function timelineItemObserverCallback(entries: IntersectionObserverEntry[]) {
+		const intersectingMap: Record<string, boolean> = {
+			...intersectingEvents
+		};
+
+		entries.forEach((entry) => {
+			const eventId = entry.target.id.replace(ITEM_ID_PREFIX, '');
+			intersectingMap[eventId] = entry.isIntersecting;
+		});
+
+		intersectingEvents = intersectingMap;
+	}
+
+	function yearObserverAction(item: HTMLElement) {
+		yearObserver ??= new IntersectionObserver(yearObserverCallback, {
+			threshold: 0
+		});
+
+		yearObserver.observe(item);
+
+		return {
+			destroy() {
+				yearObserver.unobserve(item);
+			}
+		};
+	}
+
+	function yearObserverCallback(entries: IntersectionObserverEntry[]) {
+		entries.forEach((entry) => {
+			if (entry.isIntersecting) {
+				currentIntersectingYear = entry.target;
+			}
+		});
+	}
+
+	function handleScroll() {
+		if (throttling) {
+			return;
+		}
+
+		requestAnimationFrame(() => {
+			reveal();
+			checkYear();
+			throttling = false;
+		});
+		throttling = true;
+	}
+
+	function checkYear() {
+		// For the foldout to adjust the height based on whether the header collapses
+
+		for (let i = 0; i < years.length; i++) {
+			const year = years[i];
+			const nextYear = years[i + 1];
+			const element1 = yearElements[year.year].getBoundingClientRect().top;
+			const element2: number | undefined =
+				yearElements[nextYear?.year]?.getBoundingClientRect().top;
+
+			if (
+				element2 &&
+				scrollY > element1 + window.scrollY - windowInnerHeight / 1.25 &&
+				scrollY < element2 + window.scrollY - windowInnerHeight / 1.25
+			) {
+				currentYear = year.year;
+			}
+			// For the last year
+			else if (
+				scrollY > element1 + window.scrollY - windowInnerHeight / 1.25 &&
+				typeof element2 === 'undefined'
+			) {
+				currentYear = years[years.length - 1].year;
+			}
+		}
 	}
 </script>
 
-<svelte:window bind:scrollY={scroll} bind:innerHeight />
+<svelte:window bind:scrollY bind:innerHeight on:scroll={handleScroll} />
+
 <section class="timeline">
-	{#each years as year, x}
-		<section class="year-divider">
-			<p class="year-css" id="contentyear_{x}">{year}</p>
-			{#each data as item, i}
-				{#if item.date.getFullYear() === year}
-					<section class="timeline-section reveal-section active">
-						<div class="timeline-item" id="id_{i}">
-							<div class="timeline-extra">
-								<h2>{item.title}</h2>
-								<h3>{formatDate(item.date)}</h3>
-								<div class="milestone-content">
-									<SimpleSlateRenderer richTextElements={item.content} />
-								</div>
-							</div>
-							<div class="timeline-img-container">
-								<SimpleImageGallery images={item.images} />
+	{#each years as year}
+		<section class="year-divider" use:yearObserverAction bind:this={yearElements[year.year]}>
+			<p class="year-css" id={year.id}>{year.year}</p>
+			{#each year.events as item}
+				<section
+					class="timeline-section reveal-section active"
+					bind:this={revealSections[year.year]}
+				>
+					<div class="timeline-item" id="{ITEM_ID_PREFIX}{item.id}" use:timelineTimeObserverAction>
+						<div class="timeline-extra">
+							<h2>{item.title}</h2>
+							<h3>{formatDate(item.date)}</h3>
+							<div class="milestone-content">
+								<SimpleSlateRenderer richTextElements={item.content} />
 							</div>
 						</div>
-					</section>
-				{/if}
+						<div class="timeline-img-container">
+							<SimpleImageGallery images={item.images} />
+						</div>
+					</div>
+				</section>
 			{/each}
 		</section>
 	{/each}

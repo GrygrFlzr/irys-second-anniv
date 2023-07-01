@@ -1,13 +1,66 @@
-<script>
+<script lang="ts">
 	import '$lib/css/main.css';
+	import { onMount } from 'svelte';
 	import Navbar from './Navbar.svelte';
 
 	let scrollY = 0;
+	let unfold = false;
+	let header: HTMLElement;
+	let prefersReducedMotion = false;
+	let matchesPC = false;
+
+	onMount(() => {
+		let matchesReduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+		let matchesPC = matchMedia('(min-width: 768px)');
+
+		matchesReduceMotion?.addEventListener('change', handlePrefersReducedMotionChange);
+
+		matchesPC?.addEventListener('change', handleResize);
+
+		updateHeaderHeight(header.clientHeight);
+
+		return () => {
+			matchesReduceMotion?.removeEventListener('change', handlePrefersReducedMotionChange);
+			matchesPC?.removeEventListener('change', handleResize);
+		};
+	});
+
+	$: unfold = scrollY <= 120;
+	// if there's transition update to a proximate value of the header height
+	// and calculate the actual height after the transition
+	$: if (header) {
+		if (matchesPC && !prefersReducedMotion) {
+			updateHeaderHeight((unfold ? 8.5 : 4.5) * 16);
+		} else {
+			updateHeaderHeight(header.clientHeight);
+		}
+	}
+
+	function calculateAndUpdateHeaderHeight() {
+		updateHeaderHeight(header.clientHeight);
+	}
+
+	function updateHeaderHeight(height: number) {
+		globalThis.document?.documentElement.style.setProperty('--header-height', `${height}px`);
+	}
+
+	function handlePrefersReducedMotionChange(event: MediaQueryListEvent) {
+		prefersReducedMotion = event.matches;
+	}
+
+	function handleResize(event: MediaQueryListEvent) {
+		matchesPC = event.matches;
+		updateHeaderHeight(header.clientHeight);
+	}
 </script>
 
-<header class="header" id="header-id">
+<header class="header" bind:this={header}>
 	<a class="skip-to-main-button" href="#main"> Skip to main content </a>
-	<div class="scroll-fold" class:scroll-unfold={scrollY <= 120}>
+	<div
+		class="scroll-fold"
+		class:scroll-unfold={unfold}
+		on:transitionend={calculateAndUpdateHeaderHeight}
+	>
 		<div class="logo">
 			<img
 				class="logo-img"
@@ -82,12 +135,6 @@
 		padding: 1em;
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		.skip-to-main-button {
-			transition: none;
-		}
-	}
-
 	@media (min-width: 768px) {
 		.scroll-fold {
 			transition: max-height 0.15s;
@@ -127,6 +174,16 @@
 
 		.h1::after {
 			border-left: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.skip-to-main-button {
+			transition: none;
+		}
+
+		.scroll-fold {
+			transition: none;
 		}
 	}
 </style>

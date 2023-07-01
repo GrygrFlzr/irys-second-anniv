@@ -18,12 +18,18 @@ module.exports = {
 		es2017: true,
 		node: true
 	},
+	globals: {
+		globalThis: true
+	},
 	overrides: [
 		{
 			files: ['*.svelte'],
 			parser: 'svelte-eslint-parser',
 			parserOptions: {
 				parser: '@typescript-eslint/parser'
+			},
+			rules: {
+				'@typescript-eslint/no-unused-vars': ["warn", { "argsIgnorePattern": "^_" }],
 			}
 		}
 	]

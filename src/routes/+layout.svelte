@@ -11,7 +11,7 @@
 
 <style>
 	main {
-		margin-top: var(--header-height);
+		margin-top: var(--header-offset);
 	}
 
 	@media (min-width: 768px) {

@@ -1,171 +1,34 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import type { TimelineData } from '$lib/types/Types';
-	import { browser } from '$app/environment';
+	import type { YearlyTimelineData } from '$lib/types/Types';
 
-	export let data: Array<TimelineData> = [
-		{
-			date: new Date(),
-			title: 'placeholder2',
-			background_image: undefined,
-			images: [],
-			content: []
-		}
-	];
+	export let years: YearlyTimelineData[];
+	export let intersectingEvents: Record<string, boolean>;
+	/* For the diamond to move about*/
+	export let diamondY: number;
+	export let currentYear = years[0].year;
 
-	const years = [2021, 2022, 2023];
-
-	// For Lighting up the timeline bubble and foldout content when content is on screen
-	let active = false;
-	let border = false;
-	if (browser) {
-		const items = document.querySelectorAll('.timeline-item');
-
-		const observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					const currentIndex = Array.prototype.indexOf.call(items, entry.target);
-					const timelineBubble = document.getElementById(`content_${currentIndex}`);
-					const foldoutContent = document.getElementById(`foldout-content${currentIndex}`);
-					timelineBubble?.classList.toggle('active', entry.isIntersecting);
-					foldoutContent?.classList.toggle('active', entry.isIntersecting);
-				});
-			},
-			{
-				threshold: 0
-			}
-		);
-		items.forEach((item) => {
-			observer.observe(item);
-		});
-	}
-	// For the diamond to move about
-	let diamondY = 0;
-
-	$: if (browser) {
-		const contentYear = document.querySelectorAll('.year-divider');
-		const observer2 = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						const currentIndex = Array.prototype.indexOf.call(contentYear, entry.target);
-						currentYearIndex = currentIndex + 1;
-						diamondY = Math.max(
-							0,
-							((y - (entry.boundingClientRect.top + window.pageYOffset)) /
-								entry.boundingClientRect.height) *
-								100
-						);
-					}
-				});
-			},
-			{
-				threshold: 0
-			}
-		);
-		contentYear.forEach((year) => {
-			observer2.observe(year);
-		});
-	}
-
-	// For the toggle button to disappear/ Foldout
-	let foldout: HTMLDivElement | null;
-	let toggleid: HTMLDivElement;
-
-	let timeline: HTMLDivElement;
-	let foldoutopen = false;
+	let foldoutOpen = false;
 	function handleFoldoutOpen() {
-		foldoutopen = true;
-		toggleid?.classList.toggle('active');
-		foldout?.classList.toggle('active');
-		timeline?.classList.toggle('active');
+		foldoutOpen = true;
 		document.body.addEventListener('click', handleMenuClose);
 	}
 
 	function handleMenuClose() {
-		foldoutopen = false;
-		toggleid?.classList.toggle('active');
-		foldout?.classList.toggle('active');
-		timeline?.classList.toggle('active');
+		foldoutOpen = false;
 		document.body.removeEventListener('click', handleMenuClose);
 	}
 
 	//Allows the user to scroll into the timeline content on click
-	function scrolltoElement(id: string) {
+	function scrollToElement(id: string) {
 		const element = document.getElementById(id);
 		element?.scrollIntoView({ behavior: 'smooth' });
 	}
 
-	let y = 0;
-	let wrapperY = 0;
-	let wrapperOffset = 0;
-	let scrollHeight = 1;
-	let scrollTop = 0;
-	let throttling = false;
-	let windowInnerHeight = 0;
-	let headerHeight: number | undefined;
-
-	$: currentYear = years[0];
-	$: currentYearIndex = 0;
-	$: currentYearDiamond = currentYearIndex * 23;
-	$: scrollHeightBelow = scrollHeight - wrapperOffset - 100;
-	$: calcOffset = wrapperOffset - windowInnerHeight / 2;
-
-	onMount(() => {
-		scrollHeight = document.documentElement.scrollHeight;
-		scrollTop = document.documentElement.scrollTop;
-
-		// For the timeline to do the collapse thing
-		window.addEventListener('scroll', function () {
-			// For the foldout to adjust the height based on whether the header collapses
-			const HHeight = document.getElementById('header-id')?.offsetHeight;
-			headerHeight = HHeight;
-			// ---------------------------------------------------------------------------- //
-			for (let i = 0; i < years.length; i++) {
-				var element1 = document.getElementById(`contentyear_${i}`)?.getBoundingClientRect().top;
-				var element2 = document.getElementById(`contentyear_${i + 1}`)?.getBoundingClientRect().top;
-				// Can't really get rid of lint errors as element2 is supposed to be undefined for the last year
-				try {
-					if (
-						y > element1 + this.window.scrollY - windowInnerHeight / 1.25 &&
-						y < element2 + this.window.scrollY - windowInnerHeight / 1.25
-					) {
-						currentYear = years[i];
-					}
-					// For the last year
-					else if (
-						y > element1 + this.window.scrollY - windowInnerHeight / 1.25 &&
-						typeof element2 === 'undefined'
-					) {
-						currentYear = years[years.length - 1];
-					}
-				} catch {
-					currentYear = years[i];
-				}
-			}
-		});
-	});
-
-	function handleResize() {
-		if (throttling) {
-			return;
-		}
-
-		throttling = true;
-		requestAnimationFrame(() => {
-			scrollHeight = document.documentElement.scrollHeight;
-			throttling = false;
-		});
-	}
-
-	function checkSidebarY(node: HTMLElement) {
-		wrapperY = node.getBoundingClientRect().top + screenY;
-	}
+	$: currentYearIndex = years.findIndex((y) => y.year === currentYear);
+	$: currentYearDiamondOffset = (currentYearIndex + 1) * 23;
 </script>
 
-<svelte:window bind:scrollY={y} on:resize={handleResize} bind:innerHeight={windowInnerHeight} />
-
-<div class="toggle" bind:this={toggleid} class:active>
+<div class="toggle" class:active={foldoutOpen}>
 	<button
 		type="button"
 		class="arrow glow"
@@ -173,40 +36,38 @@
 		on:click|stopPropagation={handleFoldoutOpen}>&#8250</button
 	>
 </div>
-<div class="foldout" style:top="calc({headerHeight}px)" class:active bind:this={foldout}>
-	{#each years as year}
+<div class="foldout" class:active={foldoutOpen}>
+	{#each years as { year, events }}
 		<section class="foldout-wrapper">
 			<h2 class="foldout-year">{year}</h2>
-			{#each data as content, i}
-				{#if content.date.getFullYear() === year}
-					<button
-						class="foldout-content"
-						class:active
-						id="foldout-content{i}"
-						on:click|preventDefault={() => scrolltoElement(`id_${i}`)}
-					>
-						<p class="content-title">{content.title}</p>
-					</button>
-				{/if}
+			{#each events as content}
+				{@const target = `id_${content.id}`}
+				<a
+					class="foldout-content"
+					class:active={intersectingEvents[content.id]}
+					id="foldout-content{content.id}"
+					href="#id_{target}"
+					on:click|preventDefault={() => scrollToElement(target)}
+				>
+					<p class="content-title">{content.title}</p>
+				</a>
 			{/each}
 		</section>
 	{/each}
 </div>
 
-<div class="sidebar" class:active bind:this={timeline}>
-	<div class="wrapper" use:checkSidebarY>
-		<span class="diamond" style:top="calc({diamondY}% + {currentYearDiamond}px)">&#9830</span>
-		{#each years as year, x}
-			<div class="year" id="timelineyear_{x}">
+<div class="sidebar" class:active={foldoutOpen}>
+	<div class="wrapper">
+		<span class="diamond" style:top="calc({diamondY}% + {currentYearDiamondOffset}px)">&#9830</span>
+		{#each years as { year, events }}
+			<div class="year" id="x">
 				<p>{year}</p>
-				<div class="links" class:active>
-					{#each data as content, i}
-						{#if content.date.getFullYear() === year && content.date.getFullYear() === currentYear}
-							<div class="content-jump" class:active class:border id="content_{i}">
-								<!--<button on:click={() => scrolltoElement(`${x}_${i}_id`)}>{content.title}</button>-->
-							</div>
-						{/if}
-					{/each}
+				<div class="links">
+					{#if year === currentYear}
+						{#each events as content}
+							<div class="content-jump" class:active={intersectingEvents[content.id]} />
+						{/each}
+					{/if}
 				</div>
 			</div>
 		{/each}
@@ -257,12 +118,12 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		top: 63.8px;
+		top: var(--header-height);
 		width: 250px;
 		height: 95svh;
 		transform: translateX(-300px);
 		background: #e5e5e5;
-		transition: 0.5s;
+		transition: transform 0.5s, top 0.15s;
 	}
 	/*Styling Scrollbar for Firefox*/
 	.foldout.active {
@@ -297,6 +158,10 @@
 		padding: 15px;
 		height: auto;
 		width: 100%;
+		display: inline-block;
+		text-decoration: none;
+		color: initial;
+		font-size: 0.83em;
 	}
 	.foldout-content.active {
 		background: #b90b8c;
@@ -409,10 +274,10 @@
 		position: absolute;
 		left: -9px;
 	}
-	.content-jump.border {
+	/* .content-jump.border {
 		border-left: 3px solid #b90b8c;
 		transition: all 500ms ease-in-out;
-	}
+	} */
 	.content-jump.active::after {
 		background-color: #b90b8c;
 		transition: all 500ms ease-in-out;

@@ -2,7 +2,13 @@ import { env } from '$env/dynamic/private';
 import fetchAllFromCMS from '$lib/js/FetchFromCMS';
 import getImaginaryProxyImageURL from '$lib/js/ImaginaryImageProxyTools';
 import type { Event } from '$lib/types/HefCmsTypes';
-import type { Image, RichtextElement, RichtextTextElement, TimelineData } from '$lib/types/Types';
+import type {
+	Image,
+	RichtextElement,
+	RichtextTextElement,
+	TimelineData,
+	YearlyTimelineData
+} from '$lib/types/Types';
 import qs from 'qs';
 import type { PageServerLoad } from './$types';
 
@@ -47,8 +53,10 @@ export const load = async function loadDataFromCMS() {
 		cmsRestUrl.endsWith('/') ? '' : '/'
 	}api/${eventSlug}${query}`;
 	const data = await fetchAllFromCMS<Event>(formattedUrl);
+
 	const retData: TimelineData[] = data.map((element: Event) => {
 		return {
+			id: element.id,
 			date: new Date(element.date),
 			title: element.title,
 			backgroundImage: element.backgroundImage
@@ -76,7 +84,25 @@ export const load = async function loadDataFromCMS() {
 		return a.date.valueOf() - b.date.valueOf();
 	});
 
+	const years = new Map<number, TimelineData[]>();
+
+	for (const item of retData) {
+		const year = item.date.getFullYear();
+		let yearData = years.get(year);
+		if (!yearData) {
+			yearData = [];
+			years.set(year, yearData);
+		}
+		yearData.push(item);
+	}
+
 	return {
-		data: retData
+		data: Array.from(years.entries()).map(
+			([year, events]): YearlyTimelineData => ({
+				year,
+				events,
+				id: `year_${year}`
+			})
+		)
 	};
 } satisfies PageServerLoad;

@@ -2,11 +2,13 @@
 	import type { PageData } from './$types';
 	import Timeline from './Timeline.svelte';
 	import TimelineContent from './TimelineContent.svelte';
-	// Can probably have a different file hold the data / Use the database
-	// *IMPORTANT* DATA IS REQUIRED TO BE SORTED BY YEAR/DATE ACCORDINGLY (OTHERWISE IT WIRED AND STUFF)
 
 	// Prefilled by server data; assuming the data is sorted by server side code.
 	export let data: PageData;
+
+	let intersectingEvents: Record<string, boolean> = {};
+	let diamondY = 0;
+	let currentYear = data.data[0].year;
 </script>
 
 <div class="background-img">
@@ -14,15 +16,17 @@
 		<div class="achievements blur">
 			<h1 class="timeHeader">Oh you found me! Stream Idol</h1>
 		</div>
-		<Timeline data={data.data} />
+		<Timeline bind:intersectingEvents bind:diamondY bind:currentYear years={data.data} />
 		<div class="blur">
-			<TimelineContent data={data.data} />
+			<TimelineContent bind:intersectingEvents bind:diamondY bind:currentYear years={data.data} />
 		</div>
 	</div>
 </div>
 
 <style>
 	.background-img {
+		/** shouldn't be global otherwise other pages and error page will also be hidden */
+		margin-top: calc(var(--header-offset) * -1);
 		background: #600150;
 		background-image: url('/img/timeline-bg.jpg');
 		background-repeat: no-repeat;

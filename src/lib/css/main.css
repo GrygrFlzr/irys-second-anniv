@@ -12,6 +12,13 @@ body {
 :root {
 	--very-dark-pink: #540028;
 	--dark-pink: #a1004d;
+	--header-offset: 4.5rem;
+}
+
+@media (min-width: 768px) {
+	:root {
+		--header-offset: 8.5rem;
+	}
 }
 
 * {
