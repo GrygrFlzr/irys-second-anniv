@@ -20,7 +20,7 @@
 	}
 
 	.item-contributor {
-        color: #ddd;
+		color: #ddd;
 		font-size: 20px;
 		margin-top: 12px;
 	}
