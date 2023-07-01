@@ -22,10 +22,11 @@
 			it adds random whitespace to the generated output.
         -->
 		<span
+			class="text"
 			class:bold={elem.bold}
 			class:italic={elem.italic}
 			class:underline={elem.underline}
-			class:strikethrough={elem.strikethrough}>{elem.text}</span
+			class:strikethrough={elem.strikethrough}>{elem.text.trim()}</span
 		>
 	{:else if elem.type === 'link'}
 		<a
@@ -89,5 +90,9 @@
 	blockquote {
 		border-left: 0.2rem solid gray;
 		padding-left: 0.4rem;
+	}
+
+	.text {
+		white-space: pre-line;
 	}
 </style>
