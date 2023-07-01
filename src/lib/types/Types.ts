@@ -40,11 +40,20 @@ type RichtextTextElement = Text & {
 	strikethrough: boolean;
 };
 
+type ArtSubmissionData = {
+	id: string;
+	author: string;
+	authorIcon?: Image;
+	message: string;
+	images: Array<Image>;
+};
+
 export type {
 	Image,
 	TimelineData,
 	RichtextElement,
 	RichtextTextElement,
 	RichtextLinkElement,
-	YearlyTimelineData
+	YearlyTimelineData,
+	ArtSubmissionData
 };
