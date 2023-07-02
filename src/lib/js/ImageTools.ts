@@ -19,7 +19,7 @@ function getImageObject(cmsImageObj: any): Image {
 	}
 	return {
 		src: getProxyImageURL(cmsImage.url, cmsImage.width, cmsImage.height),
-		alt: cmsImage.alt,
+		alt: cmsImage.alt ?? '',
 		height: cmsImage.height,
 		width: cmsImage.width
 	};
