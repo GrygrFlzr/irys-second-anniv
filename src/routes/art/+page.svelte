@@ -10,7 +10,7 @@
 	import { fade, fly } from 'svelte/transition';
 
 	// Test data for art contributions
-	const data = [
+	const dataTest = [
 		{
 			contributor: 'contributor_1',
 			images: ['/img/art/art-1.png', '/img/art/art-2.png']
@@ -93,7 +93,7 @@
 						y: contentsTransitionFadeOffset
 					}}
 				>
-					<ArtGallery {data} />
+					<ArtGallery data={dataTest} />
 				</div>
 			</div>
 		</div>
