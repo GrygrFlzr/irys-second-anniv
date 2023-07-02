@@ -199,7 +199,7 @@
 		position: relative;
 		transform: translateY(150px);
 		opacity: 0;
-		transition: all 1s ease;
+		transition: 1s all ease;
 	}
 	.active {
 		transform: translateY(0);
@@ -236,11 +236,15 @@
     position:absolute;
     left: -39px;
 }*/
-
-	.date {
+	h2 {
 		margin: 10px;
 		text-transform: uppercase;
 		font-size: large;
+	}
+
+	.date {
+		margin: 10px;
+		font-size: medium;
 		font-weight: bold;
 	}
 	p {
