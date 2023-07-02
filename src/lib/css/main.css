@@ -27,6 +27,14 @@ html {
 	}
 }
 
+@media (prefers-reduced-motion: reduce) {
+	/* has weird stuttering effect on scroll */
+	body,
+	html {
+		scroll-snap-type: none;
+	}
+}
+
 * {
 	box-sizing: border-box;
 }

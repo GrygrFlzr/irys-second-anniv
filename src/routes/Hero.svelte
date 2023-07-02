@@ -20,8 +20,10 @@
 	 * @param {HTMLElement} ele
 	 */
 	function autoScroll(ele) {
-		const matchMedia = window.matchMedia('(min-width: 1500px)');
-		if (!matchMedia.matches) {
+		if (
+			!matchMedia('(min-width: 1500px)').matches ||
+			matchMedia('prefers-reduced-motion: reduce').matches
+		) {
 			return;
 		}
 		const timeout = setInterval(() => {
@@ -125,13 +127,13 @@
 		.poem {
 			position: absolute;
 			right: 1rem;
-			top: 0;
+			top: 6rem;
 			width: 25%;
 			padding: 1rem;
 			scrollbar-width: thin;
 			overflow-y: scroll;
 			height: calc(100vh - 12rem);
-			padding-top: 70vh;
+			padding-top: 50vh;
 		}
 
 		.poem::-webkit-scrollbar {
@@ -145,6 +147,12 @@
 		.poem::-webkit-scrollbar-thumb {
 			background-color: #888;
 			border-radius: 0.5rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.poem {
+			padding-top: 0;
 		}
 	}
 </style>

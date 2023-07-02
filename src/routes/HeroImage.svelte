@@ -1,13 +1,14 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { draw, fade } from 'svelte/transition';
 	import { quadInOut } from 'svelte/easing';
 
 	let drawStroke = false;
 	let showImage = false;
+	let drawInner = draw;
 
 	$: if (showImage) {
-		drawStroke = true;
+		drawStroke = !matchMedia('(prefers-reduced-motion: reduce)').matches;
 	}
 
 	function handleIntroEnd() {
@@ -28,7 +29,7 @@
 >
 	{#if drawStroke}
 		<path
-			in:draw={{ duration: 1500, easing: quadInOut }}
+			in:drawInner={{ duration: 1500, easing: quadInOut }}
 			fill="none"
 			stroke-width="6"
 			stroke="#B00C85"

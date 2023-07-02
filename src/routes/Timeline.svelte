@@ -304,4 +304,16 @@
 			width: 250px;
 		}
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.sidebar .links .content-jump,
+		.sidebar,
+		.toggle,
+		.glow,
+		.links,
+		.foldout {
+			transition: none;
+			animation: none;
+		}
+	}
 </style>

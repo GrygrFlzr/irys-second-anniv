@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SimpleImageGallery from '$lib/components/SimpleImageGallery.svelte';
 	import SimpleSlateRenderer from '$lib/components/SimpleSlateRenderer.svelte';
+	import { createReducedMotionStore } from '$lib/js/createMediaQueryStore';
 	import type { YearlyTimelineData } from '$lib/types/Types';
 
 	export let years: YearlyTimelineData[];
@@ -18,9 +19,10 @@
 	const ITEM_ID_PREFIX = 'id_';
 	const yearElements: Record<number, HTMLElement> = {};
 	const revealSections: Record<string, HTMLElement> = {};
+	const prefersReducedMotion = createReducedMotionStore();
 
 	$: innerHeight = 0;
-	$: if (currentIntersectingYear) {
+	$: if (currentIntersectingYear && !$prefersReducedMotion) {
 		const boundingClientRect = currentIntersectingYear.getBoundingClientRect();
 
 		diamondY = Math.max(
@@ -197,7 +199,7 @@
 		position: relative;
 		transform: translateY(150px);
 		opacity: 0;
-		transition: 1s all ease;
+		transition: all 1s ease;
 	}
 	.active {
 		transform: translateY(0);
@@ -293,6 +295,12 @@
 
 		.timeline-img-container {
 			margin: auto 2rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.reveal-section {
+			transition: 1s opacity ease;
 		}
 	}
 
