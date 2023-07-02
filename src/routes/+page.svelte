@@ -1,101 +1,35 @@
-<script>
-	import TimelineContent from './TimelineContent.svelte';
-	import Timeline from './Timeline.svelte';
+<script lang="ts">
+	import type { PageData } from './$types';
 	import Hero from './Hero.svelte';
-	// Can probably have a different file hold the data / Use the database
-	// *IMPORTANT* DATA IS REQUIRED TO BE SORTED BY YEAR/DATE ACCORDINGLY (OTHERWISE IT WIRED AND STUFF)
-	const data = [
-		{
-			year: '2021',
-			date: 'July 11',
-			title: 'Test Title',
-			photo: '/img/bg1.png',
-			content:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque maxime libero consequuntur et error ullam ipsa commodi non rerum labore. Minus, dicta rem. Autem voluptatum tenetur minus molestiae, magni dolorem libero ad quas natus placeat? Amet harum excepturi eaque aspernatur facere mollitia illum facilis saepe fugiat, at qui laborum voluptas! Quos sint blanditiis impedit tempore. Error ullam ipsa mollitia debitis, iusto eius facere fugiat deserunt, illum explicabo quod ratione id a? Rerum amet velit, corporis inventore ratione eveniet iusto iste cum, vitae debitis excepturi dolores nam sit saepe veniam! Aperiam sint dolorum laudantium numquam doloribus voluptatibus cumque quidem distinctio sit.'
-		},
-		{
-			year: '2021',
-			date: 'July 12 2021',
-			title: 'Test Title2',
-			photo: '/img/bg2.png',
-			content:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo explicabo voluptatum ex saepe quidem mollitia quibusdam enim quos nulla doloribus.'
-		},
-		{
-			year: '2021',
-			date: 'July 13',
-			title: 'Make it longer1',
-			photo: '/img/logo-solid.png',
-			content:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque maxime libero consequuntur et error ullam ipsa commodi non rerum labore. Minus, dicta rem. Autem voluptatum tenetur minus molestiae, magni dolorem libero ad quas natus placeat? Amet harum excepturi eaque aspernatur facere mollitia illum facilis saepe fugiat, at qui laborum voluptas! Quos sint blanditiis impedit tempore. Error ullam ipsa mollitia debitis, iusto eius facere fugiat deserunt, illum explicabo quod ratione id a? Rerum amet velit, corporis inventore ratione eveniet iusto iste cum, vitae debitis excepturi dolores nam sit saepe veniam! Aperiam sint dolorum laudantium numquam doloribus voluptatibus cumque quidem distinctio sit.'
-		},
-		{
-			year: '2021',
-			date: 'July 14',
-			title: 'Make it longer2',
-			photo: '/img/logo-solid.png',
-			content:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque maxime libero consequuntur et error ullam ipsa commodi non rerum labore. Minus, dicta rem. Autem voluptatum tenetur minus molestiae, magni dolorem libero ad quas natus placeat? Amet harum excepturi eaque aspernatur facere mollitia illum facilis saepe fugiat, at qui laborum voluptas! Quos sint blanditiis impedit tempore. Error ullam ipsa mollitia debitis, iusto eius facere fugiat deserunt, illum explicabo quod ratione id a? Rerum amet velit, corporis inventore ratione eveniet iusto iste cum, vitae debitis excepturi dolores nam sit saepe veniam! Aperiam sint dolorum laudantium numquam doloribus voluptatibus cumque quidem distinctio sit.'
-		},
-		{
-			year: '2022',
-			date: 'July 15',
-			title: 'Make it longer3',
-			photo: '/img/logo-solid.png',
-			content:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque maxime libero consequuntur et error ullam ipsa commodi non rerum labore. Minus, dicta rem. Autem voluptatum tenetur minus molestiae, magni dolorem libero ad quas natus placeat? Amet harum excepturi eaque aspernatur facere mollitia illum facilis saepe fugiat, at qui laborum voluptas! Quos sint blanditiis impedit tempore. Error ullam ipsa mollitia debitis, iusto eius facere fugiat deserunt, illum explicabo quod ratione id a? Rerum amet velit, corporis inventore ratione eveniet iusto iste cum, vitae debitis excepturi dolores nam sit saepe veniam! Aperiam sint dolorum laudantium numquam doloribus voluptatibus cumque quidem distinctio sit.'
-		},
-		{
-			year: '2022',
-			date: 'July 21',
-			title: 'Make it longer4',
-			photo: '/img/logo-solid.png',
-			content:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque maxime libero consequuntur et error ullam ipsa commodi non rerum labore. Minus, dicta rem. Autem voluptatum tenetur minus molestiae, magni dolorem libero ad quas natus placeat? Amet harum excepturi eaque aspernatur facere mollitia illum facilis saepe fugiat, at qui laborum voluptas! Quos sint blanditiis impedit tempore. Error ullam ipsa mollitia debitis, iusto eius facere fugiat deserunt, illum explicabo quod ratione id a? Rerum amet velit, corporis inventore ratione eveniet iusto iste cum, vitae debitis excepturi dolores nam sit saepe veniam! Aperiam sint dolorum laudantium numquam doloribus voluptatibus cumque quidem distinctio sit.'
-		},
-		{
-			year: '2022',
-			date: 'July 23',
-			title: 'Make it longer5',
-			photo: '/img/logo-solid.png',
-			content:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque maxime libero consequuntur et error ullam ipsa commodi non rerum labore. Minus, dicta rem. Autem voluptatum tenetur minus molestiae, magni dolorem libero ad quas natus placeat? Amet harum excepturi eaque aspernatur facere mollitia illum facilis saepe fugiat, at qui laborum voluptas! Quos sint blanditiis impedit tempore. Error ullam ipsa mollitia debitis, iusto eius facere fugiat deserunt, illum explicabo quod ratione id a? Rerum amet velit, corporis inventore ratione eveniet iusto iste cum, vitae debitis excepturi dolores nam sit saepe veniam! Aperiam sint dolorum laudantium numquam doloribus voluptatibus cumque quidem distinctio sit.'
-		},
-		{
-			year: '2022',
-			date: 'July 27',
-			title: 'Make it longer6',
-			photo: '/img/logo-solid.png',
-			content:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque maxime libero consequuntur et error ullam ipsa commodi non rerum labore. Minus, dicta rem. Autem voluptatum tenetur minus molestiae, magni dolorem libero ad quas natus placeat? Amet harum excepturi eaque aspernatur facere mollitia illum facilis saepe fugiat, at qui laborum voluptas! Quos sint blanditiis impedit tempore. Error ullam ipsa mollitia debitis, iusto eius facere fugiat deserunt, illum explicabo quod ratione id a? Rerum amet velit, corporis inventore ratione eveniet iusto iste cum, vitae debitis excepturi dolores nam sit saepe veniam! Aperiam sint dolorum laudantium numquam doloribus voluptatibus cumque quidem distinctio sit.'
-		},
-		{
-			year: '2023',
-			date: 'July 3',
-			title: 'Make it longer7',
-			photo: '/img/logo-solid.png',
-			content:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque maxime libero consequuntur et error ullam ipsa commodi non rerum labore. Minus, dicta rem. Autem voluptatum tenetur minus molestiae, magni dolorem libero ad quas natus placeat? Amet harum excepturi eaque aspernatur facere mollitia illum facilis saepe fugiat, at qui laborum voluptas! Quos sint blanditiis impedit tempore. Error ullam ipsa mollitia debitis, iusto eius facere fugiat deserunt, illum explicabo quod ratione id a? Rerum amet velit, corporis inventore ratione eveniet iusto iste cum, vitae debitis excepturi dolores nam sit saepe veniam! Aperiam sint dolorum laudantium numquam doloribus voluptatibus cumque quidem distinctio sit.'
-		}
-	];
+	import Timeline from './Timeline.svelte';
+	import TimelineContent from './TimelineContent.svelte';
+
+	// Prefilled by server data; assuming the data is sorted by server side code.
+	export let data: PageData;
+
+	let intersectingEvents: Record<string, boolean> = {};
+	let diamondY = 0;
+	let currentYear = data.data[0].year;
 </script>
 
 <Hero />
 
 <div class="background-img">
 	<div class="content">
-		<div class="achievements sr-only">
-			<h2 class="timeHeader">Achievements/Major Events</h2>
+		<div class="achievements blur">
+			<div class="timeHeader">Oh you found me! Stream Idol</div>
 		</div>
-		<Timeline {data} />
-		<div>
-			<TimelineContent {data} />
+		<Timeline bind:intersectingEvents bind:diamondY bind:currentYear years={data.data} />
+		<div class="blur">
+			<TimelineContent bind:intersectingEvents bind:diamondY bind:currentYear years={data.data} />
 		</div>
 	</div>
 </div>
 
 <style>
 	.background-img {
+		/** shouldn't be global otherwise other pages and error page will also be hidden */
+		margin-top: calc(var(--header-offset) * -1);
 		background: #600150;
 		background-image: url('/img/timeline-bg.jpg');
 		background-repeat: no-repeat;
@@ -105,10 +39,11 @@
 
 	.content {
 		background: rgba(0, 0, 0, 0);
-		backdrop-filter: blur(5px);
 		padding-top: 1em;
 	}
-
+	.blur {
+		backdrop-filter: blur(5px);
+	}
 	.achievements {
 		background-color: #300029;
 		margin: 0px 20px 10px;
@@ -122,16 +57,14 @@
 		margin: auto;
 		padding: 15px 15px;
 	}
-
-	.sr-only {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border-width: 0;
+	@media (max-width: 769px) {
+		.timeHeader {
+			font-size: small;
+			padding: 0px;
+		}
+		.achievements {
+			padding: 0px;
+			margin: 0px;
+		}
 	}
 </style>

@@ -5,11 +5,6 @@
 
 body {
 	margin: 0;
-	background: #600150;
-	background-image: var(--background-image, url('/img/timeline-bg.jpg'));
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-attachment: fixed;
 	font-family: 'Jura', sans-serif;
 	box-sizing: border-box;
 }
@@ -23,12 +18,12 @@ html {
 :root {
 	--very-dark-pink: #540028;
 	--dark-pink: #a1004d;
-	--header-height: 3.5rem;
+	--header-offset: 4.5rem;
 }
 
 @media (min-width: 768px) {
 	:root {
-		--header-height: 10rem;
+		--header-offset: 8.5rem;
 	}
 }
 
