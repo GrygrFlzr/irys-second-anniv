@@ -12,40 +12,117 @@
 	// Test data for art contributions
 	const dataTest = [
 		{
-			contributor: 'contributor_1',
-			images: ['/img/art/art-1.png', '/img/art/art-2.png']
+			author: 'contributor_1',
+			images: [
+				{
+					src: '/img/art/art-1.png',
+					alt: '',
+					width: 915,
+					height: 670,
+				}
+			]
 		},
 		{
-			contributor: 'contributor_2',
-			images: ['/img/art/art-2.png']
+			author: 'contributor_2',
+			images: [
+				{
+					src: '/img/art/art-2.png',
+					alt: '',
+					width: 900,
+					height: 900,
+				}
+			]
 		},
 		{
-			contributor: 'contributor_3',
-			images: ['/img/art/art-3.png']
+			author: 'contributor_3',
+			images: [
+				{
+					src: '/img/art/art-3.png',
+					alt: '',
+					width: 1000,
+					height: 667,
+				},
+				{
+					src: '/img/art/art-4.png',
+					alt: '',
+					width: 1000,
+					height: 667,
+
+				}
+			]
 		},
 		{
-			contributor: 'contributor_4',
-			images: ['/img/art/art-4.png']
+			author: 'contributor_4',
+			images: [
+				{
+					src: '/img/art/art-4.png',
+					alt: '',
+					width: 1000,
+					height: 667,
+				},
+				{
+					src: '/img/art/art-5.png',
+					alt: '',
+					width: 1000,
+					height: 688,
+
+				}
+			]
 		},
 		{
-			contributor: 'contributor_5',
-			images: ['/img/art/art-5.png']
+			author: 'contributor_5',
+			images: [
+				{
+					src: '/img/art/art-5.png',
+					alt: '',
+					width: 1000,
+					height: 688,
+				},
+			]
 		},
 		{
-			contributor: 'contributor_6',
-			images: ['/img/art/art-6.png']
+			author: 'contributor_6',
+			images: [
+				{
+					src: '/img/art/art-6.png',
+					alt: '',
+					width: 1000,
+					height: 1333,
+				},
+			]
 		},
 		{
-			contributor: 'contributor_7',
-			images: ['/img/art/art-7.png']
+			author: 'contributor_7',
+			images: [
+				{
+					src: '/img/art/art-7.png',
+					alt: '',
+					width: 1000,
+					height: 771,
+				},
+			]
 		},
 		{
-			contributor: 'contributor_8',
-			images: ['/img/art/art-8.png']
+			author: 'contributor_8',
+			images: [
+				{
+					src: '/img/art/art-8.png',
+					alt: '',
+					width: 641,
+					height: 1000,
+				},
+			]
 		},
 		{
-			contributor: 'contributor_9',
-			images: ['/img/art/art-9.png']
+			author: 'contributor_9',
+			images: [
+				{
+					src: '/img/art/art-9.png',
+					alt: '',
+					width: 900,
+					height: 565,
+				},
+			]
 		}
 	];
 

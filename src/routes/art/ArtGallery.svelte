@@ -1,18 +1,13 @@
-<script>
+<script lang="ts">
 	import ArtGalleryItem from './ArtGalleryItem.svelte';
 
-	export let data = [
-		{
-			contributor: 'contributor_0',
-			images: ['/img/art/art-1.png']
-		}
-	];
+	export let data: any[] = [];
 </script>
 
 <div class="content">
 	<div class="items-container">
 		{#each data as item}
-			<ArtGalleryItem {...item} />
+			<ArtGalleryItem author={item.author} images={item.images} />
 		{/each}
 	</div>
 </div>
