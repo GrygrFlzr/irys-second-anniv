@@ -25,7 +25,7 @@
 	}
 
 	$: currentYearIndex = years.findIndex((y) => y.year === currentYear);
-	$: currentYearDiamondOffset = (currentYearIndex + 1) * 23;
+	$: currentYearDiamondOffset = (currentYearIndex) * 23;
 </script>
 
 <div class="toggle" class:active={foldoutOpen}>

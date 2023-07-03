@@ -24,7 +24,6 @@
 	$: innerHeight = 0;
 	$: if (currentIntersectingYear && !$prefersReducedMotion) {
 		const boundingClientRect = currentIntersectingYear.getBoundingClientRect();
-
 		diamondY = Math.max(
 			0,
 			((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100
@@ -81,7 +80,7 @@
 
 	function yearObserverAction(item: HTMLElement) {
 		yearObserver ??= new IntersectionObserver(yearObserverCallback, {
-			threshold: 0
+			threshold: 0.1
 		});
 
 		yearObserver.observe(item);
@@ -168,6 +167,9 @@
 				</section>
 			{/each}
 		</section>
+		<div class="extra-space">
+			<h2 class="year-end">End of {year.year}</h2>
+		</div>
 	{/each}
 </section>
 
@@ -223,7 +225,37 @@
 		padding: 20px;
 		color: #59084a;
 	}
-
+	.extra-space{
+		display: flex;
+		color: #ddd;
+		width: auto;
+		height: 450px;
+		align-items: center;
+		justify-content: center;
+	}
+	.year-end{
+		position: relative;
+	}
+	.year-end::before{
+		content: "";
+		display: block;
+		width: 60%;
+		height: 2px;
+		background: #ddd	;
+		left: -70%;
+		top: 50%;
+		position: absolute;
+	}
+	.year-end::after{
+		content: "";
+		display: block;
+		width: 60%;
+		height: 2px;
+		background: #ddd	;
+		right: -70%;
+		top: 50%;
+		position: absolute;
+	}
 	/* Dot beside the timeline 
 .timeline-item::before{
     content: '';
@@ -262,17 +294,26 @@
 			margin: 0px 10px 0px 40px;
 			padding: 30px 10px 0px 20px;
 		}
+		.extra-space{
+			height: 100px;
+		}
 	}
 	@media (min-width: 481px) {
 		.timeline {
 			margin: 0px 20px 0px 40px;
 			padding: 50px 20px 0px 30px;
 		}
+		.extra-space{
+			height: 250px;
+		}
 	}
 	@media (min-width: 769px) {
 		.timeline {
 			margin: 0px 0px 0px 135px;
 			padding: 50px 30px 0px 30px;
+		}
+		.extra-space{
+			height: 350px;
 		}
 	}
 
@@ -289,6 +330,9 @@
 
 		.timeline-img-container {
 			margin: auto 1rem;
+		}
+		.extra-space{
+			height: 450px;
 		}
 	}
 
