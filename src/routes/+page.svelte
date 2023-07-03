@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import Hero from './Hero.svelte';
 	import Timeline from './Timeline.svelte';
 	import TimelineContent from './TimelineContent.svelte';
 
@@ -12,10 +13,15 @@
 </script>
 
 <div class="background-img">
+	<div class="stream-idol blur">
+		<a href="https://www.youtube.com/watch?v=UpbpwXAEJl4" class="timeHeader"
+			>Oh you found me! Stream Idol</a
+		>
+	</div>
+
+	<Hero />
+
 	<div class="content">
-		<div class="achievements blur">
-			<h1 class="timeHeader">Oh you found me! Stream Idol</h1>
-		</div>
 		<Timeline bind:intersectingEvents bind:diamondY bind:currentYear years={data.data} />
 		<div class="blur">
 			<TimelineContent bind:intersectingEvents bind:diamondY bind:currentYear years={data.data} />
@@ -36,12 +42,12 @@
 
 	.content {
 		background: rgba(0, 0, 0, 0);
-		padding-top: 1em;
 	}
 	.blur {
+		padding-top: 1rem;
 		backdrop-filter: blur(5px);
 	}
-	.achievements {
+	.stream-idol {
 		background-color: #300029;
 		margin: 0px 20px 10px;
 		padding: 15px 15px;
@@ -53,13 +59,14 @@
 		text-align: center;
 		margin: auto;
 		padding: 15px 15px;
+		display: block;
 	}
 	@media (max-width: 769px) {
 		.timeHeader {
 			font-size: small;
 			padding: 0px;
 		}
-		.achievements {
+		.stream-idol {
 			padding: 0px;
 			margin: 0px;
 		}

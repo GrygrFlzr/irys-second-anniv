@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SimpleImageGallery from '$lib/components/SimpleImageGallery.svelte';
 	import SimpleSlateRenderer from '$lib/components/SimpleSlateRenderer.svelte';
+	import { createReducedMotionStore } from '$lib/js/createMediaQueryStore';
 	import type { YearlyTimelineData } from '$lib/types/Types';
 
 	export let years: YearlyTimelineData[];
@@ -18,9 +19,10 @@
 	const ITEM_ID_PREFIX = 'id_';
 	const yearElements: Record<number, HTMLElement> = {};
 	const revealSections: Record<string, HTMLElement> = {};
+	const prefersReducedMotion = createReducedMotionStore();
 
 	$: innerHeight = 0;
-	$: if (currentIntersectingYear) {
+	$: if (currentIntersectingYear && !$prefersReducedMotion) {
 		const boundingClientRect = currentIntersectingYear.getBoundingClientRect();
 
 		diamondY = Math.max(
@@ -154,7 +156,7 @@
 					<div class="timeline-item" id="{ITEM_ID_PREFIX}{item.id}" use:timelineTimeObserverAction>
 						<div class="timeline-extra">
 							<h2>{item.title}</h2>
-							<h3>{formatDate(item.date)}</h3>
+							<div class="date">{formatDate(item.date)}</div>
 							<div class="milestone-content">
 								<SimpleSlateRenderer richTextElements={item.content} />
 							</div>
@@ -183,11 +185,13 @@
 		padding-bottom: 20px;
 		text-decoration: underline;
 		text-underline-position: under;
+		scroll-snap-align: start;
 	}
 	.timeline-section {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+		min-height: 90vh;
 		min-height: 100svh;
 	}
 	/* Line for the timeline      border-left: 2px solid #ccc;  */
@@ -232,15 +236,16 @@
     position:absolute;
     left: -39px;
 }*/
-
 	h2 {
 		margin: 10px;
 		text-transform: uppercase;
 		font-size: large;
 	}
-	h3 {
+
+	.date {
 		margin: 10px;
 		font-size: medium;
+		font-weight: bold;
 	}
 	p {
 		margin: 0;
@@ -294,6 +299,12 @@
 
 		.timeline-img-container {
 			margin: auto 2rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.reveal-section {
+			transition: 1s opacity ease;
 		}
 	}
 

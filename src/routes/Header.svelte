@@ -1,38 +1,23 @@
 <script lang="ts">
 	import '$lib/css/main.css';
-	import { onMount } from 'svelte';
 	import Navbar from './Navbar.svelte';
+	import { createMediaQueryStore, createReducedMotionStore } from '$lib/js/createMediaQueryStore';
+	import { tick } from 'svelte';
 
 	let scrollY = 0;
 	let unfold = false;
 	let header: HTMLElement;
-	let prefersReducedMotion = false;
-	let matchesPC = false;
-
-	onMount(() => {
-		let matchesReduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
-		let matchesPC = matchMedia('(min-width: 768px)');
-
-		matchesReduceMotion?.addEventListener('change', handlePrefersReducedMotionChange);
-
-		matchesPC?.addEventListener('change', handleResize);
-
-		updateHeaderHeight(header.clientHeight);
-
-		return () => {
-			matchesReduceMotion?.removeEventListener('change', handlePrefersReducedMotionChange);
-			matchesPC?.removeEventListener('change', handleResize);
-		};
-	});
+	let prefersReducedMotion = createReducedMotionStore();
+	let matchesPC = createMediaQueryStore('(min-width: 768px)');
 
 	$: unfold = scrollY <= 120;
 	// if there's transition update to a proximate value of the header height
 	// and calculate the actual height after the transition
 	$: if (header) {
-		if (matchesPC && !prefersReducedMotion) {
-			updateHeaderHeight((unfold ? 8.5 : 4.5) * 16);
+		if ($matchesPC && !$prefersReducedMotion) {
+			updateHeaderHeight((unfold ? 8.5 : 5) * 16);
 		} else {
-			updateHeaderHeight(header.clientHeight);
+			tick().then(calculateAndUpdateHeaderHeight);
 		}
 	}
 
@@ -42,15 +27,6 @@
 
 	function updateHeaderHeight(height: number) {
 		globalThis.document?.documentElement.style.setProperty('--header-height', `${height}px`);
-	}
-
-	function handlePrefersReducedMotionChange(event: MediaQueryListEvent) {
-		prefersReducedMotion = event.matches;
-	}
-
-	function handleResize(event: MediaQueryListEvent) {
-		matchesPC = event.matches;
-		updateHeaderHeight(header.clientHeight);
 	}
 </script>
 
@@ -144,7 +120,7 @@
 			max-height: 10rem;
 		}
 
-		.logo {
+		.logo-img {
 			height: 2.5rem;
 		}
 

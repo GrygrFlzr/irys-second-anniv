@@ -9,6 +9,12 @@ body {
 	box-sizing: border-box;
 }
 
+body,
+html {
+	scroll-snap-type: y proximity;
+	scroll-padding-top: 8rem;
+}
+
 :root {
 	--very-dark-pink: #540028;
 	--dark-pink: #a1004d;
@@ -18,6 +24,14 @@ body {
 @media (min-width: 768px) {
 	:root {
 		--header-offset: 8.5rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	/* has weird stuttering effect on scroll */
+	body,
+	html {
+		scroll-snap-type: none;
 	}
 }
 
