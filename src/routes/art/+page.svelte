@@ -18,7 +18,7 @@
 					src: '/img/art/art-1.png',
 					alt: '',
 					width: 915,
-					height: 670,
+					height: 670
 				}
 			]
 		},
@@ -29,7 +29,7 @@
 					src: '/img/art/art-2.png',
 					alt: '',
 					width: 900,
-					height: 900,
+					height: 900
 				}
 			]
 		},
@@ -40,14 +40,13 @@
 					src: '/img/art/art-3.png',
 					alt: '',
 					width: 1000,
-					height: 667,
+					height: 667
 				},
 				{
 					src: '/img/art/art-4.png',
 					alt: '',
 					width: 1000,
-					height: 667,
-
+					height: 667
 				}
 			]
 		},
@@ -58,14 +57,13 @@
 					src: '/img/art/art-4.png',
 					alt: '',
 					width: 1000,
-					height: 667,
+					height: 667
 				},
 				{
 					src: '/img/art/art-5.png',
 					alt: '',
 					width: 1000,
-					height: 688,
-
+					height: 688
 				}
 			]
 		},
@@ -76,8 +74,8 @@
 					src: '/img/art/art-5.png',
 					alt: '',
 					width: 1000,
-					height: 688,
-				},
+					height: 688
+				}
 			]
 		},
 		{
@@ -87,8 +85,8 @@
 					src: '/img/art/art-6.png',
 					alt: '',
 					width: 1000,
-					height: 1333,
-				},
+					height: 1333
+				}
 			]
 		},
 		{
@@ -98,8 +96,8 @@
 					src: '/img/art/art-7.png',
 					alt: '',
 					width: 1000,
-					height: 771,
-				},
+					height: 771
+				}
 			]
 		},
 		{
@@ -109,8 +107,8 @@
 					src: '/img/art/art-8.png',
 					alt: '',
 					width: 641,
-					height: 1000,
-				},
+					height: 1000
+				}
 			]
 		},
 		{
@@ -120,8 +118,8 @@
 					src: '/img/art/art-9.png',
 					alt: '',
 					width: 900,
-					height: 565,
-				},
+					height: 565
+				}
 			]
 		}
 	];
@@ -154,7 +152,7 @@
 						}}
 					>
 						A collection of messages and art from IRyStocrats around the world, for IRyS' 2nd
-						Anniversary.
+						AnniversaRyS.
 					</div>
 				</div>
 			</div>
@@ -201,11 +199,19 @@
 		flex-direction: column;
 		margin: auto;
 		width: 50em;
+		text-shadow: 2px 2px 0.25rem rgb(0, 0, 0, 0.5);
+	}
+
+	@media (max-width: calc(max(50em, 768px))) {
+		.header-group {
+			width: 90%;
+		}
 	}
 
 	.header-title {
 		color: #ffffff;
 		font-size: 40px;
+		text-align: center;
 	}
 
 	.header-desc {
