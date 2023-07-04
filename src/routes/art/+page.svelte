@@ -9,121 +9,6 @@
 
 	import { fade, fly } from 'svelte/transition';
 
-	// Test data for art contributions
-	const dataTest = [
-		{
-			author: 'contributor_1',
-			images: [
-				{
-					src: '/img/art/art-1.png',
-					alt: '',
-					width: 915,
-					height: 670
-				}
-			]
-		},
-		{
-			author: 'contributor_2',
-			images: [
-				{
-					src: '/img/art/art-2.png',
-					alt: '',
-					width: 900,
-					height: 900
-				}
-			]
-		},
-		{
-			author: 'contributor_3',
-			images: [
-				{
-					src: '/img/art/art-3.png',
-					alt: '',
-					width: 1000,
-					height: 667
-				},
-				{
-					src: '/img/art/art-4.png',
-					alt: '',
-					width: 1000,
-					height: 667
-				}
-			]
-		},
-		{
-			author: 'contributor_4',
-			images: [
-				{
-					src: '/img/art/art-4.png',
-					alt: '',
-					width: 1000,
-					height: 667
-				},
-				{
-					src: '/img/art/art-5.png',
-					alt: '',
-					width: 1000,
-					height: 688
-				}
-			]
-		},
-		{
-			author: 'contributor_5',
-			images: [
-				{
-					src: '/img/art/art-5.png',
-					alt: '',
-					width: 1000,
-					height: 688
-				}
-			]
-		},
-		{
-			author: 'contributor_6',
-			images: [
-				{
-					src: '/img/art/art-6.png',
-					alt: '',
-					width: 1000,
-					height: 1333
-				}
-			]
-		},
-		{
-			author: 'contributor_7',
-			images: [
-				{
-					src: '/img/art/art-7.png',
-					alt: '',
-					width: 1000,
-					height: 771
-				}
-			]
-		},
-		{
-			author: 'contributor_8',
-			images: [
-				{
-					src: '/img/art/art-8.png',
-					alt: '',
-					width: 641,
-					height: 1000
-				}
-			]
-		},
-		{
-			author: 'contributor_9',
-			images: [
-				{
-					src: '/img/art/art-9.png',
-					alt: '',
-					width: 900,
-					height: 565
-				}
-			]
-		}
-	];
-
 	const headerAppearDuration = 500;
 	const contentsAppearDuration = 400;
 
@@ -198,8 +83,8 @@
 		display: flex;
 		flex-direction: column;
 		margin: auto;
-		width: 50em;
 		text-shadow: 2px 2px 0.25rem rgb(0, 0, 0, 0.5);
+		width: 50em;
 	}
 
 	@media (max-width: calc(max(50em, 768px))) {
