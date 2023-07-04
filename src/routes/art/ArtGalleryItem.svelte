@@ -17,12 +17,14 @@
 
 <style>
 	.content {
-		padding: 24px 0px;
+		display: block;
+		padding: 24px calc(0.2*(max(0px, 100vw - 768px)) + 12px); /*Min padding at 768px which increases with vw*/
 	}
 
 	.item-author {
 		color: #ddd;
 		font-size: 20px;
-		margin-top: 12px;
+		margin-top: 8px;
+		margin-bottom: 12px;
 	}
 </style>

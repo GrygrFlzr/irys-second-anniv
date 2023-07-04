@@ -170,7 +170,7 @@
 						y: contentsTransitionFadeOffset
 					}}
 				>
-					<ArtGallery data={dataTest} />
+					<ArtGallery data={data.data} />
 				</div>
 			</div>
 		</div>
