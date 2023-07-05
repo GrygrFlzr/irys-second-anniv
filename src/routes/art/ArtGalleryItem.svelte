@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Image } from '$lib/types/Types';
-	import SimpleImageGallery from '$lib/components/SimpleImageGallery.svelte';
+	import ArtGalleryImageComponent from './ArtGalleryImageComponent.svelte';
 
 	export let itemNumber = 0;
 	export let author = 'author';
@@ -13,7 +13,7 @@
 		<span class="item-author">{author ? author : 'Anonymous'}</span>
 	</div>
 	<div class="item-gallery">
-		<SimpleImageGallery {images} />
+		<ArtGalleryImageComponent {images} />
 	</div>
 </div>
 
