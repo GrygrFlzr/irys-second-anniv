@@ -7,7 +7,7 @@
 <div class="content">
 	<div class="items-container">
 		{#each data as item, i}
-			<ArtGalleryItem author={item.author} images={item.images} />
+			<ArtGalleryItem author={item.author} images={item.images} itemNumber={i + 1} />
 			{#if i != data.length - 1}
 				<hr class="item-divider" />
 			{/if}
@@ -35,6 +35,6 @@
 		height: 2px;
 		background-image: linear-gradient(to right, transparent, rgb(109, 2, 54, 0.5), transparent);
 		margin-top: 32px;
-		margin-bottom: 32px;
+		margin-bottom: 24px;
 	}
 </style>

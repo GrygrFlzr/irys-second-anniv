@@ -2,17 +2,18 @@
 	import type { Image } from '$lib/types/Types';
 	import SimpleImageGallery from '$lib/components/SimpleImageGallery.svelte';
 
+	export let itemNumber = 0;
 	export let author = 'author';
 	export let images: Image[];
 </script>
 
 <div class="content">
+	<div class="item-labels">
+		<span class="item-number">#{itemNumber} |</span>
+		<span class="item-author">{author ? author : 'Anonymous'}</span>
+	</div>
 	<div class="item-gallery">
 		<SimpleImageGallery {images} />
-	</div>
-	<div class="item-author">
-		<span class="item-author-by">by: </span>
-		{author ? author : 'Anonymous'}
 	</div>
 </div>
 
@@ -21,17 +22,19 @@
 		width: 100%;
 	}
 
-	.item-author {
-		color: rgb(221, 221, 221, 1);
+	.item-labels {
 		font-size: 20px;
-		margin-top: 8px;
-		margin-bottom: 4px;
+		margin-bottom: 18px;
 		text-shadow: 2px 2px 0.25rem rgb(0, 0, 0, 0.5);
-		text-align: right;
+		text-align: left;
 	}
 
-	.item-author-by {
+	.item-number {
 		color: rgb(221, 221, 221, 0.4);
+	}
+
+	.item-author {
+		color: rgb(221, 221, 221, 1);
 	}
 
 	.item-gallery {
