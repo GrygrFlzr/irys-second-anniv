@@ -11,22 +11,27 @@
 		<SimpleImageGallery {images} />
 	</div>
 	<div class="item-author">
-		{author}
+		<span class="item-author-by">by: </span>
+		{author ? author : 'Anonymous'}
 	</div>
 </div>
 
 <style>
 	.content {
-		display: block;
-		padding: 24px calc(0.2 * (max(0px, 100vw - 768px)) + 12px); /*Min padding at 768px which increases with vw*/
+		width: 100%;
 	}
 
 	.item-author {
-		color: #ddd;
+		color: rgb(221, 221, 221, 1);
 		font-size: 20px;
 		margin-top: 8px;
-		margin-bottom: 12px;
+		margin-bottom: 4px;
 		text-shadow: 2px 2px 0.25rem rgb(0, 0, 0, 0.5);
+		text-align: right;
+	}
+
+	.item-author-by {
+		color: rgb(221, 221, 221, 0.4);
 	}
 
 	.item-gallery {
