@@ -34,6 +34,7 @@
 		border: 0;
 		height: 2px;
 		background-image: linear-gradient(to right, transparent, rgb(109, 2, 54, 0.5), transparent);
+		margin-top: 32px;
 		margin-bottom: 32px;
 	}
 </style>
