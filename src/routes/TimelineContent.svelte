@@ -284,9 +284,12 @@
 		padding: 10px 0px;
 		font-size: medium;
 	}
-
+/*https://stackoverflow.com/questions/1165497/how-to-prevent-text-from-overflowing-in-css*/
 	.milestone-content {
 		margin: 10px;
+		word-wrap: break-word;
+		/*white-space: pre-wrap; (Seems to add more whitespace below the link)*/
+		word-break: break-word;
 	}
 
 	@media (min-width: 320px) {
