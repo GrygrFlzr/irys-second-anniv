@@ -1,6 +1,9 @@
 <script>
 	import '$lib/css/main.css';
+	import { createGlobalStore } from '$lib/js/globalStore';
 	import Header from './Header.svelte';
+
+	createGlobalStore();
 </script>
 
 <Header />

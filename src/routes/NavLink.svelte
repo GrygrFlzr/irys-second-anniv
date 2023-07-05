@@ -3,7 +3,7 @@
 	export let href;
 </script>
 
-<a class="nav-link" {href}>
+<a class="nav-link" {href} on:click>
 	<span class="nav-link-text">
 		<slot />
 	</span>

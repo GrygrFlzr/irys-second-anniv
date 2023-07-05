@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { YearlyTimelineData } from '$lib/types/Types';
+	import { getGlobalStore } from '$lib/js/globalStore';
 
 	export let years: YearlyTimelineData[];
 	export let intersectingEvents: Record<string, boolean>;
@@ -8,6 +9,8 @@
 	export let currentYear = years[0].year;
 
 	let foldoutOpen = false;
+	const globalStore = getGlobalStore();
+
 	function handleFoldoutOpen() {
 		foldoutOpen = true;
 		document.body.addEventListener('click', handleMenuClose);
@@ -25,18 +28,19 @@
 	}
 
 	$: currentYearIndex = years.findIndex((y) => y.year === currentYear);
-	$: currentYearDiamondOffset = (currentYearIndex) * 23;
+	$: currentYearDiamondOffset = currentYearIndex * 23;
 </script>
 
 <div class="toggle" class:active={foldoutOpen}>
 	<button
 		type="button"
 		class="arrow glow"
+		class:hide={$globalStore.navLinksVisible}
 		id="toggle_button"
 		on:click|stopPropagation={handleFoldoutOpen}>&#8250</button
 	>
 </div>
-<div class="foldout" class:active={foldoutOpen}>
+<div class="foldout" class:active={foldoutOpen} style:top="{$globalStore.headerHeight}px">
 	{#each years as { year, events }}
 		<section class="foldout-wrapper">
 			<h2 class="foldout-year">{year}</h2>
@@ -96,6 +100,9 @@
 		border: none;
 		padding-left: 16px;
 	}
+	.arrow.hide {
+		display: none;
+	}
 	.glow {
 		font-size: 50px;
 		color: #fff;
@@ -118,7 +125,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		top: var(--header-height);
 		width: 250px;
 		height: 95svh;
 		transform: translateX(-300px);
@@ -216,7 +222,7 @@
 		transform: translateX(-250px);
 		background: transparent;
 		transition: all 500ms ease-in-out;
-		z-index: 1000;
+		z-index: 499;
 	}
 	.sidebar.active {
 		transform: translateX(-500px);
@@ -295,6 +301,9 @@
 	@media (min-width: 769px) {
 		.foldout {
 			width: 200px;
+		}
+		.arrow.hide {
+			display: inline-block;
 		}
 	}
 	@media (min-width: 1024px) {

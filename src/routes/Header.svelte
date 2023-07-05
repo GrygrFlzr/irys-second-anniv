@@ -3,19 +3,21 @@
 	import Navbar from './Navbar.svelte';
 	import { createMediaQueryStore, createReducedMotionStore } from '$lib/js/createMediaQueryStore';
 	import { tick } from 'svelte';
+	import { getGlobalStore } from '$lib/js/globalStore';
 
 	let scrollY = 0;
 	let unfold = false;
 	let header: HTMLElement;
 	let prefersReducedMotion = createReducedMotionStore();
 	let matchesPC = createMediaQueryStore('(min-width: 768px)');
+	const globalStore = getGlobalStore();
 
 	$: unfold = scrollY <= 120;
 	// if there's transition update to a proximate value of the header height
 	// and calculate the actual height after the transition
 	$: if (header) {
 		if ($matchesPC && !$prefersReducedMotion) {
-			updateHeaderHeight((unfold ? 8.5 : 5) * 16);
+			updateHeaderHeight((unfold ? 8.5 : 4) * 16);
 		} else {
 			tick().then(calculateAndUpdateHeaderHeight);
 		}
@@ -26,7 +28,7 @@
 	}
 
 	function updateHeaderHeight(height: number) {
-		globalThis.document?.documentElement.style.setProperty('--header-height', `${height}px`);
+		$globalStore.headerHeight = height;
 	}
 </script>
 

@@ -18,7 +18,7 @@ html {
 :root {
 	--very-dark-pink: #540028;
 	--dark-pink: #a1004d;
-	--header-offset: 4.5rem;
+	--header-offset: 3.5rem;
 }
 
 @media (min-width: 768px) {
