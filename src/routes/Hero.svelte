@@ -113,6 +113,7 @@
 	}
 
 	.poem {
+		scroll-snap-align: start;
 		padding: 2rem 10%;
 		opacity: 0;
 		transition: all 150ms ease-in-out;

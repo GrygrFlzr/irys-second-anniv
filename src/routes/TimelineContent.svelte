@@ -150,7 +150,7 @@
 			{#each year.events as item}
 				<section
 					class="timeline-section reveal-section active"
-					bind:this={revealSections[year.year]}
+					bind:this={revealSections[item.id]}
 				>
 					<div class="timeline-item" id="{ITEM_ID_PREFIX}{item.id}" use:timelineTimeObserverAction>
 						<div class="timeline-extra">
@@ -199,7 +199,7 @@
 	/* Line for the timeline      border-left: 2px solid #ccc;  */
 	.reveal-section {
 		position: relative;
-		transform: translateY(150px);
+		transform: translateY(100px);
 		opacity: 0;
 		transition: 1s all ease;
 	}
@@ -317,6 +317,10 @@
 		}
 		.extra-space{
 			height: 350px;
+		}
+
+		.reveal-section {
+			transform: translateY(150px);
 		}
 	}
 

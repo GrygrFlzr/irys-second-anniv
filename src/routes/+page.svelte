@@ -12,7 +12,8 @@
 	let currentYear = data.data[0].year;
 </script>
 
-<div class="background-img">
+<div class="background">
+	<img src="/img/timeline-bg.jpg" class="background-img" alt="" />
 	<div class="stream-idol blur">
 		<a href="https://www.youtube.com/watch?v=UpbpwXAEJl4" class="timeHeader"
 			>Oh you found me! Stream Idol</a
@@ -30,14 +31,25 @@
 </div>
 
 <style>
-	.background-img {
+	.background {
 		/** shouldn't be global otherwise other pages and error page will also be hidden */
 		margin-top: calc(var(--header-offset) * -1);
 		background: #600150;
-		background-image: url('/img/timeline-bg.jpg');
-		background-repeat: no-repeat;
-		background-size: cover;
-		background-attachment: fixed;
+	}
+
+	/* 
+		the performance of background-attachment: fixed 
+		is terrible on Chrome Android. will-change: transform doesn't help much
+		so we use a fixed position image instead
+	 */
+	.background-img {
+		width: 100vw;
+		height: 100vh;
+		object-fit: cover;
+		object-position: center;
+		position: fixed;
+		top: 0;
+		z-index: 0;
 	}
 
 	.content {
