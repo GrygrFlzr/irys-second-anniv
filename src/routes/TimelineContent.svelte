@@ -8,6 +8,7 @@
 	export let intersectingEvents: Record<string, boolean>;
 	export let diamondY: number;
 	export let currentYear: number;
+	export let src: string | undefined;
 
 	let scrollY = 0;
 	let timelineItemObserver: IntersectionObserver;
@@ -29,6 +30,7 @@
 			((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100
 		);
 	}
+	$: idFromEvent = new Map(years.flatMap((year) => year.events).map((event) => [event.id, event]));
 
 	/* Reference https://alvarotrigo.com/blog/css-animations-scroll/*/
 	function reveal() {
@@ -53,11 +55,11 @@
 
 	function timelineTimeObserverAction(item: HTMLElement) {
 		timelineItemObserver ??= new IntersectionObserver(timelineItemObserverCallback, {
-			threshold: 0
+			threshold: 0.5
 		});
 
 		timelineItemObserver.observe(item);
-
+		
 		return {
 			destroy() {
 				timelineItemObserver.unobserve(item);
@@ -72,6 +74,15 @@
 
 		entries.forEach((entry) => {
 			const eventId = entry.target.id.replace(ITEM_ID_PREFIX, '');
+			const event = idFromEvent.get(eventId);
+			if(event?.background_image != null){
+				src = event.background_image.src;
+				console.log("here somehow");
+			}
+			else if(event?.images != null){
+				console.log("here2");
+				src = event?.images[0].src;
+			}
 			intersectingMap[eventId] = entry.isIntersecting;
 		});
 
@@ -319,9 +330,6 @@
 			height: 350px;
 		}
 
-		.reveal-section {
-			transform: translateY(150px);
-		}
 	}
 
 	@media (min-width: 1024px) {

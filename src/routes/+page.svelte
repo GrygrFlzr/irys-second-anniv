@@ -10,10 +10,11 @@
 	let intersectingEvents: Record<string, boolean> = {};
 	let diamondY = 0;
 	let currentYear = data.data[0].year;
+	let src = "/img/timeline-bg.jpg";
 </script>
 
 <div class="background">
-	<img src="/img/timeline-bg.jpg" class="background-img" alt="" />
+	<img src={src} class="background-img" alt="" />
 	<div class="stream-idol blur">
 		<a href="https://www.youtube.com/watch?v=UpbpwXAEJl4" class="timeHeader"
 			>Oh you found me! Stream Idol</a
@@ -25,7 +26,7 @@
 	<div class="content">
 		<Timeline bind:intersectingEvents bind:diamondY bind:currentYear years={data.data} />
 		<div class="blur">
-			<TimelineContent bind:intersectingEvents bind:diamondY bind:currentYear years={data.data} />
+			<TimelineContent bind:intersectingEvents bind:diamondY bind:currentYear bind:src years={data.data} />
 		</div>
 	</div>
 </div>
@@ -50,6 +51,9 @@
 		position: fixed;
 		top: 0;
 		z-index: 0;
+		/*Background image transition doesnt work for firefox uuuuuuuuuuuuuuuuuuuuu*/
+		-webkit-transition: background-image 1s ease-in-out;
+		transition: background-image 1s ease-in-out;
 	}
 
 	.content {

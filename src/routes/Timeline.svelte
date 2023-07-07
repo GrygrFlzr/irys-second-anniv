@@ -10,7 +10,7 @@
 
 	let foldoutOpen = false;
 	const globalStore = getGlobalStore();
-
+	
 	function handleFoldoutOpen() {
 		foldoutOpen = true;
 		document.body.addEventListener('click', handleMenuClose);
@@ -21,6 +21,13 @@
 		document.body.removeEventListener('click', handleMenuClose);
 	}
 
+	let yearBoolean = false;
+	function currentYearBoolean(fromSidebarYear: number){
+
+		if(fromSidebarYear === currentYear){
+			yearBoolean = true;
+		}
+	}
 	//Allows the user to scroll into the timeline content on click
 	function scrollToElement(id: string) {
 		const element = document.getElementById(id);
@@ -66,10 +73,15 @@
 		{#each years as { year, events }}
 			<div class="year" id="x">
 				<p>{year}</p>
-				<div class="links">
+				<div 
+					class="links"
+					class:active={currentYearBoolean(year)}
+				>
 					{#if year === currentYear}
 						{#each events as content}
+						<div class="get-tabled">
 							<div class="content-jump" class:active={intersectingEvents[content.id]} />
+						</div>
 						{/each}
 					{/if}
 				</div>
@@ -195,18 +207,28 @@
 		background-color: #ddd;
 		border: 3px solid #ddd;
 		position: absolute;
-		left: 0px;
+		left: -8px;
 		transition: all 300ms ease-in-out;
 	}
 	.links {
 		transition: all 500ms ease-in-out;
+		display: table;
+    	table-layout: fixed;
+		height: 0svh;
+		border-left: 3px solid #ddd;
+	}
+	.links.active{
+		height: 60svh;
+	}
+	.get-tabled{
+		display: table-row;
 	}
 	.year p {
 		margin: inherit;
 		padding: 5px 0px 0px 15px;
 		color: #ddd;
 		border-left: 3px solid #ddd;
-		transform: translateX(7px);
+		transform: translateX(0px);
 	}
 	/*		border-left: 2px solid #ccc;*/
 	.sidebar {
@@ -232,6 +254,7 @@
 		color: #ddd;
 		font-size: 32px;
 		position: absolute;
+		left: -7px;
 		line-height: 1;
 	}
 
@@ -254,9 +277,10 @@
 	}
 
 	.content-jump {
-		border-left: 3px solid #ddd;
+		display:table-cell;
+		vertical-align: middle;
 		padding-left: 6px;
-		transform: translateX(7px);
+		transform: translateX(0px);
 	}
 	.content-jump::before {
 		content: '';
