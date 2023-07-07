@@ -22,7 +22,7 @@
 	<div class="nav-links" class:navLinkActive={navLinksVisible}>
 		<NavLink href="/" on:click={close}>Timeline</NavLink>
 		<NavLink href="/art" on:click={close}>Fan Art</NavLink>
-		<NavLink href="/about" on:click={close}>About Us</NavLink>
+		<NavLink href="/about" on:click={close}>About</NavLink>
 	</div>
 </nav>
 
