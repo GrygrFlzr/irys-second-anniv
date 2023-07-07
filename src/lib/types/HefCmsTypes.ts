@@ -63,7 +63,6 @@ export interface Guild {
 	staff?: string[] | User[];
 	updatedAt: string;
 	createdAt: string;
-	_status?: 'draft' | 'published';
 }
 export interface SubmissionMedia {
 	id: string;
@@ -150,9 +149,9 @@ export interface Submission {
 }
 export interface Event {
 	id: string;
+	title: string;
 	project: string | Project;
 	date: string;
-	title: string;
 	images: {
 		image?: string | EventMedia;
 		id?: string;
@@ -160,6 +159,19 @@ export interface Event {
 	backgroundImage?: string | EventMedia;
 	content: {
 		[k: string]: unknown;
+	}[];
+	devprops: {
+		key: string;
+		value:
+			| {
+					[k: string]: unknown;
+			  }
+			| unknown[]
+			| string
+			| number
+			| boolean
+			| null;
+		id?: string;
 	}[];
 	updatedAt: string;
 	createdAt: string;
