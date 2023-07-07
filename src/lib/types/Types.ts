@@ -14,17 +14,9 @@ type TimelineData = {
 	background_image?: Image;
 	images: Array<Image>;
 	content: Array<RichtextElement | RichtextTextElement>;
-	devProps: {
+	devprops?: {
 		key: string;
-		value:
-			| {
-					[k: string]: unknown;
-			  }
-			| unknown[]
-			| string
-			| number
-			| boolean
-			| null;
+		value: string;
 		id?: string;
 	}[];
 };
