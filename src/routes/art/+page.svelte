@@ -9,46 +9,6 @@
 
 	import { fade, fly } from 'svelte/transition';
 
-	// Test data for art contributions
-	const dataTest = [
-		{
-			contributor: 'contributor_1',
-			images: ['/img/art/art-1.png', '/img/art/art-2.png']
-		},
-		{
-			contributor: 'contributor_2',
-			images: ['/img/art/art-2.png']
-		},
-		{
-			contributor: 'contributor_3',
-			images: ['/img/art/art-3.png']
-		},
-		{
-			contributor: 'contributor_4',
-			images: ['/img/art/art-4.png']
-		},
-		{
-			contributor: 'contributor_5',
-			images: ['/img/art/art-5.png']
-		},
-		{
-			contributor: 'contributor_6',
-			images: ['/img/art/art-6.png']
-		},
-		{
-			contributor: 'contributor_7',
-			images: ['/img/art/art-7.png']
-		},
-		{
-			contributor: 'contributor_8',
-			images: ['/img/art/art-8.png']
-		},
-		{
-			contributor: 'contributor_9',
-			images: ['/img/art/art-9.png']
-		}
-	];
-
 	const headerAppearDuration = 500;
 	const contentsAppearDuration = 400;
 
@@ -77,7 +37,7 @@
 						}}
 					>
 						A collection of messages and art from IRyStocrats around the world, for IRyS' 2nd
-						Anniversary.
+						AnniversaRyS.
 					</div>
 				</div>
 			</div>
@@ -93,7 +53,7 @@
 						y: contentsTransitionFadeOffset
 					}}
 				>
-					<ArtGallery data={dataTest} />
+					<ArtGallery data={data.data} />
 				</div>
 			</div>
 		</div>
@@ -123,12 +83,20 @@
 		display: flex;
 		flex-direction: column;
 		margin: auto;
+		text-shadow: 2px 2px 0.25rem rgb(0, 0, 0, 0.5);
 		width: 50em;
+	}
+
+	@media (max-width: calc(max(50em, 768px))) {
+		.header-group {
+			width: 90%;
+		}
 	}
 
 	.header-title {
 		color: #ffffff;
 		font-size: 40px;
+		text-align: center;
 	}
 
 	.header-desc {
