@@ -1,7 +1,8 @@
 <script lang="ts">
+	import type { ArtSubmissionData } from '$lib/types/Types';
 	import ArtGalleryItem from './ArtGalleryItem.svelte';
 
-	export let data: any[] = [];
+	export let data: ArtSubmissionData[] = [];
 </script>
 
 <div class="content">
