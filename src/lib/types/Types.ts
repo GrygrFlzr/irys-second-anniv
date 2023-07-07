@@ -14,6 +14,11 @@ type TimelineData = {
 	background_image?: Image;
 	images: Array<Image>;
 	content: Array<RichtextElement | RichtextTextElement>;
+	devprops?: {
+		key: string;
+		value: string;
+		id?: string;
+	}[];
 };
 
 type YearlyTimelineData = {

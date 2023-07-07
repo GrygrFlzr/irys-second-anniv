@@ -1,16 +1,20 @@
 <script lang="ts">
 	import SimpleImageGallery from '$lib/components/SimpleImageGallery.svelte';
 	import SimpleSlateRenderer from '$lib/components/SimpleSlateRenderer.svelte';
-	import { createReducedMotionStore } from '$lib/js/createMediaQueryStore';
-	import type { YearlyTimelineData } from '$lib/types/Types';
+	import type { TimelineData, YearlyTimelineData } from '$lib/types/Types';
+	import type { Readable } from 'svelte/store';
 
 	export let years: YearlyTimelineData[];
 	export let intersectingEvents: Record<string, boolean>;
 	export let diamondY: number;
 	export let currentYear: number;
+	export let showConfettiElements: Set<string>;
+	export let prefersReducedMotion: Readable<boolean>;
 
 	let scrollY = 0;
 	let timelineItemObserver: IntersectionObserver;
+	let confettiObserver: IntersectionObserver;
+	let confettiElements: Map<string, boolean> = new Map();
 	let yearObserver: IntersectionObserver;
 	let currentIntersectingYear: Element;
 	let throttling = false;
@@ -19,7 +23,6 @@
 	const ITEM_ID_PREFIX = 'id_';
 	const yearElements: Record<number, HTMLElement> = {};
 	const revealSections: Record<string, HTMLElement> = {};
-	const prefersReducedMotion = createReducedMotionStore();
 
 	$: innerHeight = 0;
 	$: if (currentIntersectingYear && !$prefersReducedMotion) {
@@ -32,15 +35,26 @@
 
 	/* Reference https://alvarotrigo.com/blog/css-animations-scroll/*/
 	function reveal() {
-		for (const revealSection of Object.values(revealSections)) {
+		for (const [sectionId, revealSection] of Object.entries(revealSections)) {
 			const revealSectionTop = revealSection.getBoundingClientRect().top;
 			const revealSectionVisible = 150;
+
 			if (revealSectionTop < innerHeight - revealSectionVisible) {
 				revealSection.classList.add('active');
+
+				if (confettiElements.get(sectionId)) {
+					showConfettiElements.add(sectionId);
+				}
 			} else {
 				revealSection.classList.remove('active');
+
+				if (confettiElements.has(sectionId)) {
+					showConfettiElements.delete(sectionId);
+				}
 			}
 		}
+
+		showConfettiElements = showConfettiElements;
 	}
 
 	// https://stackoverflow.com/a/3552493
@@ -76,6 +90,43 @@
 		});
 
 		intersectingEvents = intersectingMap;
+	}
+
+	function useConfetti(item: TimelineData) {
+		// return item.title.endsWith('3');
+
+		return item.devprops?.some((prop) => prop.key == 'vfx' && prop.value == 'confetti') || false;
+	}
+
+	function confettiTagger(item: HTMLElement, enabled: boolean) {
+		if (enabled) {
+			confettiObserver ??= new IntersectionObserver(confettiObserverCallback, {
+				threshold: 0
+			});
+			confettiObserver.observe(item);
+
+			confettiElements.set(item.id.replace(ITEM_ID_PREFIX, ''), false);
+
+			return {
+				destroy() {
+					confettiObserver.unobserve(item);
+				}
+			};
+		}
+	}
+
+	function confettiObserverCallback(entries: IntersectionObserverEntry[]) {
+		entries.forEach((entry) => {
+			const eventId = entry.target.id.replace(ITEM_ID_PREFIX, '');
+			if (entry.isIntersecting) {
+				confettiElements.set(eventId, true);
+			} else {
+				showConfettiElements.delete(eventId);
+				confettiElements.set(eventId, false);
+			}
+		});
+
+		showConfettiElements = showConfettiElements;
 	}
 
 	function yearObserverAction(item: HTMLElement) {
@@ -149,7 +200,12 @@
 			<p class="year-css" id={year.id}>{year.year}</p>
 			{#each year.events as item}
 				<section class="timeline-section reveal-section active" bind:this={revealSections[item.id]}>
-					<div class="timeline-item" id="{ITEM_ID_PREFIX}{item.id}" use:timelineTimeObserverAction>
+					<div
+						class="timeline-item"
+						id="{ITEM_ID_PREFIX}{item.id}"
+						use:timelineTimeObserverAction
+						use:confettiTagger={useConfetti(item)}
+					>
 						<div class="timeline-extra">
 							<h2>{item.title}</h2>
 							<div class="date">{formatDate(item.date)}</div>

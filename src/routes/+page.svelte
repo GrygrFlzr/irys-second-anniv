@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { createReducedMotionStore } from '$lib/js/createMediaQueryStore';
 	import type { PageData } from './$types';
+	import Confetti from './Confetti.svelte';
 	import Hero from './Hero.svelte';
 	import Timeline from './Timeline.svelte';
 	import TimelineContent from './TimelineContent.svelte';
@@ -10,6 +12,9 @@
 	let intersectingEvents: Record<string, boolean> = {};
 	let diamondY = 0;
 	let currentYear = data.data[0].year;
+	let showConfettiElements: Set<string> = new Set();
+
+	const prefersReducedMotion = createReducedMotionStore();
 </script>
 
 <div class="background">
@@ -22,10 +27,18 @@
 
 	<Hero />
 
+	<Confetti showConfetti={showConfettiElements.size > 0} {prefersReducedMotion} />
 	<div class="content">
 		<Timeline bind:intersectingEvents bind:diamondY bind:currentYear years={data.data} />
 		<div class="blur">
-			<TimelineContent bind:intersectingEvents bind:diamondY bind:currentYear years={data.data} />
+			<TimelineContent
+				bind:intersectingEvents
+				bind:diamondY
+				bind:currentYear
+				bind:showConfettiElements
+				years={data.data}
+				{prefersReducedMotion}
+			/>
 		</div>
 	</div>
 </div>
