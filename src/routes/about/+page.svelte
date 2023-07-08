@@ -1,12 +1,17 @@
 <script>
-	const headerAppearDuration = 500;
-	const contentsAppearDuration = 400;
+	import { fade } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
+	import { backOut } from 'svelte/easing';
 
-	const descriptionDelayDuration = 400;
-	const contentsDelayDuration = 700;
+	const imageTransitionFlyOffset = 32;
+	const imageTransitionFlyDuration = 500;
+	const imageAppearDuration = 400;
 
-	const headerTransitionFadeOffset = 24;
-	const contentsTransitionFadeOffset = 24;
+	const bodyDelayDuration = 300;
+	const bodyAppearDuration = 400;
+
+	const descriptionTransitionFlyOffset = 24;
+	const descriptionTransitionFlyDuration = 500;
 
 	const link_irys_discord = 'https://discord.gg/irystocrats';
 	const link_holoenfans_discord = 'https://discord.gg/holoenfans';
@@ -19,32 +24,62 @@
 	<div class="content">
 		<div class="about-container">
 			<div class="about-item" id="item-server">
-				<img
-					class="about-image"
-					src="/img/about/about-img-server.png"
-					alt="GuyRyS doing half a heart on the right"
-				/>
-				<div class="about-body">
-					<div class="about-body-header">About Us</div>
-					<div class="about-body-desc">
-						This fan project is brought to you by the IRyStocrats in
-						<a href={link_irys_discord} target="blank">IRyS' Stage</a> (IRyS' fan discord) and
-						<a href={link_holoenfans_discord} target="_blank">HoloEN Fans</a>.
+				<div in:fly={{ duration: imageTransitionFlyDuration, x: -imageTransitionFlyOffset }}>
+					<img
+						class="about-image"
+						src="/img/about/about-img-server.png"
+						alt="GuyRyS doing half a heart on the right"
+						in:fade={{ duration: imageAppearDuration }}
+					/>
+				</div>
+				<div
+					class="about-body"
+					in:fade={{ delay: bodyDelayDuration, duration: bodyAppearDuration }}
+				>
+					<div
+						in:fly={{
+							delay: bodyDelayDuration,
+							duration: descriptionTransitionFlyDuration,
+							y: descriptionTransitionFlyOffset,
+							easing: backOut
+						}}
+					>
+						<div class="about-body-header">About Us</div>
+						<div class="about-body-desc">
+							This fan project is brought to you by the IRyStocrats in
+							<a href={link_irys_discord} target="blank">IRyS' Stage</a> (IRyS' fan discord) and
+							<a href={link_holoenfans_discord} target="_blank">HoloEN Fans</a>.
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="about-item" id="item-irys">
-				<img
-					class="about-image"
-					src="/img/about/about-img-irys.png"
-					alt="IRyS doing a thumbs up on the left"
-				/>
-				<div class="about-body">
-					<div class="about-body-header">About IRyS</div>
-					<div class="about-body-desc">
-						IRyS is the Diva of hololive English's Project: HOPE.<br />
-						Check out her channel <a href={link_irys} target="_blank">here</a>!
+				<div in:fly={{ duration: imageTransitionFlyDuration, x: imageTransitionFlyOffset }}>
+					<img
+						class="about-image"
+						src="/img/about/about-img-irys.png"
+						alt="IRyS doing a thumbs up on the left"
+						in:fade={{ duration: imageAppearDuration }}
+					/>
+				</div>
+				<div
+					class="about-body"
+					in:fade={{ delay: bodyDelayDuration, duration: bodyAppearDuration }}
+				>
+					<div
+						in:fly={{
+							delay: bodyDelayDuration,
+							duration: descriptionTransitionFlyDuration,
+							y: descriptionTransitionFlyOffset,
+							easing: backOut
+						}}
+					>
+						<div class="about-body-header">About IRyS</div>
+						<div class="about-body-desc">
+							IRyS is the Diva of hololive English's Project: HOPE.<br />
+							Check out her channel <a href={link_irys} target="_blank">here</a>!
+						</div>
 					</div>
 				</div>
 			</div>
