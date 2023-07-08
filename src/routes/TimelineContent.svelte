@@ -192,7 +192,7 @@
 	.timeline-item {
 		display: grid;
 		grid-template-columns: 1fr;
-		background-color: rgba(0, 0, 0, 0.7);
+		background-color: rgba(0, 0, 0, 0.5);
 		padding: 20px 25px;
 		border-radius: 50px;
 		position: relative;
