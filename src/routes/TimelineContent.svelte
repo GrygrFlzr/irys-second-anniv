@@ -136,8 +136,8 @@
 				<section class="timeline-section reveal-section active" bind:this={revealSections[item.id]}>
 					<div class="timeline-item" id="{ITEM_ID_PREFIX}{item.id}" use:timelineTimeObserverAction>
 						<div class="timeline-extra">
-							<h2>{item.title}</h2>
 							<div class="date">{formatDate(item.date)}</div>
+							<h2>{item.title}</h2>
 							<div class="milestone-content">
 								<SimpleSlateRenderer richTextElements={item.content} />
 							</div>
@@ -192,7 +192,7 @@
 	.timeline-item {
 		display: grid;
 		grid-template-columns: 1fr;
-		background-color: rgba(255, 255, 255, 0.7);
+		background-color: rgba(0, 0, 0, 0.7);
 		padding: 20px 25px;
 		border-radius: 50px;
 		position: relative;
@@ -204,7 +204,7 @@
 
 	.timeline-extra {
 		margin: 10px;
-		color: #59084a;
+		color: white;
 	}
 	.extra-space {
 		display: flex;
@@ -252,13 +252,13 @@
 	h2 {
 		margin: 10px;
 		text-transform: uppercase;
-		font-size: large;
+		font-size: 2em;
 	}
 
 	.date {
 		margin: 10px;
-		font-size: medium;
-		font-weight: bold;
+		font-size: 1.5em;
+		font-weight: lighter;
 	}
 	p {
 		margin: 0;
