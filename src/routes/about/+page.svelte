@@ -7,6 +7,10 @@
 
 	const headerTransitionFadeOffset = 24;
 	const contentsTransitionFadeOffset = 24;
+
+	const link_irys_discord = 'https://discord.gg/irystocrats';
+	const link_holoenfans_discord = 'https://discord.gg/holoenfans';
+	const link_irys = 'https://www.youtube.com/@IRyS';
 </script>
 
 <div class="background-image">
@@ -22,8 +26,9 @@
 					<div class="about-body">
 						<div class="about-body-header">About Us</div>
 						<div class="about-body-desc">
-							This fan project is brought to you by the IRyStocrats in IRyS' Stage (IRyS' fan
-							discord) and HoloEN Fans.
+							This fan project is brought to you by the IRyStocrats in
+							<a href={link_irys_discord} target="blank">IRyS' Stage</a> (IRyS' fan discord) and
+							<a href={link_holoenfans_discord} target="_blank">HoloEN Fans</a>.
 						</div>
 					</div>
 				</div>
@@ -37,8 +42,8 @@
 					<div class="about-body">
 						<div class="about-body-header">About IRyS</div>
 						<div class="about-body-desc">
-							IRyS is the Diva of hololive English's Project:HOPE.<br />
-							Check out her channel here!
+							IRyS is the Diva of hololive English's Project: HOPE.<br />
+							Check out her <a href={link_irys} target="_blank">channel</a>!
 						</div>
 					</div>
 				</div>
@@ -48,6 +53,10 @@
 </div>
 
 <style>
+	a {
+		color: rgb(248, 112, 162);
+	}
+
 	.background-image {
 		background-attachment: fixed;
 		background-image: url('/img/about/about-bg.jpg');
