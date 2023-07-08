@@ -18,7 +18,7 @@
 	<span class="background-overlay" />
 	<div class="content">
 		<div class="about-container">
-			<div class="about-item">
+			<div class="about-item" id="item-server">
 				<img
 					class="about-image"
 					src="/img/about/about-img-server.png"
@@ -34,7 +34,7 @@
 				</div>
 			</div>
 
-			<div class="about-item">
+			<div class="about-item" id="item-irys">
 				<img
 					class="about-image"
 					src="/img/about/about-img-irys.png"
@@ -44,7 +44,7 @@
 					<div class="about-body-header">About IRyS</div>
 					<div class="about-body-desc">
 						IRyS is the Diva of hololive English's Project: HOPE.<br />
-						Check out her <a href={link_irys} target="_blank">channel</a>!
+						Check out her channel <a href={link_irys} target="_blank">here</a>!
 					</div>
 				</div>
 			</div>
@@ -76,24 +76,24 @@
 	}
 
 	.content {
-		padding-top: 48px;
+		padding-top: 84px;
 	}
 
 	.about-container {
 		display: grid;
 		grid-template-columns: 1fr;
+		padding: 0px calc(0.2 * (max(0px, 100vw - 800px)) + 4px); /*Min padding at 768px which increases with vw*/
 	}
 
 	.about-item {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		padding: 0px calc(0.2 * (max(0px, 100vw - 400px)) + 4px); /*Min padding at 768px which increases with vw*/
 		margin-bottom: 84px;
 	}
 
 	.about-image {
-		max-width: 500px;
+		max-width: 350px;
 		width: 100%;
 		filter: drop-shadow(8px 8px 0.35rem rgb(0, 0, 0, 0.5));
 	}
@@ -103,6 +103,7 @@
 		display: flex;
 		flex-direction: column;
 		margin-top: 32px;
+		max-width: 500px;
 	}
 
 	.about-body-header {
@@ -136,6 +137,16 @@
 		.about-body-desc {
 			padding-left: 32px;
 			padding-right: 32px;
+		}
+
+		#item-server {
+			padding-right: 0px;
+			margin-left: auto;
+		}
+
+		#item-irys {
+			padding-left: 0px;
+			margin-right: auto;
 		}
 	}
 </style>
