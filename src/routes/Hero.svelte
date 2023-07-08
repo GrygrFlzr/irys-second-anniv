@@ -50,8 +50,15 @@
 		<div class="title" class:title-show={showTitle}>THE PANDORA LOGS OF HOPE</div>
 
 		<div class="sub-title">
-			<p>Project: Hope began on xx</p>
-			<p>Some epic description about the timeline / chuuni text This is her journey.</p>
+			<p>
+				The world had long been riddled with despair and desperation.<br />
+				But it would not stay that way for long.<br />
+				One being would believe in the power of her voice.<br />
+				One nephilim saw what was needed to reawaken the world.<br /><br />
+
+				And thus, Hope descended on July 11, 2021.
+			</p>
+			<p class="sub-title-emphasis">This is her journey.</p>
 		</div>
 
 		<ScrollHint />
@@ -110,6 +117,10 @@
 	.sub-title {
 		font-size: 24px;
 		text-align: center;
+		color: white;
+	}
+
+	.sub-title-emphasis {
 	}
 
 	.poem {
