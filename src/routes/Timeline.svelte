@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { YearlyTimelineData } from '$lib/types/Types';
 	import { getGlobalStore } from '$lib/js/globalStore';
+	import Diamond from '$lib/components/Diamond.svelte';
 
 	export let years: YearlyTimelineData[];
 	export let intersectingEvents: Record<string, boolean>;
@@ -10,7 +11,7 @@
 
 	let foldoutOpen = false;
 	const globalStore = getGlobalStore();
-	
+
 	function handleFoldoutOpen() {
 		foldoutOpen = true;
 		document.body.addEventListener('click', handleMenuClose);
@@ -22,9 +23,8 @@
 	}
 
 	let yearBoolean = false;
-	function currentYearBoolean(fromSidebarYear: number){
-
-		if(fromSidebarYear === currentYear){
+	function currentYearBoolean(fromSidebarYear: number) {
+		if (fromSidebarYear === currentYear) {
 			yearBoolean = true;
 		}
 	}
@@ -69,19 +69,21 @@
 
 <div class="sidebar" class:active={foldoutOpen}>
 	<div class="wrapper">
-		<span class="diamond" style:top="calc({diamondY}% + {currentYearDiamondOffset}px)">&#9830</span>
+		<span class="diamond" style:top="calc({diamondY}% + {currentYearDiamondOffset}px)">
+			<Diamond />
+		</span>
 		{#each years as { year, events }}
 			<div class="year" id="x">
-				<p>{year}</p>
-				<div 
-					class="links"
-					class:active={currentYearBoolean(year)}
-				>
+				<p class="year-num">
+					<span class="year-num-mobile">{year}</span>
+					<span class="year-num-large">{year}</span>
+				</p>
+				<div class="links" class:active={currentYearBoolean(year)}>
 					{#if year === currentYear}
 						{#each events as content}
-						<div class="get-tabled">
-							<div class="content-jump" class:active={intersectingEvents[content.id]} />
-						</div>
+							<div class="get-tabled">
+								<div class="content-jump" class:active={intersectingEvents[content.id]} />
+							</div>
 						{/each}
 					{/if}
 				</div>
@@ -110,7 +112,7 @@
 	.arrow {
 		background: transparent;
 		border: none;
-		padding-left: 16px;
+		padding-left: 0.5rem;
 	}
 	.arrow.hide {
 		display: none;
@@ -198,37 +200,41 @@
 		height: auto;
 		width: auto;
 	}
-	.year::before {
-		content: '';
-		display: block;
-		width: 12px;
-		height: 12px;
-		border-radius: 50%;
-		background-color: #ddd;
-		border: 3px solid #ddd;
-		position: absolute;
-		left: -8px;
-		transition: all 300ms ease-in-out;
-	}
+
 	.links {
 		transition: all 500ms ease-in-out;
 		display: table;
-    	table-layout: fixed;
+		table-layout: fixed;
 		height: 0svh;
 		border-left: 3px solid #ddd;
 	}
-	.links.active{
+	.links.active {
 		height: 60svh;
 	}
-	.get-tabled{
+	.get-tabled {
 		display: table-row;
 	}
-	.year p {
+	.year .year-num {
 		margin: inherit;
 		padding: 5px 0px 0px 15px;
 		color: #ddd;
 		border-left: 3px solid #ddd;
 		transform: translateX(0px);
+	}
+	.year .year-num-mobile {
+		position: relative;
+		left: -2.5rem;
+		background-color: #fff;
+		color: var(--dark-pink);
+		padding: 2px 5px;
+		border-radius: 0.5rem;
+		font-size: 0.85rem;
+		width: 2.5rem;
+		text-align: center;
+		display: inline-block;
+	}
+	.year .year-num-large {
+		display: none;
 	}
 	/*		border-left: 2px solid #ccc;*/
 	.sidebar {
@@ -238,7 +244,7 @@
 		top: 150px;
 		left: 300px;
 		bottom: 0;
-		margin: 0 0 0 25px;
+		margin: 0 0 0 18px;
 		width: 18px;
 		padding-top: 25px;
 		transform: translateX(-250px);
@@ -277,7 +283,7 @@
 	}
 
 	.content-jump {
-		display:table-cell;
+		display: table-cell;
 		vertical-align: middle;
 		padding-left: 6px;
 		transform: translateX(0px);
@@ -328,6 +334,34 @@
 		}
 		.arrow.hide {
 			display: inline-block;
+		}
+		.arrow {
+			padding-left: 1rem;
+		}
+
+		.year .year-num-large {
+			display: inline;
+		}
+
+		.sidebar {
+			margin-left: 25px;
+		}
+
+		.year::before {
+			content: '';
+			display: block;
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			background-color: #ddd;
+			border: 3px solid #ddd;
+			position: absolute;
+			left: -8px;
+			transition: all 300ms ease-in-out;
+		}
+
+		.year .year-num-mobile {
+			display: none;
 		}
 	}
 	@media (min-width: 1024px) {

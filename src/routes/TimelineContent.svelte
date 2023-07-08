@@ -10,26 +10,14 @@
 	export let currentYear: number;
 	export let src: string | undefined;
 
-	let scrollY = 0;
 	let timelineItemObserver: IntersectionObserver;
-	let yearObserver: IntersectionObserver;
-	let currentIntersectingYear: Element;
 	let throttling = false;
-	let windowInnerHeight = 0;
 
 	const ITEM_ID_PREFIX = 'id_';
 	const yearElements: Record<number, HTMLElement> = {};
 	const revealSections: Record<string, HTMLElement> = {};
 	const prefersReducedMotion = createReducedMotionStore();
 
-	$: innerHeight = 0;
-	$: if (currentIntersectingYear && !$prefersReducedMotion) {
-		const boundingClientRect = currentIntersectingYear.getBoundingClientRect();
-		diamondY = Math.max(
-			0,
-			((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100
-		);
-	}
 	$: idFromEvent = new Map(years.flatMap((year) => year.events).map((event) => [event.id, event]));
 
 	/* Reference https://alvarotrigo.com/blog/css-animations-scroll/*/
@@ -59,7 +47,7 @@
 		});
 
 		timelineItemObserver.observe(item);
-		
+
 		return {
 			destroy() {
 				timelineItemObserver.unobserve(item);
@@ -75,40 +63,15 @@
 		entries.forEach((entry) => {
 			const eventId = entry.target.id.replace(ITEM_ID_PREFIX, '');
 			const event = idFromEvent.get(eventId);
-			if(event?.background_image != null){
+			if (event?.background_image != null) {
 				src = event.background_image.src;
-				console.log("here somehow");
-			}
-			else if(event?.images != null){
-				console.log("here2");
+			} else if (event?.images != null) {
 				src = event?.images[0].src;
 			}
 			intersectingMap[eventId] = entry.isIntersecting;
 		});
 
 		intersectingEvents = intersectingMap;
-	}
-
-	function yearObserverAction(item: HTMLElement) {
-		yearObserver ??= new IntersectionObserver(yearObserverCallback, {
-			threshold: 0.1
-		});
-
-		yearObserver.observe(item);
-
-		return {
-			destroy() {
-				yearObserver.unobserve(item);
-			}
-		};
-	}
-
-	function yearObserverCallback(entries: IntersectionObserverEntry[]) {
-		entries.forEach((entry) => {
-			if (entry.isIntersecting) {
-				currentIntersectingYear = entry.target;
-			}
-		});
 	}
 
 	function handleScroll() {
@@ -119,6 +82,7 @@
 		requestAnimationFrame(() => {
 			reveal();
 			checkYear();
+			checkDiamond();
 			throttling = false;
 		});
 		throttling = true;
@@ -126,6 +90,7 @@
 
 	function checkYear() {
 		// For the foldout to adjust the height based on whether the header collapses
+		let newYear = currentYear;
 
 		for (let i = 0; i < years.length; i++) {
 			const year = years[i];
@@ -133,36 +98,42 @@
 			const element1 = yearElements[year.year].getBoundingClientRect().top;
 			const element2: number | undefined =
 				yearElements[nextYear?.year]?.getBoundingClientRect().top;
+			const element1ScrollY = element1 + scrollY;
+			const element2ScrollY = (element2 ?? 0) + scrollY;
+			const bottomOfScreen = scrollY + innerHeight / 1.25;
 
-			if (
-				element2 &&
-				scrollY > element1 + window.scrollY - windowInnerHeight / 1.25 &&
-				scrollY < element2 + window.scrollY - windowInnerHeight / 1.25
-			) {
-				currentYear = year.year;
+			if (element2 && bottomOfScreen > element1ScrollY && scrollY < element2ScrollY) {
+				newYear = year.year;
 			}
 			// For the last year
-			else if (
-				scrollY > element1 + window.scrollY - windowInnerHeight / 1.25 &&
-				typeof element2 === 'undefined'
-			) {
-				currentYear = years[years.length - 1].year;
+			else if (bottomOfScreen > element1ScrollY && typeof element2 === 'undefined') {
+				newYear = years[years.length - 1].year;
 			}
+		}
+
+		currentYear = newYear;
+	}
+
+	function checkDiamond() {
+		const currentIntersectingYear = yearElements[currentYear];
+		if (currentIntersectingYear && !$prefersReducedMotion) {
+			const boundingClientRect = currentIntersectingYear.getBoundingClientRect();
+			diamondY = Math.max(
+				0,
+				((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100
+			);
 		}
 	}
 </script>
 
-<svelte:window bind:scrollY bind:innerHeight on:scroll={handleScroll} />
+<svelte:window on:scroll={handleScroll} />
 
 <section class="timeline">
 	{#each years as year}
-		<section class="year-divider" use:yearObserverAction bind:this={yearElements[year.year]}>
+		<section class="year-divider" bind:this={yearElements[year.year]}>
 			<p class="year-css" id={year.id}>{year.year}</p>
 			{#each year.events as item}
-				<section
-					class="timeline-section reveal-section active"
-					bind:this={revealSections[item.id]}
-				>
+				<section class="timeline-section reveal-section active" bind:this={revealSections[item.id]}>
 					<div class="timeline-item" id="{ITEM_ID_PREFIX}{item.id}" use:timelineTimeObserverAction>
 						<div class="timeline-extra">
 							<h2>{item.title}</h2>
@@ -226,17 +197,16 @@
 		border-radius: 50px;
 		position: relative;
 		height: auto;
-		margin: 0px 0px 100px 60px;
+		margin: 0px 0px 100px 20px;
 		line-height: 1.5;
 		justify-items: left;
 	}
 
 	.timeline-extra {
 		margin: 10px;
-		padding: 20px;
 		color: #59084a;
 	}
-	.extra-space{
+	.extra-space {
 		display: flex;
 		color: #ddd;
 		width: auto;
@@ -244,25 +214,25 @@
 		align-items: center;
 		justify-content: center;
 	}
-	.year-end{
+	.year-end {
 		position: relative;
 	}
-	.year-end::before{
-		content: "";
+	.year-end::before {
+		content: '';
 		display: block;
 		width: 60%;
 		height: 2px;
-		background: #ddd	;
+		background: #ddd;
 		left: -70%;
 		top: 50%;
 		position: absolute;
 	}
-	.year-end::after{
-		content: "";
+	.year-end::after {
+		content: '';
 		display: block;
 		width: 60%;
 		height: 2px;
-		background: #ddd	;
+		background: #ddd;
 		right: -70%;
 		top: 50%;
 		position: absolute;
@@ -295,7 +265,7 @@
 		padding: 10px 0px;
 		font-size: medium;
 	}
-/*https://stackoverflow.com/questions/1165497/how-to-prevent-text-from-overflowing-in-css*/
+	/*https://stackoverflow.com/questions/1165497/how-to-prevent-text-from-overflowing-in-css*/
 	.milestone-content {
 		margin: 10px;
 		word-wrap: break-word;
@@ -308,7 +278,7 @@
 			margin: 0px 10px 0px 40px;
 			padding: 30px 10px 0px 20px;
 		}
-		.extra-space{
+		.extra-space {
 			height: 100px;
 		}
 	}
@@ -317,7 +287,7 @@
 			margin: 0px 20px 0px 40px;
 			padding: 50px 20px 0px 30px;
 		}
-		.extra-space{
+		.extra-space {
 			height: 250px;
 		}
 	}
@@ -326,10 +296,12 @@
 			margin: 0px 0px 0px 135px;
 			padding: 50px 30px 0px 30px;
 		}
-		.extra-space{
+		.extra-space {
 			height: 350px;
 		}
-
+		.timeline-extra {
+			padding: 20px;
+		}
 	}
 
 	@media (min-width: 1024px) {
@@ -346,7 +318,7 @@
 		.timeline-img-container {
 			margin: auto 1rem;
 		}
-		.extra-space{
+		.extra-space {
 			height: 450px;
 		}
 	}
