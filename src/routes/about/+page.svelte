@@ -13,38 +13,38 @@
 	const link_irys = 'https://www.youtube.com/@IRyS';
 </script>
 
-<div class="background-image">
-	<div class="background-overlay">
-		<div class="content">
-			<div class="about-container">
-				<div class="about-item">
-					<img
-						class="about-image"
-						src="/img/about/about-img-server.png"
-						alt="GuyRyS doing half a heart on the right"
-					/>
-					<div class="about-body">
-						<div class="about-body-header">About Us</div>
-						<div class="about-body-desc">
-							This fan project is brought to you by the IRyStocrats in
-							<a href={link_irys_discord} target="blank">IRyS' Stage</a> (IRyS' fan discord) and
-							<a href={link_holoenfans_discord} target="_blank">HoloEN Fans</a>.
-						</div>
+<div>
+	<img src="/img/about/about-bg.jpg" class="background-img" alt="" />
+	<span class="background-overlay" />
+	<div class="content">
+		<div class="about-container">
+			<div class="about-item">
+				<img
+					class="about-image"
+					src="/img/about/about-img-server.png"
+					alt="GuyRyS doing half a heart on the right"
+				/>
+				<div class="about-body">
+					<div class="about-body-header">About Us</div>
+					<div class="about-body-desc">
+						This fan project is brought to you by the IRyStocrats in
+						<a href={link_irys_discord} target="blank">IRyS' Stage</a> (IRyS' fan discord) and
+						<a href={link_holoenfans_discord} target="_blank">HoloEN Fans</a>.
 					</div>
 				</div>
+			</div>
 
-				<div class="about-item">
-					<img
-						class="about-image"
-						src="/img/about/about-img-irys.png"
-						alt="IRyS doing a thumbs up on the left"
-					/>
-					<div class="about-body">
-						<div class="about-body-header">About IRyS</div>
-						<div class="about-body-desc">
-							IRyS is the Diva of hololive English's Project: HOPE.<br />
-							Check out her <a href={link_irys} target="_blank">channel</a>!
-						</div>
+			<div class="about-item">
+				<img
+					class="about-image"
+					src="/img/about/about-img-irys.png"
+					alt="IRyS doing a thumbs up on the left"
+				/>
+				<div class="about-body">
+					<div class="about-body-header">About IRyS</div>
+					<div class="about-body-desc">
+						IRyS is the Diva of hololive English's Project: HOPE.<br />
+						Check out her <a href={link_irys} target="_blank">channel</a>!
 					</div>
 				</div>
 			</div>
@@ -53,22 +53,26 @@
 </div>
 
 <style>
-	a {
-		color: rgb(248, 112, 162);
-	}
-
-	.background-image {
-		background-attachment: fixed;
-		background-image: url('/img/about/about-bg.jpg');
-		background-repeat: no-repeat;
-		background-size: cover;
-		height: 100%;
+	.background-img {
+		object-fit: cover;
+		object-position: center;
+		position: fixed;
+		top: 0;
+		width: 100vw;
+		height: 100vh;
+		z-index: -2;
 	}
 
 	.background-overlay {
-		background-color: rgb(24, 18, 23, 0.4);
-		background-size: cover;
 		backdrop-filter: blur(5px);
+		background-color: rgb(24, 18, 23, 0.4);
+		background-position: top;
+		background-size: cover;
+		position: fixed;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
 	}
 
 	.content {
@@ -114,6 +118,10 @@
 		margin-top: 24px;
 		text-align: center;
 		text-shadow: 2px 2px 0.25rem rgb(0, 0, 0, 0.5);
+	}
+
+	.about-body-desc a {
+		color: rgb(248, 112, 162);
 	}
 
 	@media (min-width: 768px) {
