@@ -25,12 +25,16 @@
 		<div class="about-container">
 			<div class="about-item" id="item-server">
 				<div in:fly={{ duration: imageTransitionFlyDuration, x: -imageTransitionFlyOffset }}>
-					<img
-						class="about-image"
-						src="/img/about/about-img-server.png"
-						alt="GuyRyS doing half a heart on the right"
-						in:fade={{ duration: imageAppearDuration }}
-					/>
+					<picture>
+						<!--Display a special image when the layout of items change-->
+						<source srcset="/img/about/about-img-server-split.png" media="(max-width: 767px)" />
+						<img
+							class="about-image"
+							src="/img/about/about-img-server.png"
+							alt="GuyRyS doing half a heart on the right"
+							in:fade={{ duration: imageAppearDuration }}
+						/>
+					</picture>
 				</div>
 				<div
 					class="about-body"
