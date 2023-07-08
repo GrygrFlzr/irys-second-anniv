@@ -1,10 +1,39 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import HeroImage from './HeroImage.svelte';
 	import ScrollHint from './ScrollHint.svelte';
+	import type { TransitionConfig } from 'svelte/transition';
+	import { createReducedMotionStore } from '$lib/js/createMediaQueryStore';
 
 	let showTitle = false;
 	let showPoem = false;
+	let lastDuration = 0;
+	let poemElement: HTMLElement;
+
+	const reducedMotion = createReducedMotionStore();
+
+	const poem = [
+		`poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			cCpoem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem
+		`,
+
+		`poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem cCpoem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem cCpoem poem
+			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
+			poem poem poem poem poem poem poem
+		`
+	];
+
+	$: textTransition = $reducedMotion ? () => ({}) : typewriter;
 
 	onMount(() => {
 		setTimeout(() => {
@@ -16,26 +45,25 @@
 		}, 1500);
 	});
 
-	/**
-	 * @param {HTMLElement} ele
-	 */
-	function autoScroll(ele) {
-		if (
-			!matchMedia('(min-width: 1500px)').matches ||
-			matchMedia('prefers-reduced-motion: reduce').matches
-		) {
-			return;
-		}
-		const timeout = setInterval(() => {
-			ele.scrollBy({ top: 10, behavior: 'smooth' });
-		}, 50);
-		if (ele.scrollTop + ele.clientHeight >= ele.scrollHeight) {
-			clearInterval(timeout);
+	function typewriter(node: HTMLElement, { speed = 1 }): TransitionConfig {
+		const valid = node.childNodes.length === 1 && node.childNodes[0].nodeType === Node.TEXT_NODE;
+
+		if (!valid) {
+			throw new Error(`This transition only works on elements with a single text node child`);
 		}
 
+		const text = node.textContent ?? '';
+		const duration = text.length / (speed * 0.01);
+		const delay = lastDuration;
+		lastDuration += duration;
+
 		return {
-			destroy() {
-				clearInterval(timeout);
+			delay,
+			duration,
+			tick: (t) => {
+				const i = ~~(text.length * t);
+				node.textContent = text.slice(0, i);
+				poemElement?.scrollBy({ top: 3, behavior: 'smooth' });
 			}
 		};
 	}
@@ -57,28 +85,13 @@
 		<ScrollHint />
 	{/if}
 
-	<div class="poem" class:show={showPoem} use:autoScroll>
-		<p>
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			cCpoem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem
-		</p>
-
-		<p>
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem cCpoem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem cCpoem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem
-		</p>
-	</div>
+	{#key showPoem}
+		<div class="poem" class:show={showPoem} bind:this={poemElement}>
+			{#each poem as line}
+				<p in:textTransition={{ speed: 5 }}>{line}</p>
+			{/each}
+		</div>
+	{/key}
 </div>
 
 <style>
@@ -116,7 +129,7 @@
 		scroll-snap-align: start;
 		padding: 2rem 10%;
 		opacity: 0;
-		transition: all 150ms ease-in-out;
+		/* transition: all 150ms ease-in-out; */
 		color: rgba(255, 255, 255, 0.5);
 	}
 
@@ -154,6 +167,9 @@
 	@media (prefers-reduced-motion: reduce) {
 		.poem {
 			padding-top: 0;
+			display: flex;
+			flex-direction: column;
+			justify-content: end;
 		}
 	}
 </style>
