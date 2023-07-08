@@ -51,14 +51,14 @@
 
 		<div class="sub-title">
 			<p>
-				The world had long been riddled with despair and desperation.<br />
+				The world had been riddled with despair and desperation.<br />
 				But it would not stay that way for long.<br />
 				One being would believe in the power of her voice.<br />
 				One nephilim saw what was needed to reawaken the world.<br /><br />
 
 				And thus, Hope descended on July 11, 2021.
 			</p>
-			<p class="sub-title-emphasis">This is her journey.</p>
+			<p class="sub-title-emphasis"><b>This is her journey.</b></p>
 		</div>
 
 		<ScrollHint />
@@ -115,12 +115,14 @@
 	}
 
 	.sub-title {
-		font-size: 24px;
+		font-size: 22px;
 		text-align: center;
-		color: white;
+		color: rgb(255, 255, 255, 0.5);
 	}
 
 	.sub-title-emphasis {
+		font-size: 24px;
+		color: rgb(255, 255, 255, 1);
 	}
 
 	.poem {
