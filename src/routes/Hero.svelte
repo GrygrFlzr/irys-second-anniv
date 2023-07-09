@@ -1,10 +1,58 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import HeroImage from './HeroImage.svelte';
 	import ScrollHint from './ScrollHint.svelte';
+	import type { TransitionConfig } from 'svelte/transition';
+	import { createReducedMotionStore } from '$lib/js/createMediaQueryStore';
 
 	let showTitle = false;
 	let showPoem = false;
+	let lastDuration = 0;
+	let poemElement: HTMLElement;
+
+	const reducedMotion = createReducedMotionStore();
+
+	// white-space: pre-line. so it's fine for the poem to be indented
+	const poem = [
+		`On the day of the weaver star
+		On the hour of the ox
+		People await near and far
+		As the timer ticks and tocks`,
+
+		`For eight hours they wonder
+		Until the sixth zodiac sign
+		Then fourteen bell chimes thunder
+		And after it, a repeat sign ||:`,
+
+		`"As long as we are with hope,
+		we live. We stand tall."
+		With these first dozen words
+		She is introduced to all`,
+
+		`Soon to arrive is this nephilim
+		A singer, a streamer, a soul of kindness
+		Born a half demon and half seraphim
+		She is Hope Incarnate, she is IRyS`,
+
+		`Once the Hope of the Paradise
+		In times of eons past
+		She awoke to our modern cries
+		For the same hope she once cast`,
+
+		`In these times of despair, when flames burn cold
+		When people give up before dreams unfold
+		With her heart of gold, her voice so bold
+		She sings for tales and futures yet untold`,
+
+		`In four days she will be here
+		In four days she will shine
+		And through the bird in blue we hear
+		She tweets a repeat sign ||:`,
+
+		`- Yi Xuan Tan`
+	];
+
+	$: textTransition = $reducedMotion ? () => ({}) : typewriter;
 
 	onMount(() => {
 		setTimeout(() => {
@@ -16,28 +64,36 @@
 		}, 1500);
 	});
 
-	/**
-	 * @param {HTMLElement} ele
-	 */
-	function autoScroll(ele) {
-		if (
-			!matchMedia('(min-width: 1500px)').matches ||
-			matchMedia('prefers-reduced-motion: reduce').matches
-		) {
-			return;
-		}
-		const timeout = setInterval(() => {
-			ele.scrollBy({ top: 10, behavior: 'smooth' });
-		}, 50);
-		if (ele.scrollTop + ele.clientHeight >= ele.scrollHeight) {
-			clearInterval(timeout);
+	function typewriter(node: HTMLElement, { speed = 1 }): TransitionConfig {
+		const valid = node.childNodes.length === 1 && node.childNodes[0].nodeType === Node.TEXT_NODE;
+
+		if (!valid) {
+			throw new Error(`This transition only works on elements with a single text node child`);
 		}
 
+		const text = node.textContent ?? '';
+		const duration = text.length / (speed * 0.01);
+		const delay = lastDuration;
+		lastDuration += duration;
+
 		return {
-			destroy() {
-				clearInterval(timeout);
+			delay,
+			duration,
+			tick: (t) => {
+				const i = ~~(text.length * t);
+				node.textContent = text.slice(0, i);
+
+				if (text[i - 1] === '\n' || i === text.length) {
+					scrollPoem();
+				}
 			}
 		};
+	}
+
+	function scrollPoem() {
+		setTimeout(() => {
+			poemElement?.scrollTo({ top: poemElement.scrollHeight, behavior: 'smooth' });
+		}, 50);
 	}
 </script>
 
@@ -57,28 +113,15 @@
 		<ScrollHint />
 	{/if}
 
-	<div class="poem" class:show={showPoem} use:autoScroll>
-		<p>
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			cCpoem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem
-		</p>
-
-		<p>
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem cCpoem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem cCpoem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem
-		</p>
-	</div>
+	{#key showPoem}
+		<div class="poem" class:show={showPoem} bind:this={poemElement}>
+			<div class="fit-content">
+				{#each poem as line}
+					<p class="poem-paragraph" in:textTransition={{ speed: 4 }}>{line}</p>
+				{/each}
+			</div>
+		</div>
+	{/key}
 </div>
 
 <style>
@@ -118,6 +161,21 @@
 		opacity: 0;
 		transition: all 150ms ease-in-out;
 		color: rgba(255, 255, 255, 0.5);
+		/* 
+			reminder: if this is changed to whitespace sensitive
+			we need to dedent the poem array
+		*/
+		white-space: pre-line;
+		line-height: 1.5;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.fit-content {
+		width: fit-content;
+		min-width: 22em;
+		max-width: 80vw;
 	}
 
 	.show {
@@ -154,6 +212,9 @@
 	@media (prefers-reduced-motion: reduce) {
 		.poem {
 			padding-top: 0;
+			display: flex;
+			flex-direction: column;
+			justify-content: end;
 		}
 	}
 </style>
