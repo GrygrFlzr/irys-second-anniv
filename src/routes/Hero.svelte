@@ -12,25 +12,44 @@
 
 	const reducedMotion = createReducedMotionStore();
 
+	// white-space: pre-line. so it's fine for the poem to be indented
 	const poem = [
-		`poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			cCpoem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem
-		`,
+		`On the day of the weaver star
+		On the hour of the ox
+		People await near and far
+		As the timer ticks and tocks`,
 
-		`poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem cCpoem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem cCpoem poem
-			poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem poem
-			poem poem poem poem poem poem poem
-		`
+		`For eight hours they wonder
+		Until the sixth zodiac sign
+		Then fourteen bell chimes thunder
+		And after it, a repeat sign ||:`,
+
+		`"As long as we are with hope,
+		we live. We stand tall."
+		With these first dozen words
+		She is introduced to all`,
+
+		`Soon to arrive is this nephilim
+		A singer, a streamer, a soul of kindness
+		Born a half demon and half seraphim
+		She is Hope Incarnate, she is IRyS`,
+
+		`Once the Hope of the Paradise
+		In times of eons past
+		She awoke to our modern cries
+		For the same hope she once cast`,
+
+		`In these times of despair, when flames burn cold
+		When people give up before dreams unfold
+		With her heart of gold, her voice so bold
+		She sings for tales and futures yet untold`,
+
+		`In four days she will be here
+		In four days she will shine
+		And through the bird in blue we hear
+		She tweets a repeat sign ||:`,
+
+		`- Yi Xuan Tan`
 	];
 
 	$: textTransition = $reducedMotion ? () => ({}) : typewriter;
@@ -63,9 +82,18 @@
 			tick: (t) => {
 				const i = ~~(text.length * t);
 				node.textContent = text.slice(0, i);
-				poemElement?.scrollBy({ top: 3, behavior: 'smooth' });
+
+				if (text[i - 1] === '\n' || i === text.length) {
+					scrollPoem();
+				}
 			}
 		};
+	}
+
+	function scrollPoem() {
+		setTimeout(() => {
+			poemElement?.scrollTo({ top: poemElement.scrollHeight, behavior: 'smooth' });
+		}, 50);
 	}
 </script>
 
@@ -87,9 +115,11 @@
 
 	{#key showPoem}
 		<div class="poem" class:show={showPoem} bind:this={poemElement}>
-			{#each poem as line}
-				<p in:textTransition={{ speed: 5 }}>{line}</p>
-			{/each}
+			<div class="fit-content">
+				{#each poem as line}
+					<p class="poem-paragraph" in:textTransition={{ speed: 4 }}>{line}</p>
+				{/each}
+			</div>
 		</div>
 	{/key}
 </div>
@@ -129,8 +159,23 @@
 		scroll-snap-align: start;
 		padding: 2rem 10%;
 		opacity: 0;
-		/* transition: all 150ms ease-in-out; */
+		transition: all 150ms ease-in-out;
 		color: rgba(255, 255, 255, 0.5);
+		/* 
+			reminder: if this is changed to whitespace sensitive
+			we need to dedent the poem array
+		*/
+		white-space: pre-line;
+		line-height: 1.5;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.fit-content {
+		width: fit-content;
+		min-width: 22em;
+		max-width: 80vw;
 	}
 
 	.show {
