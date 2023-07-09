@@ -61,7 +61,7 @@
 		on:click|stopPropagation={handleFoldoutOpen}>&#8250</button
 	>
 </div>
-<section class="modal-container" class:active={foldoutOpen}>
+<div class="modal-container" class:active={foldoutOpen}>
 	<div class="foldout" class:active={foldoutOpen} style:top="{$globalStore.headerHeight}px">
 		{#each years as { year, events }}
 			<section class="foldout-wrapper">
@@ -82,7 +82,7 @@
 			</section>
 		{/each}
 	</div>
-</section>
+</div>
 
 <div class="sidebar" class:active={foldoutOpen} class:display={scrollY > $globalStore.heroHeight}>
 	<div class="wrapper">
@@ -106,6 +106,7 @@
 				</div>
 			</div>
 		{/each}
+		<div class="last-circle"></div>
 	</div>
 </div>
 
@@ -164,8 +165,8 @@
 		left: 0;
 		z-index: 400;
 		display: flex;
-		background-color: rgba(0,0,0,0.4);
 		transform: translateX(-3000px);
+		background-color: rgba(0,0,0,0.4);
 		transition: transform 0.5s, top 0.15s;
 	}
 	.modal-container.active{
@@ -276,13 +277,12 @@
 		font-size: 1.2em;
 	}
 	.year-num.active {
-		text-shadow: 1px 1px 8px #b90b8c;
 		font-weight: bold;
 	}
 	/*		border-left: 2px solid #ccc;*/
 	.sidebar {
 		position: fixed;
-		top: 175px;
+		top: 100px;
 		left: 300px;
 		bottom: 0;
 		margin: 0 0 0 18px;
@@ -356,6 +356,28 @@
 		position: absolute;
 		left: -9px;
 	}
+	.last-circle::before{
+		content: '';
+		background: #e1cbd2;
+		width: 0px;
+		height: 3px;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		left: 1;
+	}
+	.last-circle::after{
+		content: '';
+		display: block;
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		/*background-color: #b90b8c;*/
+		background-color: #ddd;
+		border: 3px solid #ddd;
+		position: absolute;
+		left: -8px;
+	}
 	/* .content-jump.border {
 		border-left: 3px solid #b90b8c;
 		transition: all 500ms ease-in-out;
@@ -370,6 +392,9 @@
 		}
 		.sidebar {
 			left: 285px;
+		}
+		.year-num.active{
+			text-shadow: none;
 		}
 	}
 	@media (min-width: 481px) {
@@ -410,6 +435,10 @@
 			transition: all 300ms ease-in-out;
 		}
 
+		.year-num.active{
+			text-shadow: 1px 1px 8px #b90b8c;
+		}
+		
 		.year .year-num-mobile {
 			display: none;
 		}

@@ -156,6 +156,9 @@
 			<div class="year-end">End of {year.year}</div>
 		</div>
 	{/each}
+	<div>
+
+	</div>
 </section>
 
 <!-- Reference from https://www.youtube.com/watch?v=TcYSRI1JFQE -->
@@ -166,18 +169,42 @@
 		padding: 0 20px 0 30px;
 	}
 	.year-css {
+		display:flex;
+		width:auto;
+		position: relative;
 		color: #ddd;
-		font-size: 22px;
-		margin-left: 2.5rem;
+		font-size: 2em;
 		padding-bottom: 20px;
 		text-decoration: underline;
 		text-underline-position: under;
 		scroll-snap-align: start;
+		align-items: center;
+		justify-content: center;
+	}
+	.year-css::before {
+		content: '';
+		display: block;
+		width: 15%;
+		height: 2px;
+		background: #ddd;
+		left: 20%;
+		top: 50%;
+		position: absolute;
+	}
+	.year-css::after {
+		content: '';
+		display: block;
+		width: 15%;
+		height: 2px;
+		background: #ddd;
+		right: 20%;
+		top: 50%;
+		position: absolute;
 	}
 	.timeline-section {
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
+		justify-content: space-evenly;
 		min-height: 90vh;
 		min-height: 100svh;
 	}
@@ -284,6 +311,14 @@
 		.extra-space {
 			height: 100px;
 		}
+		.year-css::before {
+			width: 20%;
+			left: 10%;
+		}
+		.year-css::after{
+			width: 20%;
+			right: 10%;
+		}
 		.year-end::before {
 			width: 25%;
 			left: -30%;
@@ -299,15 +334,24 @@
 			padding: 50px 20px 0px 30px;
 		}
 		.extra-space {
+			margin-left: 10px;
 			height: 250px;
+		}
+		.year-css::before {
+			width:25%;
+			left:4%;
+		}
+		.year-css::after{
+			width:25%;
+			right:4%;
 		}
 		.year-end::before {
 			width: 30%;
-			left: -35%;
+			left: -50%;
 		}
 		.year-end::after {
 			width: 30%;
-			right: -35%;
+			right: -50%;
 		}
 	}
 	@media (min-width: 769px) {
@@ -316,6 +360,7 @@
 			padding: 50px 30px 0px 30px;
 		}
 		.extra-space {
+			margin-left: 10px;
 			height: 350px;
 		}
 		.timeline-extra {
@@ -335,11 +380,17 @@
 		.date {
 			font-size: 1.5em;
 		}
-
-		.year-css {
-			margin-left: 60px;
+		
+		.year-css::before {
+			width: 25%;
+			left: 5%;
+		}
+		.year-css::after{
+			width: 25%;
+			right: 5%;
 		}
 		.year-end::before {
+			right: 20px;
 			width: 60%;
 			left: -70%;
 		}
@@ -375,6 +426,13 @@
 
 		.timeline-img-container {
 			margin: auto 2rem;
+		}
+		.extra-space{
+			margin-left: 0px;
+			margin-right: 90px;
+		}
+		.year-css{
+			margin-right: 100px;
 		}
 	}
 
