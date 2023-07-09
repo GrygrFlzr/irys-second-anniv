@@ -22,7 +22,7 @@ export const load = async function loadDataFromCMS() {
 		{ addQueryPrefix: true }
 	);
 	const formattedUrl = `${cmsRestUrl}${
-		cmsRestUrl.endsWith('/') ? '' : '/'
+		cmsRestUrl?.endsWith('/') ? '' : '/'
 	}api/${eventSlug}${query}`;
 	const data = await fetchAllFromCMS<Submission>(formattedUrl);
 
