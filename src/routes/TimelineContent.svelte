@@ -220,20 +220,20 @@
 	.year-end::before {
 		content: '';
 		display: block;
-		width: 60%;
+		width: 15%;
 		height: 2px;
 		background: #ddd;
-		left: -70%;
+		left: -20%;
 		top: 50%;
 		position: absolute;
 	}
 	.year-end::after {
 		content: '';
 		display: block;
-		width: 60%;
+		width: 15%;
 		height: 2px;
 		background: #ddd;
-		right: -70%;
+		right: -20%;
 		top: 50%;
 		position: absolute;
 	}
@@ -281,6 +281,14 @@
 		.extra-space {
 			height: 100px;
 		}
+		.year-end::before{
+			width: 25%;
+			left: -30%;
+		}
+		.year-end::after{
+			width: 25%;
+			right: -30%;
+		}
 	}
 	@media (min-width: 481px) {
 		.timeline {
@@ -289,6 +297,14 @@
 		}
 		.extra-space {
 			height: 250px;
+		}
+		.year-end::before{
+			width: 30%;
+			left: -35%;
+		}
+		.year-end::after{
+			width: 30%;
+			right: -35%;
 		}
 	}
 	@media (min-width: 769px) {
@@ -301,6 +317,14 @@
 		}
 		.timeline-extra {
 			padding: 20px;
+		}
+		.year-end::before{
+			width: 60%;
+			left: -70%;
+		}
+		.year-end::after{
+			width: 60%;
+			right: -70%;
 		}
 	}
 

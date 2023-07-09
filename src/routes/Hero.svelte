@@ -1,10 +1,13 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import HeroImage from './HeroImage.svelte';
 	import ScrollHint from './ScrollHint.svelte';
+	import { getGlobalStore } from '$lib/js/globalStore';
 
 	let showTitle = false;
 	let showPoem = false;
+	let heroSection: HTMLElement;
+	const globalStore = getGlobalStore();
 
 	onMount(() => {
 		setTimeout(() => {
@@ -14,12 +17,14 @@
 		setTimeout(() => {
 			showPoem = true;
 		}, 1500);
+		
+		$globalStore.heroHeight = heroSection.clientHeight;
 	});
 
 	/**
 	 * @param {HTMLElement} ele
 	 */
-	function autoScroll(ele) {
+	function autoScroll(ele:HTMLElement) {
 		if (
 			!matchMedia('(min-width: 1500px)').matches ||
 			matchMedia('prefers-reduced-motion: reduce').matches
@@ -41,7 +46,7 @@
 	}
 </script>
 
-<div class="hero-section">
+<div class="hero-section" bind:this={heroSection}>
 	<div class="hero-image">
 		<HeroImage />
 	</div>
@@ -96,6 +101,7 @@
 		color: #fff;
 		scroll-snap-align: start;
 		position: relative;
+		z-index: 499;
 	}
 
 	.hero-image {

@@ -10,6 +10,7 @@
 	export let currentYear = years[0].year;
 
 	let foldoutOpen = false;
+	let scrollY = 0;
 	const globalStore = getGlobalStore();
 
 	function handleFoldoutOpen() {
@@ -22,12 +23,7 @@
 		document.body.removeEventListener('click', handleMenuClose);
 	}
 
-	let yearBoolean = false;
-	function currentYearBoolean(fromSidebarYear: number) {
-		if (fromSidebarYear === currentYear) {
-			yearBoolean = true;
-		}
-	}
+
 	//Allows the user to scroll into the timeline content on click
 	function scrollToElement(id: string) {
 		const element = document.getElementById(id);
@@ -38,7 +34,10 @@
 	$: currentYearDiamondOffset = currentYearIndex * 23;
 </script>
 
-<div class="toggle" class:active={foldoutOpen}>
+<!--Might be bad practice-->
+<svelte:window bind:scrollY /> 
+
+<div class="toggle" class:active={foldoutOpen} class:display={scrollY > $globalStore.heroHeight}>
 	<button
 		type="button"
 		class="arrow glow"
@@ -67,18 +66,18 @@
 	{/each}
 </div>
 
-<div class="sidebar" class:active={foldoutOpen}>
+<div class="sidebar" class:active={foldoutOpen} class:display={scrollY>$globalStore.heroHeight}>
 	<div class="wrapper">
 		<span class="diamond" style:top="calc({diamondY}% + {currentYearDiamondOffset}px)">
 			<Diamond />
 		</span>
 		{#each years as { year, events }}
 			<div class="year" id="x">
-				<p class="year-num">
+				<p class="year-num" class:active={currentYear === year}>
 					<span class="year-num-mobile">{year}</span>
 					<span class="year-num-large">{year}</span>
 				</p>
-				<div class="links" class:active={currentYearBoolean(year)}>
+				<div class="links" class:active={currentYear === year} >
 					{#if year === currentYear}
 						{#each events as content}
 							<div class="get-tabled">
@@ -96,6 +95,7 @@
 <!-- Glow Reference https://www.w3schools.com/howto/howto_css_glowing_text.asp-->
 <style>
 	.toggle {
+		opacity: 0;
 		position: fixed;
 		top: 40%;
 		left: 0px;
@@ -108,6 +108,10 @@
 	}
 	.toggle.active {
 		transform: translateX(-30px);
+	}
+	.toggle.display{
+		opacity: 1;
+		transition: 500ms ease-in-out;
 	}
 	.arrow {
 		background: transparent;
@@ -202,7 +206,8 @@
 	}
 
 	.links {
-		transition: all 500ms ease-in-out;
+		transition: 500ms ease-in;
+		transition: 750ms ease-out;
 		display: table;
 		table-layout: fixed;
 		height: 0svh;
@@ -235,13 +240,16 @@
 	}
 	.year .year-num-large {
 		display: none;
+		font-size: 1.2em;
+	}
+	.year-num.active{
+		text-shadow:1px 1px 8px #b90b8c;
+		font-weight: bold;
 	}
 	/*		border-left: 2px solid #ccc;*/
 	.sidebar {
-		position: -webkit-sticky; /* for Safari */
-		position: sticky;
-		float: left;
-		top: 150px;
+		position: fixed;
+		top: 175px;
 		left: 300px;
 		bottom: 0;
 		margin: 0 0 0 18px;
@@ -250,10 +258,15 @@
 		transform: translateX(-250px);
 		background: transparent;
 		transition: all 500ms ease-in-out;
-		z-index: 499;
+		z-index: 498;
+		opacity: 0;
 	}
 	.sidebar.active {
 		transform: translateX(-500px);
+	}
+	.sidebar.display{
+		opacity: 1;
+		transition: 500ms ease-in-out;
 	}
 	.diamond {
 		top: 0px;
@@ -322,6 +335,9 @@
 		.content-title {
 			font-size: 1.5em;
 		}
+		.sidebar{
+			left: 285px;
+		}
 	}
 	@media (min-width: 481px) {
 		.content-title {
@@ -345,6 +361,7 @@
 
 		.sidebar {
 			margin-left: 25px;
+			left: 300px;
 		}
 
 		.year::before {

@@ -22,9 +22,14 @@
 	</div>
 
 	<Hero />
-
+	
 	<div class="content">
-		<Timeline bind:intersectingEvents bind:diamondY bind:currentYear years={data.data} />
+			<Timeline 
+				bind:intersectingEvents 
+				bind:diamondY 
+				bind:currentYear 
+				years={data.data} 
+			/>
 		<div class="blur">
 			<TimelineContent
 				bind:intersectingEvents
