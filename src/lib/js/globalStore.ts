@@ -4,6 +4,7 @@ import { writable, type Writable } from 'svelte/store';
 const CONTEXT_KEY = 'globalStore';
 
 export interface GlobalStore {
+	heroHeight: number;
 	navLinksVisible: boolean;
 	headerHeight: number;
 }

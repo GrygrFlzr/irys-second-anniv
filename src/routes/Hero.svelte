@@ -17,14 +17,14 @@
 		setTimeout(() => {
 			showPoem = true;
 		}, 1500);
-		
+
 		$globalStore.heroHeight = heroSection.clientHeight;
 	});
 
 	/**
 	 * @param {HTMLElement} ele
 	 */
-	function autoScroll(ele:HTMLElement) {
+	function autoScroll(ele: HTMLElement) {
 		if (
 			!matchMedia('(min-width: 1500px)').matches ||
 			matchMedia('prefers-reduced-motion: reduce').matches

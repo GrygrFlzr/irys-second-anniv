@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { YearlyTimelineData } from '$lib/types/Types';
 	import { getGlobalStore } from '$lib/js/globalStore';
-	import Diamond from '$lib/components/Diamond.svelte';
+	import Diamond from '$lib/components/DiamondIcon.svelte';
+	import { toDomId } from '$lib/js/timelineContentLink';
 
 	export let years: YearlyTimelineData[];
 	export let intersectingEvents: Record<string, boolean>;
@@ -23,7 +24,6 @@
 		document.body.removeEventListener('click', handleMenuClose);
 	}
 
-
 	//Allows the user to scroll into the timeline content on click
 	function scrollToElement(id: string) {
 		const element = document.getElementById(id);
@@ -35,7 +35,7 @@
 </script>
 
 <!--Might be bad practice-->
-<svelte:window bind:scrollY /> 
+<svelte:window bind:scrollY />
 
 <div class="toggle" class:active={foldoutOpen} class:display={scrollY > $globalStore.heroHeight}>
 	<button
@@ -51,12 +51,12 @@
 		<section class="foldout-wrapper">
 			<h2 class="foldout-year">{year}</h2>
 			{#each events as content}
-				{@const target = `id_${content.id}`}
+				{@const target = toDomId(content.id)}
 				<a
 					class="foldout-content"
 					class:active={intersectingEvents[content.id]}
 					id="foldout-content{content.id}"
-					href="#id_{target}"
+					href="#{target}"
 					on:click|preventDefault={() => scrollToElement(target)}
 				>
 					<p class="content-title">{content.title}</p>
@@ -66,7 +66,7 @@
 	{/each}
 </div>
 
-<div class="sidebar" class:active={foldoutOpen} class:display={scrollY>$globalStore.heroHeight}>
+<div class="sidebar" class:active={foldoutOpen} class:display={scrollY > $globalStore.heroHeight}>
 	<div class="wrapper">
 		<span class="diamond" style:top="calc({diamondY}% + {currentYearDiamondOffset}px)">
 			<Diamond />
@@ -77,7 +77,7 @@
 					<span class="year-num-mobile">{year}</span>
 					<span class="year-num-large">{year}</span>
 				</p>
-				<div class="links" class:active={currentYear === year} >
+				<div class="links" class:active={currentYear === year}>
 					{#if year === currentYear}
 						{#each events as content}
 							<div class="get-tabled">
@@ -109,7 +109,7 @@
 	.toggle.active {
 		transform: translateX(-30px);
 	}
-	.toggle.display{
+	.toggle.display {
 		opacity: 1;
 		transition: 500ms ease-in-out;
 	}
@@ -206,7 +206,6 @@
 	}
 
 	.links {
-		transition: 500ms ease-in;
 		transition: 750ms ease-out;
 		display: table;
 		table-layout: fixed;
@@ -228,13 +227,13 @@
 	}
 	.year .year-num-mobile {
 		position: relative;
-		left: -2.5rem;
+		left: -2.4rem;
 		background-color: #fff;
 		color: var(--dark-pink);
 		padding: 2px 5px;
 		border-radius: 0.5rem;
 		font-size: 0.85rem;
-		width: 2.5rem;
+		width: 2.7rem;
 		text-align: center;
 		display: inline-block;
 	}
@@ -242,8 +241,8 @@
 		display: none;
 		font-size: 1.2em;
 	}
-	.year-num.active{
-		text-shadow:1px 1px 8px #b90b8c;
+	.year-num.active {
+		text-shadow: 1px 1px 8px #b90b8c;
 		font-weight: bold;
 	}
 	/*		border-left: 2px solid #ccc;*/
@@ -264,7 +263,7 @@
 	.sidebar.active {
 		transform: translateX(-500px);
 	}
-	.sidebar.display{
+	.sidebar.display {
 		opacity: 1;
 		transition: 500ms ease-in-out;
 	}
@@ -335,7 +334,7 @@
 		.content-title {
 			font-size: 1.5em;
 		}
-		.sidebar{
+		.sidebar {
 			left: 285px;
 		}
 	}

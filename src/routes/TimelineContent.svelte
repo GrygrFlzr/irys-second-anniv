@@ -1,7 +1,9 @@
 <script lang="ts">
 	import SimpleImageGallery from '$lib/components/SimpleImageGallery.svelte';
 	import SimpleSlateRenderer from '$lib/components/SimpleSlateRenderer.svelte';
+	import TitleLink from '$lib/components/TitleLink.svelte';
 	import { createReducedMotionStore } from '$lib/js/createMediaQueryStore';
+	import { TIMELINE_ID_PREFIX, toDomId } from '$lib/js/timelineContentLink';
 	import type { YearlyTimelineData } from '$lib/types/Types';
 
 	export let years: YearlyTimelineData[];
@@ -13,7 +15,6 @@
 	let timelineItemObserver: IntersectionObserver;
 	let throttling = false;
 
-	const ITEM_ID_PREFIX = 'id_';
 	const yearElements: Record<number, HTMLElement> = {};
 	const revealSections: Record<string, HTMLElement> = {};
 	const prefersReducedMotion = createReducedMotionStore();
@@ -61,7 +62,7 @@
 		};
 
 		entries.forEach((entry) => {
-			const eventId = entry.target.id.replace(ITEM_ID_PREFIX, '');
+			const eventId = entry.target.id.replace(TIMELINE_ID_PREFIX, '');
 			const event = idFromEvent.get(eventId);
 			if (event?.background_image != null) {
 				src = event.background_image.src;
@@ -134,10 +135,12 @@
 			<p class="year-css" id={year.id}>{year.year}</p>
 			{#each year.events as item}
 				<section class="timeline-section reveal-section active" bind:this={revealSections[item.id]}>
-					<div class="timeline-item" id="{ITEM_ID_PREFIX}{item.id}" use:timelineTimeObserverAction>
+					<div class="timeline-item" id={toDomId(item.id)} use:timelineTimeObserverAction>
 						<div class="timeline-extra">
 							<div class="date">{formatDate(item.date)}</div>
-							<h2>{item.title}</h2>
+							<TitleLink href="#{toDomId(item.id)}">
+								<h2>{item.title}</h2>
+							</TitleLink>
 							<div class="milestone-content">
 								<SimpleSlateRenderer richTextElements={item.content} />
 							</div>
@@ -150,7 +153,7 @@
 			{/each}
 		</section>
 		<div class="extra-space">
-			<h2 class="year-end">End of {year.year}</h2>
+			<div class="year-end">End of {year.year}</div>
 		</div>
 	{/each}
 </section>
@@ -165,7 +168,7 @@
 	.year-css {
 		color: #ddd;
 		font-size: 22px;
-		margin-left: 60px;
+		margin-left: 2.5rem;
 		padding-bottom: 20px;
 		text-decoration: underline;
 		text-underline-position: under;
@@ -193,7 +196,7 @@
 		display: grid;
 		grid-template-columns: 1fr;
 		background-color: rgba(0, 0, 0, 0.5);
-		padding: 20px 25px;
+		padding: 1rem 0.75rem;
 		border-radius: 50px;
 		position: relative;
 		height: auto;
@@ -203,7 +206,7 @@
 	}
 
 	.timeline-extra {
-		margin: 10px;
+		margin: 3px;
 		color: white;
 	}
 	.extra-space {
@@ -249,16 +252,16 @@
     position:absolute;
     left: -39px;
 }*/
-	h2 {
+	h2,
+	.year-end {
+		font-size: 1.7rem;
 		margin: 10px;
 		text-transform: uppercase;
-		font-size: 2em;
 	}
-
 	.date {
 		margin: 10px;
-		font-size: 1.5em;
 		font-weight: lighter;
+		font-size: 1.2rem;
 	}
 	p {
 		margin: 0;
@@ -276,16 +279,16 @@
 	@media (min-width: 320px) {
 		.timeline {
 			margin: 0px 10px 0px 40px;
-			padding: 30px 10px 0px 20px;
+			padding: 30px 5px 0px 20px;
 		}
 		.extra-space {
 			height: 100px;
 		}
-		.year-end::before{
+		.year-end::before {
 			width: 25%;
 			left: -30%;
 		}
-		.year-end::after{
+		.year-end::after {
 			width: 25%;
 			right: -30%;
 		}
@@ -298,11 +301,11 @@
 		.extra-space {
 			height: 250px;
 		}
-		.year-end::before{
+		.year-end::before {
 			width: 30%;
 			left: -35%;
 		}
-		.year-end::after{
+		.year-end::after {
 			width: 30%;
 			right: -35%;
 		}
@@ -317,12 +320,30 @@
 		}
 		.timeline-extra {
 			padding: 20px;
+			margin: 10px;
 		}
-		.year-end::before{
+
+		.timeline-item {
+			padding: 20px 25px;
+		}
+
+		h2,
+		.year-end {
+			font-size: 2em;
+		}
+
+		.date {
+			font-size: 1.5em;
+		}
+
+		.year-css {
+			margin-left: 60px;
+		}
+		.year-end::before {
 			width: 60%;
 			left: -70%;
 		}
-		.year-end::after{
+		.year-end::after {
 			width: 60%;
 			right: -70%;
 		}
