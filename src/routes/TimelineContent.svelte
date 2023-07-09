@@ -148,10 +148,7 @@
 		<section class="year-divider" use:yearObserverAction bind:this={yearElements[year.year]}>
 			<p class="year-css" id={year.id}>{year.year}</p>
 			{#each year.events as item}
-				<section
-					class="timeline-section reveal-section active"
-					bind:this={revealSections[item.id]}
-				>
+				<section class="timeline-section reveal-section active" bind:this={revealSections[item.id]}>
 					<div class="timeline-item" id="{ITEM_ID_PREFIX}{item.id}" use:timelineTimeObserverAction>
 						<div class="timeline-extra">
 							<h2>{item.title}</h2>
@@ -225,7 +222,7 @@
 		padding: 20px;
 		color: #59084a;
 	}
-	.extra-space{
+	.extra-space {
 		display: flex;
 		color: #ddd;
 		width: auto;
@@ -233,25 +230,25 @@
 		align-items: center;
 		justify-content: center;
 	}
-	.year-end{
+	.year-end {
 		position: relative;
 	}
-	.year-end::before{
-		content: "";
+	.year-end::before {
+		content: '';
 		display: block;
 		width: 60%;
 		height: 2px;
-		background: #ddd	;
+		background: #ddd;
 		left: -70%;
 		top: 50%;
 		position: absolute;
 	}
-	.year-end::after{
-		content: "";
+	.year-end::after {
+		content: '';
 		display: block;
 		width: 60%;
 		height: 2px;
-		background: #ddd	;
+		background: #ddd;
 		right: -70%;
 		top: 50%;
 		position: absolute;
@@ -284,7 +281,7 @@
 		padding: 10px 0px;
 		font-size: medium;
 	}
-/*https://stackoverflow.com/questions/1165497/how-to-prevent-text-from-overflowing-in-css*/
+	/*https://stackoverflow.com/questions/1165497/how-to-prevent-text-from-overflowing-in-css*/
 	.milestone-content {
 		margin: 10px;
 		word-wrap: break-word;
@@ -297,7 +294,7 @@
 			margin: 0px 10px 0px 40px;
 			padding: 30px 10px 0px 20px;
 		}
-		.extra-space{
+		.extra-space {
 			height: 100px;
 		}
 	}
@@ -306,7 +303,7 @@
 			margin: 0px 20px 0px 40px;
 			padding: 50px 20px 0px 30px;
 		}
-		.extra-space{
+		.extra-space {
 			height: 250px;
 		}
 	}
@@ -315,7 +312,7 @@
 			margin: 0px 0px 0px 135px;
 			padding: 50px 30px 0px 30px;
 		}
-		.extra-space{
+		.extra-space {
 			height: 350px;
 		}
 
@@ -338,7 +335,7 @@
 		.timeline-img-container {
 			margin: auto 1rem;
 		}
-		.extra-space{
+		.extra-space {
 			height: 450px;
 		}
 	}
