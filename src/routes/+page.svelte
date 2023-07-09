@@ -1,8 +1,12 @@
 <script lang="ts">
+	import { crossfade } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
 	import type { PageData } from './$types';
 	import Hero from './Hero.svelte';
 	import Timeline from './Timeline.svelte';
 	import TimelineContent from './TimelineContent.svelte';
+	import { createReducedMotionStore } from '$lib/js/createMediaQueryStore';
+	import { browser } from '$app/environment';
 
 	// Prefilled by server data; assuming the data is sorted by server side code.
 	export let data: PageData;
@@ -11,10 +15,49 @@
 	let diamondY = 0;
 	let currentYear = data.data[0].year;
 	let src = '/img/timeline-bg.jpg';
+	let startPos = 0;
+	let bgTransform = 0;
+
+	const [send, receive] = crossfade({
+		duration: 1000,
+		easing: quintOut
+	});
+
+	const key = 'WHAT_EVER';
+	const prefersReducedMotion = createReducedMotionStore();
+
+	$: src, resetBgTransform();
+	$: diamondY, transformBg();
+
+	function resetBgTransform() {
+		if ($prefersReducedMotion || !browser) {
+			return;
+		}
+
+		bgTransform = 0;
+		startPos = globalThis.scrollY;
+	}
+
+	function transformBg() {
+		if ($prefersReducedMotion || !browser) {
+			return;
+		}
+
+		bgTransform = Math.min(100, (startPos - globalThis.scrollY) / 20);
+	}
 </script>
 
 <div class="background">
-	<img {src} class="background-img" alt="" />
+	{#key src}
+		<img
+			{src}
+			in:send={{ key }}
+			out:receive={{ key }}
+			class="background-img"
+			alt=""
+			style:transform="translateY({bgTransform}px)"
+		/>
+	{/key}
 	<div class="stream-idol blur">
 		<a href="https://www.youtube.com/watch?v=UpbpwXAEJl4" class="timeHeader"
 			>Oh you found me! Stream Idol</a
@@ -22,14 +65,9 @@
 	</div>
 
 	<Hero />
-	
+
 	<div class="content">
-			<Timeline 
-				bind:intersectingEvents 
-				bind:diamondY 
-				bind:currentYear 
-				years={data.data} 
-			/>
+		<Timeline bind:intersectingEvents bind:diamondY bind:currentYear years={data.data} />
 		<div class="blur">
 			<TimelineContent
 				bind:intersectingEvents
@@ -56,15 +94,12 @@
 	 */
 	.background-img {
 		width: 100vw;
-		height: 100vh;
+		height: 115vh;
 		object-fit: cover;
 		object-position: center;
 		position: fixed;
 		top: 0;
 		z-index: 0;
-		/*Background image transition doesnt work for firefox uuuuuuuuuuuuuuuuuuuuu*/
-		-webkit-transition: background-image 1s ease-in-out;
-		transition: background-image 1s ease-in-out;
 	}
 
 	.blur {
@@ -94,6 +129,12 @@
 		.stream-idol {
 			padding: 0px;
 			margin: 0px;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.background-img {
+			height: 100vh;
 		}
 	}
 </style>
