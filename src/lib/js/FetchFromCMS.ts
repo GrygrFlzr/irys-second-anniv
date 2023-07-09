@@ -21,7 +21,7 @@ async function fetchAllFromCMS<T>(cmsUrl: string | URL): Promise<Array<T>> {
 
 		respData.docs.forEach((element: T) => data.push(element));
 
-		if (respData.nextPage != null && respData.totalDocs != data.length) {
+		if (!respData.hasNextPage && respData.totalDocs != data.length) {
 			urlObj.searchParams.set('page', respData.nextPage.toString());
 		} else {
 			hasAllData = true;
