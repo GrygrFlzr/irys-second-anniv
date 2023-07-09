@@ -16,7 +16,6 @@ async function fetchAllFromCMS<T>(cmsUrl: string | URL): Promise<Array<T>> {
 	do {
 		const urlObjQuery = qs.stringify(urlQueryParams, { addQueryPrefix: true });
 		const urlObj = new URL(`${inputUrlObj.origin}${inputUrlObj.pathname}${urlObjQuery}`);
-		console.log(urlObj);
 
 		const response = await fetch(urlObj, {
 			headers: {
@@ -27,15 +26,11 @@ async function fetchAllFromCMS<T>(cmsUrl: string | URL): Promise<Array<T>> {
 
 		respData.docs.forEach((element: T) => data.push(element));
 
-		console.log(data.length);
-
 		if (respData.hasNextPage) {
 			urlQueryParams['page'] = respData.nextPage.toString();
 		} else {
 			hasAllData = true;
 		}
-
-		console.log(`hasAllData: ${hasAllData}`);
 	} while (!hasAllData);
 
 	return data;
