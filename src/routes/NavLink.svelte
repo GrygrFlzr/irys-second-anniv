@@ -32,7 +32,7 @@
 	}
 
 	.nav-link-text::before {
-		content: '✦';
+		content: '\2726';
 		margin-right: 0.4rem;
 	}
 
