@@ -3,6 +3,7 @@
 	import { getGlobalStore } from '$lib/js/globalStore';
 	import Diamond from '$lib/components/DiamondIcon.svelte';
 	import { toDomId } from '$lib/js/timelineContentLink';
+	import { tick } from 'svelte';
 
 	export let years: YearlyTimelineData[];
 	export let intersectingEvents: Record<string, boolean>;
@@ -13,10 +14,12 @@
 	let foldoutOpen = false;
 	let scrollY = 0;
 	const globalStore = getGlobalStore();
+	const foldoutEventElements: Record<string, HTMLElement> = {};
 
 	function handleFoldoutOpen() {
 		foldoutOpen = true;
 		document.body.addEventListener('click', handleMenuClose);
+		tick().then(scrollFoldoutEvent);
 	}
 
 	function handleMenuClose() {
@@ -28,6 +31,18 @@
 	function scrollToElement(id: string) {
 		const element = document.getElementById(id);
 		element?.scrollIntoView({ behavior: 'smooth' });
+	}
+
+	function scrollFoldoutEvent() {
+		const intersectingEvent = Object.entries(intersectingEvents).find(
+			([, intersecting]) => intersecting
+		);
+
+		if (!intersectingEvent) {
+			return;
+		}
+		const [id] = intersectingEvent;
+		foldoutEventElements[id].scrollIntoView();
 	}
 
 	$: currentYearIndex = years.findIndex((y) => y.year === currentYear);
@@ -55,6 +70,7 @@
 				<a
 					class="foldout-content"
 					class:active={intersectingEvents[content.id]}
+					bind:this={foldoutEventElements[content.id]}
 					id="foldout-content{content.id}"
 					href="#{target}"
 					on:click|preventDefault={() => scrollToElement(target)}
