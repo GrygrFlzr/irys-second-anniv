@@ -52,7 +52,7 @@
 <!--Might be bad practice-->
 <svelte:window bind:scrollY />
 
-<div class="toggle" class:active={foldoutOpen} class:display={scrollY > $globalStore.heroHeight}>
+<div class="toggle" class:active={foldoutOpen} class:display={scrollY > ($globalStore.heroHeight)}>
 	<button
 		type="button"
 		class="arrow glow"
@@ -61,26 +61,28 @@
 		on:click|stopPropagation={handleFoldoutOpen}>&#8250</button
 	>
 </div>
-<div class="foldout" class:active={foldoutOpen} style:top="{$globalStore.headerHeight}px">
-	{#each years as { year, events }}
-		<section class="foldout-wrapper">
-			<h2 class="foldout-year">{year}</h2>
-			{#each events as content}
-				{@const target = toDomId(content.id)}
-				<a
-					class="foldout-content"
-					class:active={intersectingEvents[content.id]}
-					bind:this={foldoutEventElements[content.id]}
-					id="foldout-content{content.id}"
-					href="#{target}"
-					on:click|preventDefault={() => scrollToElement(target)}
-				>
-					<p class="content-title">{content.title}</p>
-				</a>
-			{/each}
-		</section>
-	{/each}
-</div>
+<section class="modal-container" class:active={foldoutOpen}>
+	<div class="foldout" class:active={foldoutOpen} style:top="{$globalStore.headerHeight}px">
+		{#each years as { year, events }}
+			<section class="foldout-wrapper">
+				<h2 class="foldout-year">{year}</h2>
+				{#each events as content}
+					{@const target = toDomId(content.id)}
+					<a
+						class="foldout-content"
+						class:active={intersectingEvents[content.id]}
+						bind:this={foldoutEventElements[content.id]}
+						id="foldout-content{content.id}"
+						href="#{target}"
+						on:click|preventDefault={() => scrollToElement(target)}
+					>
+						<p class="content-title">{content.title}</p>
+					</a>
+				{/each}
+			</section>
+		{/each}
+	</div>
+</section>
 
 <div class="sidebar" class:active={foldoutOpen} class:display={scrollY > $globalStore.heroHeight}>
 	<div class="wrapper">
@@ -153,6 +155,22 @@
 			text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6,
 				0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
 		}
+	}
+	.modal-container{
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 400;
+		display: flex;
+		background-color: rgba(0,0,0,0.4);
+		transform: translateX(-3000px);
+		transition: transform 0.5s, top 0.15s;
+	}
+	.modal-container.active{
+		transform: translateX(0px);
+		transition: 500ms ease-in-out;
 	}
 	.foldout {
 		position: fixed;
