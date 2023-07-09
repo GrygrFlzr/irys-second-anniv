@@ -3,6 +3,8 @@
 	import { fly } from 'svelte/transition';
 	import { backOut } from 'svelte/easing';
 
+	import Credits from './Credits.svelte';
+
 	const imageTransitionFlyOffset = 32;
 	const imageTransitionFlyDuration = 500;
 	const imageAppearDuration = 400;
@@ -48,7 +50,7 @@
 							easing: backOut
 						}}
 					>
-						<div class="about-body-header">About Us</div>
+						<div class="header">About Us</div>
 						<div class="about-body-desc">
 							This fan project is brought to you by the IRyStocrats in
 							<a href={link_irys_discord} target="blank">IRyS' Stage</a> (IRyS' fan discord) and
@@ -79,13 +81,19 @@
 							easing: backOut
 						}}
 					>
-						<div class="about-body-header">About IRyS</div>
+						<div class="header">About IRyS</div>
 						<div class="about-body-desc">
 							IRyS is the Diva of hololive English's Project: HOPE.<br />
 							Check out her channel <a href={link_irys} target="_blank">here</a>!
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div class="credits">
+			<div class="header">Site Credits</div>
+			<div class="credits-container">
+				<Credits />
 			</div>
 		</div>
 	</div>
@@ -145,13 +153,6 @@
 		max-width: 500px;
 	}
 
-	.about-body-header {
-		color: white;
-		font-size: 40px;
-		text-align: center;
-		text-shadow: 2px 4px 0.4rem rgb(0, 0, 0, 0.8);
-	}
-
 	.about-body-desc {
 		color: white;
 		font-size: 24px;
@@ -162,6 +163,23 @@
 
 	.about-body-desc a {
 		color: rgb(248, 112, 162);
+	}
+
+	.header {
+		color: white;
+		font-size: 40px;
+		text-align: center;
+		text-shadow: 2px 4px 0.4rem rgb(0, 0, 0, 0.8);
+	}
+
+	.credits {
+		padding-top: 64px;
+		padding-bottom: 16px;
+		background: linear-gradient(to bottom, rgb(0, 0, 0, 0) 0%, rgb(0, 0, 0, 0.5) 6%);
+	}
+
+	.credits-container {
+		margin-top: 16px;
 	}
 
 	@media (min-width: 768px) {
