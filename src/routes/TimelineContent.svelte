@@ -93,9 +93,7 @@
 	}
 
 	function useConfetti(item: TimelineData) {
-		// return item.title.endsWith('3');
-
-		return item.devprops?.some((prop) => prop.key == 'vfx' && prop.value == 'confetti') || false;
+		return item.vfx != undefined && item.vfx == 'confetti';
 	}
 
 	function confettiTagger(item: HTMLElement, enabled: boolean) {
