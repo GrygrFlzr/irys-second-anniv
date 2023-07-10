@@ -19,6 +19,10 @@
 	const contentsTransitionFadeOffset = 24;
 </script>
 
+<svelte:head>
+	<title>Anniversary Messages and Fanart - AnniversaRyS 2023</title>
+</svelte:head>
+
 <div class="background-image">
 	<div class="background-overlay">
 		<div class="content">

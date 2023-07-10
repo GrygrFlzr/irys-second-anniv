@@ -20,6 +20,10 @@
 	const link_irys = 'https://www.youtube.com/@IRyS';
 </script>
 
+<svelte:head>
+	<title>About - AnniversaRyS 2023</title>
+</svelte:head>
+
 <div>
 	<img src="/img/about/about-bg.jpg" class="background-img" alt="" />
 	<span class="background-overlay" />

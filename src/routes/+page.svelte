@@ -17,6 +17,10 @@
 	const prefersReducedMotion = createReducedMotionStore();
 </script>
 
+<svelte:head>
+	<title>The Pandora Logs Of Hope - AnniversaRyS 2023</title>
+</svelte:head>
+
 <div class="background">
 	<img src="/img/timeline-bg.jpg" class="background-img" alt="" />
 	<div class="stream-idol blur">
