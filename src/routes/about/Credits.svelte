@@ -53,7 +53,7 @@
 	.category {
 		color: white;
 		text-shadow: 2px 4px 0.4rem rgb(0, 0, 0, 0.8);
-		margin-bottom: 16px;
+		margin-bottom: 20px;
 		text-align: center;
 	}
 
