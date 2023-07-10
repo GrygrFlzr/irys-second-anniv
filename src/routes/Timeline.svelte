@@ -243,7 +243,7 @@
 	.content-title {
 		text-align: left;
 		text-overflow: ellipsis;
-		overflow: hidden;
+		overflow-x: hidden;
 		white-space: nowrap;
 		height: auto;
 		width: auto;

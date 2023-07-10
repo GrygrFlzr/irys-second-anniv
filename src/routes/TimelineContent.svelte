@@ -58,7 +58,7 @@
 
 	function timelineTimeObserverAction(item: HTMLElement) {
 		timelineItemObserver ??= new IntersectionObserver(timelineItemObserverCallback, {
-			threshold: 0.8
+			threshold: 1
 		});
 
 		timelineItemObserver.observe(item);
@@ -229,6 +229,12 @@
 		margin: 1rem;
 		padding: 0 20px 0 30px;
 	}
+	.year-divider{
+		display: grid;
+		grid-template-columns: 1fr;
+		height: auto;
+		gap:12.5vh;
+	}
 	.year-css {
 		display: flex;
 		width: auto;
@@ -262,9 +268,8 @@
 	.timeline-section {
 		display: flex;
 		flex-direction: column;
-		justify-content: space-evenly;
-		min-height: 90vh;
-		min-height: 100svh;
+		justify-content: space-between;
+		height: 100%;
 	}
 	/* Line for the timeline      border-left: 2px solid #ccc;  */
 	.reveal-section {
