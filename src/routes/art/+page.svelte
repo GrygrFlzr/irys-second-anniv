@@ -83,13 +83,12 @@
 		display: flex;
 		flex-direction: column;
 		margin: auto;
-		text-shadow: 2px 2px 0.25rem rgb(0, 0, 0, 0.5);
-		width: 50em;
+		width: 90%;
 	}
 
-	@media (max-width: calc(max(50em, 768px))) {
+	@media (min-width: 768px) {
 		.header-group {
-			width: 90%;
+			max-width: 40em;
 		}
 	}
 
@@ -97,6 +96,7 @@
 		color: #ffffff;
 		font-size: 40px;
 		text-align: center;
+		text-shadow: 2px 2px 0.25rem rgb(0, 0, 0, 0.5);
 	}
 
 	.header-desc {
