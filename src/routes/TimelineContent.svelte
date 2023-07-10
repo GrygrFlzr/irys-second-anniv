@@ -227,8 +227,6 @@
 		color: #ddd;
 		font-size: 2em;
 		padding-bottom: 20px;
-		text-decoration: underline;
-		text-underline-position: under;
 		align-items: center;
 		justify-content: center;
 	}
@@ -431,7 +429,7 @@
 		.date {
 			font-size: 1.5em;
 		}
-		.year-css{
+		.year-css {
 			scroll-snap-align: start;
 		}
 		.year-css::before {

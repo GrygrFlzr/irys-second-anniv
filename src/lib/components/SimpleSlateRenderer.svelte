@@ -64,21 +64,21 @@
 {/each}
 
 <style>
-	a{
+	a {
 		outline: none;
 		text-decoration: underline 0.15em rgba(0, 0, 0, 0);
-  		transition: text-decoration-color 300ms;
+		transition: text-decoration-color 300ms;
 	}
-	a:link{
+	a:link {
 		color: #e60073;
 	}
-	a:visited{
+	a:visited {
 		color: #e60073;
 	}
 	a:focus {
 		text-decoration-color: rgba(230, 0, 115, 1);
 	}
-	a:hover{
+	a:hover {
 		text-decoration-color: rgba(230, 0, 115, 1);
 	}
 	a:active {

@@ -18,14 +18,14 @@
 
 	function handleFoldoutOpen() {
 		foldoutOpen = true;
-		document.body.style.overflow = "hidden";
+		document.body.style.overflow = 'hidden';
 		document.body.addEventListener('click', handleMenuClose);
 		tick().then(scrollFoldoutEvent);
 	}
 
 	function handleMenuClose() {
 		foldoutOpen = false;
-		document.body.style.overflow = "auto";
+		document.body.style.overflow = 'auto';
 		document.body.removeEventListener('click', handleMenuClose);
 	}
 
@@ -54,7 +54,7 @@
 <!--Might be bad practice-->
 <svelte:window bind:scrollY />
 
-<div class="toggle" class:active={foldoutOpen} class:display={scrollY > ($globalStore.heroHeight)}>
+<div class="toggle" class:active={foldoutOpen} class:display={scrollY > $globalStore.heroHeight}>
 	<button
 		type="button"
 		class="arrow glow"
@@ -108,7 +108,7 @@
 				</div>
 			</div>
 		{/each}
-		<div class="last-circle"></div>
+		<div class="last-circle" />
 	</div>
 </div>
 
@@ -159,20 +159,20 @@
 				0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
 		}
 	}
-	.modal-container{
+	.modal-container {
 		position: fixed;
 		top: 0;
 		right: 0;
 		bottom: 0;
 		left: 0;
 		z-index: 500;
-		width:auto;
+		width: auto;
 		display: flex;
 		transform: translateX(-10000px);
-		background-color: rgba(0,0,0,0.4);
+		background-color: rgba(0, 0, 0, 0.4);
 		transition: transform 0.5s, top 0.15s;
 	}
-	.modal-container.active{
+	.modal-container.active {
 		transform: translateX(0px);
 		transition: 500ms ease-in-out;
 	}
@@ -360,7 +360,7 @@
 		position: absolute;
 		left: -9px;
 	}
-	.last-circle::before{
+	.last-circle::before {
 		content: '';
 		background: #e1cbd2;
 		width: 0px;
@@ -370,7 +370,7 @@
 		transform: translateY(-50%);
 		left: 1;
 	}
-	.last-circle::after{
+	.last-circle::after {
 		content: '';
 		display: block;
 		width: 12px;
@@ -398,10 +398,10 @@
 			top: 60px;
 			left: 285px;
 		}
-		.year-num.active{
+		.year-num.active {
 			text-shadow: none;
 		}
-		.foldout{
+		.foldout {
 			height: 100svh;
 		}
 	}
@@ -445,10 +445,10 @@
 			transition: all 300ms ease-in-out;
 		}
 
-		.year-num.active{
+		.year-num.active {
 			text-shadow: 1px 1px 8px #b90b8c;
 		}
-		
+
 		.year .year-num-mobile {
 			display: none;
 		}
