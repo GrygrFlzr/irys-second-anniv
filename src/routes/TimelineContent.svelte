@@ -78,11 +78,8 @@
 		entries.forEach((entry) => {
 			const eventId = entry.target.id.replace(TIMELINE_ID_PREFIX, '');
 			const event = idFromEvent.get(eventId);
-			if (event?.background_image != null) {
-				src = event.background_image.src;
-			} else if (event?.images != null) {
-				src = event?.images[0].src;
-			}
+			updateBackground(event);
+
 			intersectingMap[eventId] = entry.isIntersecting;
 		});
 
@@ -172,6 +169,18 @@
 				0,
 				((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100 * 0.8
 			);
+		}
+	}
+
+	function updateBackground(event: TimelineData | undefined) {
+		if ($prefersReducedMotion) {
+			return;
+		}
+
+		if (event?.background_image != null) {
+			src = event.background_image.src;
+		} else if (event?.images != null) {
+			src = event?.images[0].src;
 		}
 	}
 </script>
