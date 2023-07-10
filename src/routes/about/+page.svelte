@@ -24,7 +24,7 @@
 	<title>About - AnniversaRyS 2023</title>
 	<meta name="description" content="About" />
 	<meta name="og:title" content="About" />
-	<meta name="twitter:description" content="About" />
+	<meta name="twitter:title" content="About - AnniversaRyS 2023" />
 </svelte:head>
 
 <div>

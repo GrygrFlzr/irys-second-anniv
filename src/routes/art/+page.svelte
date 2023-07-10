@@ -23,7 +23,7 @@
 	<title>Anniversary Messages and Fanart - AnniversaRyS 2023</title>
 	<meta name="description" content="Anniversary Messages and Fanart" />
 	<meta name="og:title" content="Anniversary Messages and Fanart" />
-	<meta name="twitter:description" content="Anniversary Messages and Fanart" />
+	<meta name="twitter:title" content="Anniversary Messages and Fanart - AnniversaRyS 2023" />
 </svelte:head>
 
 <div class="background-image">
