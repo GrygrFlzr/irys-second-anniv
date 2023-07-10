@@ -65,21 +65,22 @@
 
 <style>
 	a {
+		font-weight: bold;
 		outline: none;
 		text-decoration: underline 0.15em rgba(0, 0, 0, 0);
 		transition: text-decoration-color 300ms;
 	}
 	a:link {
-		color: #e60073;
+		color: rgb(255, 182, 209);
 	}
 	a:visited {
 		color: #e60073;
 	}
 	a:focus {
-		text-decoration-color: rgba(230, 0, 115, 1);
+		text-decoration-color: rgb(255, 182, 209);
 	}
 	a:hover {
-		text-decoration-color: rgba(230, 0, 115, 1);
+		text-decoration-color: rgb(255, 182, 209);
 	}
 	a:active {
 		text-decoration: none;
