@@ -32,6 +32,7 @@
 		<a
 			href={toRichtextLinkElement(elem).url}
 			target={toRichtextLinkElement(elem).newTab ? '_blank' : '_self'}
+			class="richTextLink"
 		>
 			<svelte:self richTextElements={elem.children} />
 		</a>
@@ -94,5 +95,9 @@
 
 	.text {
 		white-space: pre-line;
+	}
+
+	.richTextLink {
+		margin: 0.2rem;
 	}
 </style>
