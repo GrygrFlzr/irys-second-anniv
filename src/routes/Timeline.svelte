@@ -169,7 +169,7 @@
 		width: auto;
 		display: flex;
 		transform: translateX(-10000px);
-		background-color: rgba(0, 0, 0, 0.4);
+		background-color: rgba(0, 0, 0, 0.7);
 		transition: transform 0.5s, top 0.15s;
 	}
 	.modal-container.active {
@@ -196,7 +196,7 @@
 		-webkit-overflow-scrolling: touch;
 		touch-action: pan-y;
 		scrollbar-width: thin;
-		scrollbar-color: #b90b8c #e5e5e5;
+		scrollbar-color: #f1f1f1 #e5e5e5;
 	}
 	/*Styling Scrollbar For Chrome, Edge and Safari*/
 	.foldout::-webkit-scrollbar {
@@ -206,40 +206,50 @@
 		width: 12px;
 	}
 	.foldout::-webkit-scrollbar-track {
-		background: #e5e5e5;
+		background: #140e0e;
 	}
 	.foldout::-webkit-scrollbar-thumb {
-		background-color: #b90b8c;
+		background-color: #ebebeb;
 		border-radius: 20px;
-		border: 3px solid #e5e5e5;
+		border: 2px solid #d1cfcf;
 	}
 
 	.foldout-year {
 		margin: 0;
 		padding: 8px;
+		background-color: rgb(53, 53, 53);
+		color: rgb(255, 255, 255);
 	}
 	.foldout-content {
-		background: #d9d9d9;
+		background: #212020;
 		border: transparent;
 		font-family: inherit;
 		margin: 0;
-		padding: 15px;
+		padding: 4px 15px;
 		height: auto;
 		width: 100%;
 		display: inline-block;
 		text-decoration: none;
-		color: initial;
+		color: white;
 		font-size: 0.83em;
+		box-shadow: inset 0em -2px 4px #472140;
 	}
 	.foldout-content.active {
-		background: #b90b8c;
+		background: #6d0551;
+		color: white;
 		transition: 0.3s;
+		box-shadow: inset 0em 4px rgba(0, 0, 0, 0.2);
+	}
+
+	.foldout-content.active:hover {
+		background: #ad0280;
 	}
 	.foldout-content:hover {
-		background: #116116;
+		background: #c04d83;
 		cursor: pointer;
 		transition: 0.5s;
 	}
+
 	.content-title {
 		text-align: left;
 		text-overflow: ellipsis;
