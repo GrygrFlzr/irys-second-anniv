@@ -54,6 +54,7 @@
 	<title>The Pandora Logs Of Hope - AnniversaRyS 2023</title>
 	<meta name="description" content="The Pandora Logs Of Hope" />
 	<meta name="og:title" content="The Pandora Logs Of Hope" />
+	<meta name="og:url" content="https://timelinerys.holoen.fans/" />
 	<meta name="twitter:title" content="The Pandora Logs Of Hope - AnniversaRyS 2023" />
 </svelte:head>
 
