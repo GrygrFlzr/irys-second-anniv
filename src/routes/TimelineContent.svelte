@@ -409,7 +409,6 @@
 		.timeline {
 			margin: 0px 0px 0px 135px;
 			padding: 50px 30px 0px 30px;
-			scroll-snap-align: start;
 		}
 		.extra-space {
 			margin-left: 10px;
