@@ -48,7 +48,7 @@
 	}
 
 	$: currentYearIndex = years.findIndex((y) => y.year === currentYear);
-	$: currentYearDiamondOffset = currentYearIndex * 23;
+	$: currentYearDiamondOffset = (currentYearIndex + 1) * 28;
 </script>
 
 <!--Might be bad practice-->
@@ -165,7 +165,7 @@
 		right: 0;
 		bottom: 0;
 		left: 0;
-		z-index: 400;
+		z-index: 500;
 		width:auto;
 		display: flex;
 		transform: translateX(-10000px);
@@ -185,12 +185,12 @@
 		height: 95svh;
 		transform: translateX(-300px);
 		background: #e5e5e5;
+		z-index: 1001;
 		transition: transform 0.5s, top 0.15s;
 	}
 	/*Styling Scrollbar for Firefox*/
 	.foldout.active {
 		transform: translateX(0px);
-		z-index: 1001;
 		overflow-y: scroll;
 		-webkit-overflow-scrolling: touch;
 		scrollbar-width: thin;

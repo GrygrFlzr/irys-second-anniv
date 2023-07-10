@@ -170,7 +170,7 @@
 			const boundingClientRect = currentIntersectingYear.getBoundingClientRect();
 			diamondY = Math.max(
 				0,
-				((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100 * 0.85
+				((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100 * 0.8
 			);
 		}
 	}

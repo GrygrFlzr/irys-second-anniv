@@ -76,7 +76,7 @@
 		color: #e60073;
 	}
 	a:focus {
-
+		text-decoration-color: rgba(230, 0, 115, 1);
 	}
 	a:hover{
 		text-decoration-color: rgba(230, 0, 115, 1);
