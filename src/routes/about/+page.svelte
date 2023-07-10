@@ -23,7 +23,7 @@
 <svelte:head>
 	<title>About - AnniversaRyS 2023</title>
 	<meta name="description" content="About" />
-	<meta name="og:description" content="About" />
+	<meta name="og:title" content="About" />
 	<meta name="twitter:description" content="About" />
 </svelte:head>
 

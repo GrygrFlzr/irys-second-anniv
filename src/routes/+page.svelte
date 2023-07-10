@@ -53,7 +53,7 @@
 <svelte:head>
 	<title>The Pandora Logs Of Hope - AnniversaRyS 2023</title>
 	<meta name="description" content="The Pandora Logs Of Hope" />
-	<meta name="og:description" content="The Pandora Logs Of Hope" />
+	<meta name="og:title" content="The Pandora Logs Of Hope" />
 	<meta name="twitter:description" content="The Pandora Logs Of Hope" />
 </svelte:head>
 
