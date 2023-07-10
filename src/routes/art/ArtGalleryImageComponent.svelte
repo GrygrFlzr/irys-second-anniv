@@ -67,7 +67,7 @@
 		margin-left: auto;
 		margin-right: auto;
 		max-width: 100%;
-		max-height: 1080px;
+		max-height: 800px;
 	}
 
 	@media (min-width: 768px) {
