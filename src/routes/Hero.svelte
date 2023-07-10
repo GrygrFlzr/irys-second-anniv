@@ -66,7 +66,7 @@
 			showPoem = true;
 		}, 1500);
 
-		$globalStore.heroHeight = heroSection.clientHeight;
+		updateHeroHeight();
 	});
 
 	function typewriter(node: HTMLElement, { speed = 1 }): TransitionConfig {
@@ -100,6 +100,10 @@
 			poemElement?.scrollTo({ top: poemElement.scrollHeight, behavior: 'smooth' });
 		}, 50);
 	}
+
+	function updateHeroHeight() {
+		$globalStore.heroHeight = heroSection.clientHeight;
+	}
 </script>
 
 <div class="hero-section" bind:this={heroSection}>
@@ -129,7 +133,9 @@
 		<div class="poem" class:show={showPoem} bind:this={poemElement}>
 			<div class="fit-content">
 				{#each poem as line}
-					<p class="poem-paragraph" in:textTransition={{ speed: 4 }}>{line}</p>
+					<!--typewriter need exactly one text node-->
+					<!--prettier-ignore-->
+					<p class="poem-paragraph" in:textTransition={{ speed: 4 }} on:introend={updateHeroHeight}>{line}</p>
 				{/each}
 			</div>
 		</div>

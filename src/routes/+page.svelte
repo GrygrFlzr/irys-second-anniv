@@ -18,6 +18,7 @@
 	let src = '/img/timeline-bg.jpg';
 	let startPos = 0;
 	let bgTransform = 0;
+	let showConfettiElements = new Set<string>();
 
 	const [send, receive] = crossfade({
 		duration: 1000,

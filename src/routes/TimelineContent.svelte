@@ -2,9 +2,9 @@
 	import SimpleImageGallery from '$lib/components/SimpleImageGallery.svelte';
 	import SimpleSlateRenderer from '$lib/components/SimpleSlateRenderer.svelte';
 	import TitleLink from '$lib/components/TitleLink.svelte';
-	import { createReducedMotionStore } from '$lib/js/createMediaQueryStore';
 	import { TIMELINE_ID_PREFIX, toDomId } from '$lib/js/timelineContentLink';
-	import type { YearlyTimelineData } from '$lib/types/Types';
+	import type { TimelineData, YearlyTimelineData } from '$lib/types/Types';
+	import type { Readable } from 'svelte/store';
 
 	export let years: YearlyTimelineData[];
 	export let intersectingEvents: Record<string, boolean>;
@@ -100,7 +100,7 @@
 			});
 			confettiObserver.observe(item);
 
-			confettiElements.set(item.id.replace(ITEM_ID_PREFIX, ''), false);
+			confettiElements.set(item.id.replace(TIMELINE_ID_PREFIX, ''), false);
 
 			return {
 				destroy() {
@@ -112,7 +112,7 @@
 
 	function confettiObserverCallback(entries: IntersectionObserverEntry[]) {
 		entries.forEach((entry) => {
-			const eventId = entry.target.id.replace(ITEM_ID_PREFIX, '');
+			const eventId = entry.target.id.replace(TIMELINE_ID_PREFIX, '');
 			if (entry.isIntersecting) {
 				confettiElements.set(eventId, true);
 			} else {
