@@ -229,11 +229,11 @@
 		margin: 1rem;
 		padding: 0 20px 0 30px;
 	}
-	.year-divider{
+	.year-divider {
 		display: grid;
 		grid-template-columns: 1fr;
 		height: auto;
-		gap:14vh;
+		gap: 14vh;
 	}
 	.year-css {
 		display: flex;

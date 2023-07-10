@@ -182,9 +182,10 @@
 		flex-direction: column;
 		justify-content: space-between;
 		width: 250px;
+		height: 100vh; /*Fallback for some devices*/
 		height: 100svh;
 		transform: translateX(-300px);
-		
+
 		background: #e5e5e5;
 		z-index: 1001;
 		transition: transform 0.5s, top 0.15s;
@@ -202,7 +203,7 @@
 	.foldout::-webkit-scrollbar {
 		-webkit-appearance: none;
 	}
-	.foldout::-webkit-scrollbar:vertical{
+	.foldout::-webkit-scrollbar:vertical {
 		width: 12px;
 	}
 	.foldout::-webkit-scrollbar-track {
@@ -263,10 +264,12 @@
 		transition: 750ms ease-out;
 		display: table;
 		table-layout: fixed;
+		height: 0vh; /*Fallback for some devices*/
 		height: 0svh;
 		border-left: 3px solid #ddd;
 	}
 	.links.active {
+		height: 70vh; /*Fallback for some devices*/
 		height: 70svh;
 	}
 	.get-tabled {
@@ -417,6 +420,7 @@
 			text-shadow: none;
 		}
 		.foldout {
+			height: 100vh; /*Fallback for some devices*/
 			height: 100svh;
 		}
 	}
@@ -427,6 +431,7 @@
 	}
 	@media (min-width: 769px) {
 		.foldout {
+			height: 95vh; /*Fallback for some devices*/
 			height: 95svh;
 			width: 200px;
 		}
