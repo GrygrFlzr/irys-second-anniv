@@ -52,6 +52,10 @@
 
 <svelte:head>
 	<title>The Pandora Logs Of Hope - AnniversaRyS 2023</title>
+	<meta name="description" content="The Pandora Logs Of Hope" />
+	<meta name="og:title" content="The Pandora Logs Of Hope" />
+	<meta name="og:url" content="https://timelinerys.holoen.fans/" />
+	<meta name="twitter:title" content="The Pandora Logs Of Hope - AnniversaRyS 2023" />
 </svelte:head>
 
 <div class="background">
@@ -98,8 +102,8 @@
 		background: #600150;
 	}
 
-	/* 
-		the performance of background-attachment: fixed 
+	/*
+		the performance of background-attachment: fixed
 		is terrible on Chrome Android. will-change: transform doesn't help much
 		so we use a fixed position image instead
 	 */
