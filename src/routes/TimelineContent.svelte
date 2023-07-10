@@ -339,7 +339,7 @@
 }*/
 	h2,
 	.year-end {
-		font-size: 1.7rem;
+		font-size: 1.5rem;
 		margin: 10px;
 		text-transform: uppercase;
 	}
@@ -410,6 +410,11 @@
 		.year-end::after {
 			width: 30%;
 			right: -50%;
+		}
+
+		.year-end,
+		h2 {
+			font-size: 1.7em;
 		}
 	}
 	@media (min-width: 769px) {

@@ -19,6 +19,7 @@
 	let startPos = 0;
 	let bgTransform = 0;
 	let showConfettiElements = new Set<string>();
+	let crossFading = false;
 
 	const [send, receive] = crossfade({
 		duration: 1000,
@@ -36,16 +37,16 @@
 			return;
 		}
 
-		bgTransform = 0;
+		crossFading = true;
 		startPos = globalThis.scrollY;
 	}
 
 	function transformBg() {
-		if ($prefersReducedMotion || !browser) {
+		if ($prefersReducedMotion || !browser || crossFading) {
 			return;
 		}
 
-		bgTransform = Math.min(100, (startPos - globalThis.scrollY) / 20);
+		bgTransform = Math.min(80, (startPos - globalThis.scrollY) / 20);
 	}
 </script>
 
@@ -58,6 +59,7 @@
 			class="background-img"
 			alt=""
 			style:transform="translateY({bgTransform}px)"
+			on:introend={() => (crossFading = false)}
 		/>
 	{/key}
 	<div class="stream-idol blur">
@@ -105,6 +107,7 @@
 		position: fixed;
 		top: 0;
 		z-index: 0;
+		transition: transform 0.2s ease-in-out;
 	}
 
 	.blur {
