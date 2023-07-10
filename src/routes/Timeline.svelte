@@ -1,6 +1,9 @@
 <script lang="ts">
 	import type { YearlyTimelineData } from '$lib/types/Types';
 	import { getGlobalStore } from '$lib/js/globalStore';
+	import Diamond from '$lib/components/DiamondIcon.svelte';
+	import { toDomId } from '$lib/js/timelineContentLink';
+	import { tick } from 'svelte';
 
 	export let years: YearlyTimelineData[];
 	export let intersectingEvents: Record<string, boolean>;
@@ -9,15 +12,20 @@
 	export let currentYear = years[0].year;
 
 	let foldoutOpen = false;
+	let scrollY = 0;
 	const globalStore = getGlobalStore();
+	const foldoutEventElements: Record<string, HTMLElement> = {};
 
 	function handleFoldoutOpen() {
 		foldoutOpen = true;
+		document.body.style.overflow = 'hidden';
 		document.body.addEventListener('click', handleMenuClose);
+		tick().then(scrollFoldoutEvent);
 	}
 
 	function handleMenuClose() {
 		foldoutOpen = false;
+		document.body.style.overflow = 'auto';
 		document.body.removeEventListener('click', handleMenuClose);
 	}
 
@@ -27,11 +35,26 @@
 		element?.scrollIntoView({ behavior: 'smooth' });
 	}
 
+	function scrollFoldoutEvent() {
+		const intersectingEvent = Object.entries(intersectingEvents).find(
+			([, intersecting]) => intersecting
+		);
+
+		if (!intersectingEvent) {
+			return;
+		}
+		const [id] = intersectingEvent;
+		foldoutEventElements[id].scrollIntoView();
+	}
+
 	$: currentYearIndex = years.findIndex((y) => y.year === currentYear);
-	$: currentYearDiamondOffset = currentYearIndex * 23;
+	$: currentYearDiamondOffset = (currentYearIndex + 1) * 28;
 </script>
 
-<div class="toggle" class:active={foldoutOpen}>
+<!--Might be bad practice-->
+<svelte:window bind:scrollY />
+
+<div class="toggle" class:active={foldoutOpen} class:display={scrollY > $globalStore.heroHeight}>
 	<button
 		type="button"
 		class="arrow glow"
@@ -40,41 +63,52 @@
 		on:click|stopPropagation={handleFoldoutOpen}>&#8250</button
 	>
 </div>
-<div class="foldout" class:active={foldoutOpen} style:top="{$globalStore.headerHeight}px">
-	{#each years as { year, events }}
-		<section class="foldout-wrapper">
-			<h2 class="foldout-year">{year}</h2>
-			{#each events as content}
-				{@const target = `id_${content.id}`}
-				<a
-					class="foldout-content"
-					class:active={intersectingEvents[content.id]}
-					id="foldout-content{content.id}"
-					href="#id_{target}"
-					on:click|preventDefault={() => scrollToElement(target)}
-				>
-					<p class="content-title">{content.title}</p>
-				</a>
-			{/each}
-		</section>
-	{/each}
+<div class="modal-container" class:active={foldoutOpen}>
+	<div class="foldout" class:active={foldoutOpen} style:top="{$globalStore.headerHeight}px">
+		{#each years as { year, events }}
+			<section class="foldout-wrapper">
+				<h2 class="foldout-year">{year}</h2>
+				{#each events as content}
+					{@const target = toDomId(content.id)}
+					<a
+						class="foldout-content"
+						class:active={intersectingEvents[content.id]}
+						bind:this={foldoutEventElements[content.id]}
+						id="foldout-content{content.id}"
+						href="#{target}"
+						on:click|preventDefault={() => scrollToElement(target)}
+					>
+						<p class="content-title">{content.title}</p>
+					</a>
+				{/each}
+			</section>
+		{/each}
+	</div>
 </div>
 
-<div class="sidebar" class:active={foldoutOpen}>
+<div class="sidebar" class:active={foldoutOpen} class:display={scrollY > $globalStore.heroHeight}>
 	<div class="wrapper">
-		<span class="diamond" style:top="calc({diamondY}% + {currentYearDiamondOffset}px)">&#9830</span>
+		<span class="diamond" style:top="calc({diamondY}% + {currentYearDiamondOffset}px)">
+			<Diamond />
+		</span>
 		{#each years as { year, events }}
 			<div class="year" id="x">
-				<p>{year}</p>
-				<div class="links">
+				<p class="year-num" class:active={currentYear === year}>
+					<span class="year-num-mobile">{year}</span>
+					<span class="year-num-large">{year}</span>
+				</p>
+				<div class="links" class:active={currentYear === year}>
 					{#if year === currentYear}
 						{#each events as content}
-							<div class="content-jump" class:active={intersectingEvents[content.id]} />
+							<div class="get-tabled">
+								<div class="content-jump" class:active={intersectingEvents[content.id]} />
+							</div>
 						{/each}
 					{/if}
 				</div>
 			</div>
 		{/each}
+		<div class="last-circle" />
 	</div>
 </div>
 
@@ -82,6 +116,7 @@
 <!-- Glow Reference https://www.w3schools.com/howto/howto_css_glowing_text.asp-->
 <style>
 	.toggle {
+		opacity: 0;
 		position: fixed;
 		top: 40%;
 		left: 0px;
@@ -95,10 +130,14 @@
 	.toggle.active {
 		transform: translateX(-30px);
 	}
+	.toggle.display {
+		opacity: 1;
+		transition: 500ms ease-in-out;
+	}
 	.arrow {
 		background: transparent;
 		border: none;
-		padding-left: 16px;
+		padding-left: 0.5rem;
 	}
 	.arrow.hide {
 		display: none;
@@ -120,28 +159,51 @@
 				0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
 		}
 	}
+	.modal-container {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 500;
+		width: auto;
+		display: flex;
+		transform: translateX(-10000px);
+		background-color: rgba(0, 0, 0, 0.4);
+		transition: transform 0.5s, top 0.15s;
+	}
+	.modal-container.active {
+		transform: translateX(0px);
+		transition: 500ms ease-in-out;
+	}
 	.foldout {
 		position: fixed;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 		width: 250px;
-		height: 95svh;
+		height: 100svh;
 		transform: translateX(-300px);
+		
 		background: #e5e5e5;
+		z-index: 1001;
 		transition: transform 0.5s, top 0.15s;
 	}
 	/*Styling Scrollbar for Firefox*/
 	.foldout.active {
 		transform: translateX(0px);
-		z-index: 1001;
-		overflow-y: scroll;
+		overflow: auto;
+		-webkit-overflow-scrolling: touch;
+		touch-action: pan-y;
 		scrollbar-width: thin;
 		scrollbar-color: #b90b8c #e5e5e5;
 	}
 	/*Styling Scrollbar For Chrome, Edge and Safari*/
 	.foldout::-webkit-scrollbar {
-		width: 10px;
+		-webkit-appearance: none;
+	}
+	.foldout::-webkit-scrollbar:vertical{
+		width: 12px;
 	}
 	.foldout::-webkit-scrollbar-track {
 		background: #e5e5e5;
@@ -186,52 +248,74 @@
 		height: auto;
 		width: auto;
 	}
-	.year::before {
-		content: '';
-		display: block;
-		width: 12px;
-		height: 12px;
-		border-radius: 50%;
-		background-color: #ddd;
-		border: 3px solid #ddd;
-		position: absolute;
-		left: 0px;
-		transition: all 300ms ease-in-out;
-	}
+
 	.links {
-		transition: all 500ms ease-in-out;
+		transition: 750ms ease-out;
+		display: table;
+		table-layout: fixed;
+		height: 0svh;
+		border-left: 3px solid #ddd;
 	}
-	.year p {
+	.links.active {
+		height: 70svh;
+	}
+	.get-tabled {
+		display: table-row;
+	}
+	.year .year-num {
 		margin: inherit;
 		padding: 5px 0px 0px 15px;
 		color: #ddd;
 		border-left: 3px solid #ddd;
-		transform: translateX(7px);
+		transform: translateX(0px);
+	}
+	.year .year-num-mobile {
+		position: relative;
+		left: -2.4rem;
+		background-color: #fff;
+		color: var(--dark-pink);
+		padding: 2px 5px;
+		border-radius: 0.5rem;
+		font-size: 0.85rem;
+		width: 2.7rem;
+		text-align: center;
+		display: inline-block;
+	}
+	.year .year-num-large {
+		display: none;
+		font-size: 1.2em;
+	}
+	.year-num.active {
+		font-weight: bold;
 	}
 	/*		border-left: 2px solid #ccc;*/
 	.sidebar {
-		position: -webkit-sticky; /* for Safari */
-		position: sticky;
-		float: left;
-		top: 150px;
+		position: fixed;
+		top: 80px;
 		left: 300px;
 		bottom: 0;
-		margin: 0 0 0 25px;
+		margin: 0 0 0 18px;
 		width: 18px;
 		padding-top: 25px;
 		transform: translateX(-250px);
 		background: transparent;
 		transition: all 500ms ease-in-out;
-		z-index: 499;
+		z-index: 498;
+		opacity: 0;
 	}
 	.sidebar.active {
 		transform: translateX(-500px);
+	}
+	.sidebar.display {
+		opacity: 1;
+		transition: 500ms ease-in-out;
 	}
 	.diamond {
 		top: 0px;
 		color: #ddd;
 		font-size: 32px;
 		position: absolute;
+		left: -7px;
 		line-height: 1;
 	}
 
@@ -245,7 +329,7 @@
 	}
 	.sidebar .links .content-jump {
 		margin: 0px 0px;
-		height: 50px;
+		height: 25px;
 		color: #888;
 		display: flex;
 		align-items: center;
@@ -254,9 +338,10 @@
 	}
 
 	.content-jump {
-		border-left: 3px solid #ddd;
+		display: table-cell;
+		vertical-align: middle;
 		padding-left: 6px;
-		transform: translateX(7px);
+		transform: translateX(0px);
 	}
 	.content-jump::before {
 		content: '';
@@ -280,6 +365,28 @@
 		position: absolute;
 		left: -9px;
 	}
+	.last-circle::before {
+		content: '';
+		background: #e1cbd2;
+		width: 0px;
+		height: 3px;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		left: 1;
+	}
+	.last-circle::after {
+		content: '';
+		display: block;
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		/*background-color: #b90b8c;*/
+		background-color: #ddd;
+		border: 3px solid #ddd;
+		position: absolute;
+		left: -8px;
+	}
 	/* .content-jump.border {
 		border-left: 3px solid #b90b8c;
 		transition: all 500ms ease-in-out;
@@ -292,6 +399,16 @@
 		.content-title {
 			font-size: 1.5em;
 		}
+		.sidebar {
+			top: 60px;
+			left: 285px;
+		}
+		.year-num.active {
+			text-shadow: none;
+		}
+		.foldout {
+			height: 100svh;
+		}
 	}
 	@media (min-width: 481px) {
 		.content-title {
@@ -300,10 +417,45 @@
 	}
 	@media (min-width: 769px) {
 		.foldout {
+			height: 95svh;
 			width: 200px;
 		}
 		.arrow.hide {
 			display: inline-block;
+		}
+		.arrow {
+			padding-left: 1rem;
+		}
+
+		.year .year-num-large {
+			display: inline;
+		}
+
+		.sidebar {
+			margin-left: 25px;
+			left: 300px;
+			top: 100px;
+		}
+
+		.year::before {
+			content: '';
+			display: block;
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			background-color: #ddd;
+			border: 3px solid #ddd;
+			position: absolute;
+			left: -8px;
+			transition: all 300ms ease-in-out;
+		}
+
+		.year-num.active {
+			text-shadow: 1px 1px 8px #b90b8c;
+		}
+
+		.year .year-num-mobile {
+			display: none;
 		}
 	}
 	@media (min-width: 1024px) {

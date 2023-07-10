@@ -1,10 +1,13 @@
 <script lang="ts">
-	import { createReducedMotionStore } from '$lib/js/createMediaQueryStore';
+	import { crossfade } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
 	import type { PageData } from './$types';
 	import Confetti from './Confetti.svelte';
 	import Hero from './Hero.svelte';
 	import Timeline from './Timeline.svelte';
 	import TimelineContent from './TimelineContent.svelte';
+	import { createReducedMotionStore } from '$lib/js/createMediaQueryStore';
+	import { browser } from '$app/environment';
 
 	// Prefilled by server data; assuming the data is sorted by server side code.
 	export let data: PageData;
@@ -12,9 +15,39 @@
 	let intersectingEvents: Record<string, boolean> = {};
 	let diamondY = 0;
 	let currentYear = data.data[0].year;
-	let showConfettiElements: Set<string> = new Set();
+	let src = '/img/timeline-bg.jpg';
+	let startPos = 0;
+	let bgTransform = 0;
+	let showConfettiElements = new Set<string>();
+	let crossFading = false;
 
+	const [send, receive] = crossfade({
+		duration: 1000,
+		easing: quintOut
+	});
+
+	const key = 'WHAT_EVER';
 	const prefersReducedMotion = createReducedMotionStore();
+
+	$: src, resetBgTransform();
+	$: diamondY, transformBg();
+
+	function resetBgTransform() {
+		if ($prefersReducedMotion || !browser) {
+			return;
+		}
+
+		crossFading = true;
+		startPos = globalThis.scrollY;
+	}
+
+	function transformBg() {
+		if ($prefersReducedMotion || !browser || crossFading) {
+			return;
+		}
+
+		bgTransform = Math.min(80, (startPos - globalThis.scrollY) / 20);
+	}
 </script>
 
 <svelte:head>
@@ -22,7 +55,17 @@
 </svelte:head>
 
 <div class="background">
-	<img src="/img/timeline-bg.jpg" class="background-img" alt="" />
+	{#key src}
+		<img
+			{src}
+			in:send={{ key }}
+			out:receive={{ key }}
+			class="background-img"
+			alt=""
+			style:transform="translateY({bgTransform}px)"
+			on:introend={() => (crossFading = false)}
+		/>
+	{/key}
 	<div class="stream-idol blur">
 		<a href="https://www.youtube.com/watch?v=UpbpwXAEJl4" class="timeHeader"
 			>Oh you found me! Stream Idol</a
@@ -39,6 +82,7 @@
 				bind:intersectingEvents
 				bind:diamondY
 				bind:currentYear
+				bind:src
 				bind:showConfettiElements
 				years={data.data}
 				{prefersReducedMotion}
@@ -61,20 +105,19 @@
 	 */
 	.background-img {
 		width: 100vw;
-		height: 100vh;
+		height: 115vh;
 		object-fit: cover;
 		object-position: center;
 		position: fixed;
 		top: 0;
 		z-index: 0;
+		transition: transform 0.2s ease-in-out;
 	}
 
-	.content {
-		background: rgba(0, 0, 0, 0);
-	}
 	.blur {
 		padding-top: 1rem;
 		backdrop-filter: blur(5px);
+		background-color: rgb(24, 18, 23, 0.5);
 	}
 	.stream-idol {
 		background-color: #300029;
@@ -98,6 +141,12 @@
 		.stream-idol {
 			padding: 0px;
 			margin: 0px;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.background-img {
+			height: 100vh;
 		}
 	}
 </style>

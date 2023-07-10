@@ -60,7 +60,8 @@ export const load = async function loadDataFromCMS() {
 						)}", does not conform to RichtextElement or RichtextTextElement.`
 					);
 				}
-			})
+			}),
+			vfx: element.devprops?.find((prop) => prop.key == 'vfx')?.value
 		};
 	});
 

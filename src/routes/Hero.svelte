@@ -2,14 +2,17 @@
 	import { onMount } from 'svelte';
 	import HeroImage from './HeroImage.svelte';
 	import ScrollHint from './ScrollHint.svelte';
+	import { getGlobalStore } from '$lib/js/globalStore';
 	import type { TransitionConfig } from 'svelte/transition';
 	import { createReducedMotionStore } from '$lib/js/createMediaQueryStore';
 
 	let showTitle = false;
 	let showPoem = false;
+	let heroSection: HTMLElement;
 	let lastDuration = 0;
 	let poemElement: HTMLElement;
 
+	const globalStore = getGlobalStore();
 	const reducedMotion = createReducedMotionStore();
 
 	// white-space: pre-line. so it's fine for the poem to be indented
@@ -60,6 +63,8 @@
 		setTimeout(() => {
 			showPoem = true;
 		}, 1500);
+
+		updateHeroHeight();
 	});
 
 	function typewriter(node: HTMLElement, { speed = 1 }): TransitionConfig {
@@ -93,9 +98,13 @@
 			poemElement?.scrollTo({ top: poemElement.scrollHeight, behavior: 'smooth' });
 		}, 50);
 	}
+
+	function updateHeroHeight() {
+		$globalStore.heroHeight = heroSection.clientHeight;
+	}
 </script>
 
-<div class="hero-section">
+<div class="hero-section" bind:this={heroSection}>
 	<div class="hero-image">
 		<HeroImage />
 	</div>
@@ -104,8 +113,15 @@
 		<div class="title" class:title-show={showTitle}>THE PANDORA LOGS OF HOPE</div>
 
 		<div class="sub-title">
-			<p>Project: Hope began on xx</p>
-			<p>Some epic description about the timeline / chuuni text This is her journey.</p>
+			<p>
+				The world had been riddled with despair and desperation.<br />
+				But it would not stay that way for long.<br />
+				One being would believe in the power of her voice.<br />
+				One nephilim saw what was needed to reawaken the world.<br /><br />
+
+				And thus, Hope descended on July 11, 2021.
+			</p>
+			<p class="sub-title-emphasis"><b>This is her journey.</b></p>
 		</div>
 
 		<ScrollHint />
@@ -115,7 +131,9 @@
 		<div class="poem" class:show={showPoem} bind:this={poemElement}>
 			<div class="fit-content">
 				{#each poem as line}
-					<p class="poem-paragraph" in:textTransition={{ speed: 4 }}>{line}</p>
+					<!--typewriter need exactly one text node-->
+					<!--prettier-ignore-->
+					<p class="poem-paragraph" in:textTransition={{ speed: 4 }} on:introend={updateHeroHeight}>{line}</p>
 				{/each}
 			</div>
 		</div>
@@ -130,6 +148,7 @@
 		color: #fff;
 		scroll-snap-align: start;
 		position: relative;
+		z-index: 499;
 	}
 
 	.hero-image {
@@ -149,8 +168,14 @@
 	}
 
 	.sub-title {
-		font-size: 24px;
+		font-size: 22px;
 		text-align: center;
+		color: rgb(255, 255, 255, 0.5);
+	}
+
+	.sub-title-emphasis {
+		font-size: 24px;
+		color: rgb(255, 255, 255, 1);
 	}
 
 	.poem {

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import SimpleImageGallery from '$lib/components/SimpleImageGallery.svelte';
 	import SimpleSlateRenderer from '$lib/components/SimpleSlateRenderer.svelte';
+	import TitleLink from '$lib/components/TitleLink.svelte';
+	import { TIMELINE_ID_PREFIX, toDomId } from '$lib/js/timelineContentLink';
 	import type { TimelineData, YearlyTimelineData } from '$lib/types/Types';
 	import type { Readable } from 'svelte/store';
 
@@ -8,30 +10,19 @@
 	export let intersectingEvents: Record<string, boolean>;
 	export let diamondY: number;
 	export let currentYear: number;
+	export let src: string | undefined;
 	export let showConfettiElements: Set<string>;
 	export let prefersReducedMotion: Readable<boolean>;
 
-	let scrollY = 0;
 	let timelineItemObserver: IntersectionObserver;
 	let confettiObserver: IntersectionObserver;
 	let confettiElements: Map<string, boolean> = new Map();
-	let yearObserver: IntersectionObserver;
-	let currentIntersectingYear: Element;
 	let throttling = false;
-	let windowInnerHeight = 0;
 
-	const ITEM_ID_PREFIX = 'id_';
 	const yearElements: Record<number, HTMLElement> = {};
 	const revealSections: Record<string, HTMLElement> = {};
 
-	$: innerHeight = 0;
-	$: if (currentIntersectingYear && !$prefersReducedMotion) {
-		const boundingClientRect = currentIntersectingYear.getBoundingClientRect();
-		diamondY = Math.max(
-			0,
-			((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100
-		);
-	}
+	$: idFromEvent = new Map(years.flatMap((year) => year.events).map((event) => [event.id, event]));
 
 	/* Reference https://alvarotrigo.com/blog/css-animations-scroll/*/
 	function reveal() {
@@ -67,7 +58,7 @@
 
 	function timelineTimeObserverAction(item: HTMLElement) {
 		timelineItemObserver ??= new IntersectionObserver(timelineItemObserverCallback, {
-			threshold: 0
+			threshold: 0.8
 		});
 
 		timelineItemObserver.observe(item);
@@ -85,7 +76,10 @@
 		};
 
 		entries.forEach((entry) => {
-			const eventId = entry.target.id.replace(ITEM_ID_PREFIX, '');
+			const eventId = entry.target.id.replace(TIMELINE_ID_PREFIX, '');
+			const event = idFromEvent.get(eventId);
+			updateBackground(event);
+
 			intersectingMap[eventId] = entry.isIntersecting;
 		});
 
@@ -103,7 +97,7 @@
 			});
 			confettiObserver.observe(item);
 
-			confettiElements.set(item.id.replace(ITEM_ID_PREFIX, ''), false);
+			confettiElements.set(item.id.replace(TIMELINE_ID_PREFIX, ''), false);
 
 			return {
 				destroy() {
@@ -115,7 +109,7 @@
 
 	function confettiObserverCallback(entries: IntersectionObserverEntry[]) {
 		entries.forEach((entry) => {
-			const eventId = entry.target.id.replace(ITEM_ID_PREFIX, '');
+			const eventId = entry.target.id.replace(TIMELINE_ID_PREFIX, '');
 			if (entry.isIntersecting) {
 				confettiElements.set(eventId, true);
 			} else {
@@ -127,28 +121,6 @@
 		showConfettiElements = showConfettiElements;
 	}
 
-	function yearObserverAction(item: HTMLElement) {
-		yearObserver ??= new IntersectionObserver(yearObserverCallback, {
-			threshold: 0.1
-		});
-
-		yearObserver.observe(item);
-
-		return {
-			destroy() {
-				yearObserver.unobserve(item);
-			}
-		};
-	}
-
-	function yearObserverCallback(entries: IntersectionObserverEntry[]) {
-		entries.forEach((entry) => {
-			if (entry.isIntersecting) {
-				currentIntersectingYear = entry.target;
-			}
-		});
-	}
-
 	function handleScroll() {
 		if (throttling) {
 			return;
@@ -157,6 +129,7 @@
 		requestAnimationFrame(() => {
 			reveal();
 			checkYear();
+			checkDiamond();
 			throttling = false;
 		});
 		throttling = true;
@@ -164,6 +137,7 @@
 
 	function checkYear() {
 		// For the foldout to adjust the height based on whether the header collapses
+		let newYear = currentYear;
 
 		for (let i = 0; i < years.length; i++) {
 			const year = years[i];
@@ -171,42 +145,65 @@
 			const element1 = yearElements[year.year].getBoundingClientRect().top;
 			const element2: number | undefined =
 				yearElements[nextYear?.year]?.getBoundingClientRect().top;
+			const element1ScrollY = element1 + scrollY;
+			const element2ScrollY = (element2 ?? 0) + scrollY;
+			const bottomOfScreen = scrollY + innerHeight / 1.25;
 
-			if (
-				element2 &&
-				scrollY > element1 + window.scrollY - windowInnerHeight / 1.25 &&
-				scrollY < element2 + window.scrollY - windowInnerHeight / 1.25
-			) {
-				currentYear = year.year;
+			if (element2 && bottomOfScreen > element1ScrollY && scrollY < element2ScrollY) {
+				newYear = year.year;
 			}
 			// For the last year
-			else if (
-				scrollY > element1 + window.scrollY - windowInnerHeight / 1.25 &&
-				typeof element2 === 'undefined'
-			) {
-				currentYear = years[years.length - 1].year;
+			else if (bottomOfScreen > element1ScrollY && typeof element2 === 'undefined') {
+				newYear = years[years.length - 1].year;
 			}
+		}
+
+		currentYear = newYear;
+	}
+
+	function checkDiamond() {
+		const currentIntersectingYear = yearElements[currentYear];
+		if (currentIntersectingYear && !$prefersReducedMotion) {
+			const boundingClientRect = currentIntersectingYear.getBoundingClientRect();
+			diamondY = Math.max(
+				0,
+				((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100 * 0.8
+			);
+		}
+	}
+
+	function updateBackground(event: TimelineData | undefined) {
+		if ($prefersReducedMotion) {
+			return;
+		}
+
+		if (event?.background_image != null) {
+			src = event.background_image.src;
+		} else if (event?.images != null) {
+			src = event?.images[0].src;
 		}
 	}
 </script>
 
-<svelte:window bind:scrollY bind:innerHeight on:scroll={handleScroll} />
+<svelte:window on:scroll={handleScroll} />
 
 <section class="timeline">
 	{#each years as year}
-		<section class="year-divider" use:yearObserverAction bind:this={yearElements[year.year]}>
+		<section class="year-divider" bind:this={yearElements[year.year]}>
 			<p class="year-css" id={year.id}>{year.year}</p>
 			{#each year.events as item}
 				<section class="timeline-section reveal-section active" bind:this={revealSections[item.id]}>
 					<div
 						class="timeline-item"
-						id="{ITEM_ID_PREFIX}{item.id}"
+						id={toDomId(item.id)}
 						use:timelineTimeObserverAction
 						use:confettiTagger={useConfetti(item)}
 					>
 						<div class="timeline-extra">
-							<h2>{item.title}</h2>
 							<div class="date">{formatDate(item.date)}</div>
+							<TitleLink href="#{toDomId(item.id)}">
+								<h2>{item.title}</h2>
+							</TitleLink>
 							<div class="milestone-content">
 								<SimpleSlateRenderer richTextElements={item.content} />
 							</div>
@@ -219,9 +216,10 @@
 			{/each}
 		</section>
 		<div class="extra-space">
-			<h2 class="year-end">End of {year.year}</h2>
+			<div class="year-end">End of {year.year}</div>
 		</div>
 	{/each}
+	<div />
 </section>
 
 <!-- Reference from https://www.youtube.com/watch?v=TcYSRI1JFQE -->
@@ -232,18 +230,39 @@
 		padding: 0 20px 0 30px;
 	}
 	.year-css {
+		display: flex;
+		width: auto;
+		position: relative;
 		color: #ddd;
-		font-size: 22px;
-		margin-left: 60px;
+		font-size: 2em;
 		padding-bottom: 20px;
-		text-decoration: underline;
-		text-underline-position: under;
-		scroll-snap-align: start;
+		align-items: center;
+		justify-content: center;
+	}
+	.year-css::before {
+		content: '';
+		display: block;
+		width: 15%;
+		height: 2px;
+		background: #ddd;
+		left: 20%;
+		top: 50%;
+		position: absolute;
+	}
+	.year-css::after {
+		content: '';
+		display: block;
+		width: 15%;
+		height: 2px;
+		background: #ddd;
+		right: 20%;
+		top: 50%;
+		position: absolute;
 	}
 	.timeline-section {
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
+		justify-content: space-evenly;
 		min-height: 90vh;
 		min-height: 100svh;
 	}
@@ -261,20 +280,19 @@
 	.timeline-item {
 		display: grid;
 		grid-template-columns: 1fr;
-		background-color: rgba(255, 255, 255, 0.7);
-		padding: 20px 25px;
+		background-color: rgba(0, 0, 0, 0.5);
+		padding: 1rem 0.75rem;
 		border-radius: 50px;
 		position: relative;
 		height: auto;
-		margin: 0px 0px 100px 60px;
+		margin: 0px 0px 100px 20px;
 		line-height: 1.5;
 		justify-items: left;
 	}
 
 	.timeline-extra {
-		margin: 10px;
-		padding: 20px;
-		color: #59084a;
+		margin: 3px;
+		color: white;
 	}
 	.extra-space {
 		display: flex;
@@ -290,20 +308,20 @@
 	.year-end::before {
 		content: '';
 		display: block;
-		width: 60%;
+		width: 15%;
 		height: 2px;
 		background: #ddd;
-		left: -70%;
+		left: -20%;
 		top: 50%;
 		position: absolute;
 	}
 	.year-end::after {
 		content: '';
 		display: block;
-		width: 60%;
+		width: 15%;
 		height: 2px;
 		background: #ddd;
-		right: -70%;
+		right: -20%;
 		top: 50%;
 		position: absolute;
 	}
@@ -319,16 +337,16 @@
     position:absolute;
     left: -39px;
 }*/
-	h2 {
+	h2,
+	.year-end {
+		font-size: 1.5rem;
 		margin: 10px;
 		text-transform: uppercase;
-		font-size: large;
 	}
-
 	.date {
 		margin: 10px;
-		font-size: medium;
-		font-weight: bold;
+		font-weight: lighter;
+		font-size: 1.2rem;
 	}
 	p {
 		margin: 0;
@@ -346,10 +364,26 @@
 	@media (min-width: 320px) {
 		.timeline {
 			margin: 0px 10px 0px 40px;
-			padding: 30px 10px 0px 20px;
+			padding: 30px 5px 0px 20px;
 		}
 		.extra-space {
 			height: 100px;
+		}
+		.year-css::before {
+			width: 20%;
+			left: 10%;
+		}
+		.year-css::after {
+			width: 20%;
+			right: 10%;
+		}
+		.year-end::before {
+			width: 25%;
+			left: -30%;
+		}
+		.year-end::after {
+			width: 25%;
+			right: -30%;
 		}
 	}
 	@media (min-width: 481px) {
@@ -358,7 +392,29 @@
 			padding: 50px 20px 0px 30px;
 		}
 		.extra-space {
+			margin-left: 10px;
 			height: 250px;
+		}
+		.year-css::before {
+			width: 25%;
+			left: 4%;
+		}
+		.year-css::after {
+			width: 25%;
+			right: 4%;
+		}
+		.year-end::before {
+			width: 30%;
+			left: -50%;
+		}
+		.year-end::after {
+			width: 30%;
+			right: -50%;
+		}
+
+		.year-end,
+		h2 {
+			font-size: 1.7em;
 		}
 	}
 	@media (min-width: 769px) {
@@ -367,11 +423,42 @@
 			padding: 50px 30px 0px 30px;
 		}
 		.extra-space {
+			margin-left: 10px;
 			height: 350px;
 		}
+		.timeline-extra {
+			padding: 20px;
+			margin: 10px;
+		}
 
-		.reveal-section {
-			transform: translateY(150px);
+		.timeline-item {
+			padding: 20px 25px;
+		}
+
+		h2,
+		.year-end {
+			font-size: 2em;
+		}
+
+		.date {
+			font-size: 1.5em;
+		}
+		.year-css::before {
+			width: 25%;
+			left: 5%;
+		}
+		.year-css::after {
+			width: 25%;
+			right: 5%;
+		}
+		.year-end::before {
+			right: 20px;
+			width: 60%;
+			left: -70%;
+		}
+		.year-end::after {
+			width: 60%;
+			right: -70%;
 		}
 	}
 
@@ -401,6 +488,13 @@
 
 		.timeline-img-container {
 			margin: auto 2rem;
+		}
+		.extra-space {
+			margin-left: 0px;
+			margin-right: 90px;
+		}
+		.year-css {
+			margin-right: 100px;
 		}
 	}
 

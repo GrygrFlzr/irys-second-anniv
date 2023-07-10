@@ -1,5 +1,5 @@
 <div class="scroll-hint">
-	<div>Scroll To Begin Journey</div>
+	<div>Scroll To Begin</div>
 	<svg fill="currentColor" viewBox="0 0 36 36" width="60" height="60">
 		<path d="M16 22L6 12 7.4 10.6 16 19.2 24.6 10.6 26 12z" />
 	</svg>
