@@ -10,6 +10,13 @@ import qs from 'qs';
 const cmsRestUrl = env.CMS_REST_API_URL;
 const eventSlug = 'submissions';
 const projectSlug = env.ANNIVERSARYS_2023_PROJECT_SLUG;
+
+export const config = {
+	isr: {
+		expiration: 60 * 5
+	}
+};
+
 export const load = async function loadDataFromCMS() {
 	const query = qs.stringify(
 		{
