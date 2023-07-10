@@ -58,7 +58,7 @@
 
 	function timelineTimeObserverAction(item: HTMLElement) {
 		timelineItemObserver ??= new IntersectionObserver(timelineItemObserverCallback, {
-			threshold: 1
+			threshold: 0.9
 		});
 
 		timelineItemObserver.observe(item);
@@ -233,7 +233,7 @@
 		display: grid;
 		grid-template-columns: 1fr;
 		height: auto;
-		gap:12.5vh;
+		gap:14vh;
 	}
 	.year-css {
 		display: flex;
@@ -293,6 +293,7 @@
 		margin: 0px 0px 100px 20px;
 		line-height: 1.5;
 		justify-items: left;
+		z-index: 10;
 	}
 
 	.timeline-extra {
