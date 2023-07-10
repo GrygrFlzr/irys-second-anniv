@@ -5,7 +5,7 @@
 
 	import Credits from './Credits.svelte';
 
-	const imageTransitionFlyOffset = 32;
+	const imageTransitionFlyOffset = 16;
 	const imageTransitionFlyDuration = 500;
 	const imageAppearDuration = 400;
 
@@ -129,7 +129,7 @@
 	.about-container {
 		display: grid;
 		grid-template-columns: 1fr;
-		padding: 0px calc(0.2 * (max(0px, 100vw - 800px)) + 4px); /*Min padding at 768px which increases with vw*/
+		padding: 0px calc(0.2 * (max(0px, 100vw - 800px)) + 16px); /*Min padding at 768px which increases with vw*/
 	}
 
 	.about-item {
