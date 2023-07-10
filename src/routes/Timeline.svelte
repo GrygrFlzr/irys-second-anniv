@@ -182,8 +182,9 @@
 		flex-direction: column;
 		justify-content: space-between;
 		width: 250px;
-		height: 95svh;
+		height: 100svh;
 		transform: translateX(-300px);
+		
 		background: #e5e5e5;
 		z-index: 1001;
 		transition: transform 0.5s, top 0.15s;
@@ -191,14 +192,18 @@
 	/*Styling Scrollbar for Firefox*/
 	.foldout.active {
 		transform: translateX(0px);
-		overflow-y: scroll;
+		overflow: auto;
 		-webkit-overflow-scrolling: touch;
+		touch-action: pan-y;
 		scrollbar-width: thin;
 		scrollbar-color: #b90b8c #e5e5e5;
 	}
 	/*Styling Scrollbar For Chrome, Edge and Safari*/
 	.foldout::-webkit-scrollbar {
-		width: 10px;
+		-webkit-appearance: none;
+	}
+	.foldout::-webkit-scrollbar:vertical{
+		width: 12px;
 	}
 	.foldout::-webkit-scrollbar-track {
 		background: #e5e5e5;

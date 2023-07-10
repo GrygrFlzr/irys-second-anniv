@@ -24,10 +24,6 @@ html {
 	:root {
 		--header-offset: 8.5rem;
 	}
-	body,
-	html {
-		scroll-snap-type: y proximity;
-	}
 }
 
 @media (prefers-reduced-motion: reduce) {

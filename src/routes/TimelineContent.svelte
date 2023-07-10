@@ -58,7 +58,7 @@
 
 	function timelineTimeObserverAction(item: HTMLElement) {
 		timelineItemObserver ??= new IntersectionObserver(timelineItemObserverCallback, {
-			threshold: 0.6
+			threshold: 0.8
 		});
 
 		timelineItemObserver.observe(item);
@@ -428,9 +428,6 @@
 
 		.date {
 			font-size: 1.5em;
-		}
-		.year-css {
-			scroll-snap-align: start;
 		}
 		.year-css::before {
 			width: 25%;
