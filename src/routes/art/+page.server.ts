@@ -13,7 +13,7 @@ const projectSlug = env.ANNIVERSARYS_2023_PROJECT_SLUG;
 
 export const config = {
 	isr: {
-		expiration: 60 * 5
+		expiration: false
 	}
 };
 

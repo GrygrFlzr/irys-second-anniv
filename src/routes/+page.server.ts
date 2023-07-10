@@ -18,7 +18,7 @@ const projectSlug = env.IRYS_2ND_ANNIV_PROJECT_SLUG;
 
 export const config = {
 	isr: {
-		expiration: 60 * 5
+		expiration: false
 	}
 };
 
