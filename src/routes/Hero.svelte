@@ -47,9 +47,7 @@
 		`In four days she will be here
 		In four days she will shine
 		And through the bird in blue we hear
-		She tweets a repeat sign ||:`,
-
-		`- Yi Xuan Tan`
+		She tweets a repeat sign ||:`
 	];
 
 	$: textTransition = $reducedMotion ? () => ({}) : typewriter;
@@ -170,6 +168,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		min-height: 90vh;
 	}
 
 	.fit-content {
@@ -193,6 +192,7 @@
 			overflow-y: scroll;
 			height: calc(100vh - 12rem);
 			padding-top: 50vh;
+			min-height: initial;
 		}
 
 		.poem::-webkit-scrollbar {
