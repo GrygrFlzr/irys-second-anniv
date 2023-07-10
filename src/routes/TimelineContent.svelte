@@ -44,7 +44,7 @@
 
 	function timelineTimeObserverAction(item: HTMLElement) {
 		timelineItemObserver ??= new IntersectionObserver(timelineItemObserverCallback, {
-			threshold: 0.5
+			threshold: 0.6
 		});
 
 		timelineItemObserver.observe(item);
@@ -121,7 +121,7 @@
 			const boundingClientRect = currentIntersectingYear.getBoundingClientRect();
 			diamondY = Math.max(
 				0,
-				((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100
+				(((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100)*0.9
 			);
 		}
 	}
@@ -167,6 +167,7 @@
 	.timeline {
 		margin: 1rem;
 		padding: 0 20px 0 30px;
+		scroll-snap-align: start;
 	}
 	.year-css {
 		display:flex;

@@ -63,6 +63,26 @@
 {/each}
 
 <style>
+	a{
+		outline: none;
+		text-decoration: underline 0.15em rgba(0, 0, 0, 0);
+  		transition: text-decoration-color 300ms;
+	}
+	a:link{
+		color: #e60073;
+	}
+	a:visited{
+		color: #e60073;
+	}
+	a:focus {
+
+	}
+	a:hover{
+		text-decoration-color: rgba(230, 0, 115, 1);
+	}
+	a:active {
+		text-decoration: none;
+	}
 	.bold {
 		font-weight: bold;
 	}
@@ -70,7 +90,6 @@
 	.italic {
 		font-style: italic;
 	}
-
 	.underline.strikethrough {
 		text-decoration: line-through underline;
 	}

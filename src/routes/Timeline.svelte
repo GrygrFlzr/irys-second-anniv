@@ -248,7 +248,7 @@
 		border-left: 3px solid #ddd;
 	}
 	.links.active {
-		height: 60svh;
+		height: 70svh;
 	}
 	.get-tabled {
 		display: table-row;
