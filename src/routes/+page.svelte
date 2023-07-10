@@ -2,6 +2,7 @@
 	import { crossfade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 	import type { PageData } from './$types';
+	import Confetti from './Confetti.svelte';
 	import Hero from './Hero.svelte';
 	import Timeline from './Timeline.svelte';
 	import TimelineContent from './TimelineContent.svelte';
@@ -66,6 +67,7 @@
 
 	<Hero />
 
+	<Confetti showConfetti={showConfettiElements.size > 0} {prefersReducedMotion} />
 	<div class="content">
 		<Timeline bind:intersectingEvents bind:diamondY bind:currentYear years={data.data} />
 		<div class="blur">
@@ -74,7 +76,9 @@
 				bind:diamondY
 				bind:currentYear
 				bind:src
+				bind:showConfettiElements
 				years={data.data}
+				{prefersReducedMotion}
 			/>
 		</div>
 	</div>

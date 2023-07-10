@@ -11,27 +11,41 @@
 	export let diamondY: number;
 	export let currentYear: number;
 	export let src: string | undefined;
+	export let showConfettiElements: Set<string>;
+	export let prefersReducedMotion: Readable<boolean>;
 
 	let timelineItemObserver: IntersectionObserver;
+	let confettiObserver: IntersectionObserver;
+	let confettiElements: Map<string, boolean> = new Map();
 	let throttling = false;
 
 	const yearElements: Record<number, HTMLElement> = {};
 	const revealSections: Record<string, HTMLElement> = {};
-	const prefersReducedMotion = createReducedMotionStore();
 
 	$: idFromEvent = new Map(years.flatMap((year) => year.events).map((event) => [event.id, event]));
 
 	/* Reference https://alvarotrigo.com/blog/css-animations-scroll/*/
 	function reveal() {
-		for (const revealSection of Object.values(revealSections)) {
+		for (const [sectionId, revealSection] of Object.entries(revealSections)) {
 			const revealSectionTop = revealSection.getBoundingClientRect().top;
 			const revealSectionVisible = 150;
+
 			if (revealSectionTop < innerHeight - revealSectionVisible) {
 				revealSection.classList.add('active');
+
+				if (confettiElements.get(sectionId)) {
+					showConfettiElements.add(sectionId);
+				}
 			} else {
 				revealSection.classList.remove('active');
+
+				if (confettiElements.has(sectionId)) {
+					showConfettiElements.delete(sectionId);
+				}
 			}
 		}
+
+		showConfettiElements = showConfettiElements;
 	}
 
 	// https://stackoverflow.com/a/3552493
@@ -73,6 +87,41 @@
 		});
 
 		intersectingEvents = intersectingMap;
+	}
+
+	function useConfetti(item: TimelineData) {
+		return item.vfx != undefined && item.vfx == 'confetti';
+	}
+
+	function confettiTagger(item: HTMLElement, enabled: boolean) {
+		if (enabled) {
+			confettiObserver ??= new IntersectionObserver(confettiObserverCallback, {
+				threshold: 0
+			});
+			confettiObserver.observe(item);
+
+			confettiElements.set(item.id.replace(ITEM_ID_PREFIX, ''), false);
+
+			return {
+				destroy() {
+					confettiObserver.unobserve(item);
+				}
+			};
+		}
+	}
+
+	function confettiObserverCallback(entries: IntersectionObserverEntry[]) {
+		entries.forEach((entry) => {
+			const eventId = entry.target.id.replace(ITEM_ID_PREFIX, '');
+			if (entry.isIntersecting) {
+				confettiElements.set(eventId, true);
+			} else {
+				showConfettiElements.delete(eventId);
+				confettiElements.set(eventId, false);
+			}
+		});
+
+		showConfettiElements = showConfettiElements;
 	}
 
 	function handleScroll() {
@@ -121,7 +170,7 @@
 			const boundingClientRect = currentIntersectingYear.getBoundingClientRect();
 			diamondY = Math.max(
 				0,
-				(((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100)*0.9
+				((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100 * 0.9
 			);
 		}
 	}
@@ -135,7 +184,12 @@
 			<p class="year-css" id={year.id}>{year.year}</p>
 			{#each year.events as item}
 				<section class="timeline-section reveal-section active" bind:this={revealSections[item.id]}>
-					<div class="timeline-item" id={toDomId(item.id)} use:timelineTimeObserverAction>
+					<div
+						class="timeline-item"
+						id={toDomId(item.id)}
+						use:timelineTimeObserverAction
+						use:confettiTagger={useConfetti(item)}
+					>
 						<div class="timeline-extra">
 							<div class="date">{formatDate(item.date)}</div>
 							<TitleLink href="#{toDomId(item.id)}">
@@ -156,9 +210,7 @@
 			<div class="year-end">End of {year.year}</div>
 		</div>
 	{/each}
-	<div>
-
-	</div>
+	<div />
 </section>
 
 <!-- Reference from https://www.youtube.com/watch?v=TcYSRI1JFQE -->
@@ -170,8 +222,8 @@
 		scroll-snap-align: start;
 	}
 	.year-css {
-		display:flex;
-		width:auto;
+		display: flex;
+		width: auto;
 		position: relative;
 		color: #ddd;
 		font-size: 2em;
@@ -316,7 +368,7 @@
 			width: 20%;
 			left: 10%;
 		}
-		.year-css::after{
+		.year-css::after {
 			width: 20%;
 			right: 10%;
 		}
@@ -339,12 +391,12 @@
 			height: 250px;
 		}
 		.year-css::before {
-			width:25%;
-			left:4%;
+			width: 25%;
+			left: 4%;
 		}
-		.year-css::after{
-			width:25%;
-			right:4%;
+		.year-css::after {
+			width: 25%;
+			right: 4%;
 		}
 		.year-end::before {
 			width: 30%;
@@ -381,12 +433,12 @@
 		.date {
 			font-size: 1.5em;
 		}
-		
+
 		.year-css::before {
 			width: 25%;
 			left: 5%;
 		}
-		.year-css::after{
+		.year-css::after {
 			width: 25%;
 			right: 5%;
 		}
@@ -428,11 +480,11 @@
 		.timeline-img-container {
 			margin: auto 2rem;
 		}
-		.extra-space{
+		.extra-space {
 			margin-left: 0px;
 			margin-right: 90px;
 		}
-		.year-css{
+		.year-css {
 			margin-right: 100px;
 		}
 	}

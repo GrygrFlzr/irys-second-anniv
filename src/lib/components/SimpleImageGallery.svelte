@@ -23,13 +23,7 @@
 	}
 </script>
 
-<div
-	class="pswp-gallery"
-	class:single-image-gallery={images.length === 1}
-	class:double-image-gallery={images.length === 2}
-	class:grid-image-gallery={images.length >= 3}
-	use:photoSwipeAction
->
+<div class="pswp-gallery" use:photoSwipeAction>
 	{#each images as image}
 		<a
 			href={image.src}
@@ -47,37 +41,10 @@
 	.pswp-gallery {
 		display: grid;
 		gap: 0.75rem;
-	}
-
-	.single-image-gallery {
-		grid-template-columns: 1fr;
-	}
-
-	.double-image-gallery {
-		grid-template-columns: 1fr;
-	}
-
-	.grid-image-gallery {
 		grid-template-columns: 1fr;
 	}
 
 	.thumbnail {
 		width: 100%;
-	}
-
-	@media (min-width: 768px) {
-		.double-image-gallery {
-			grid-template-columns: 1fr 1fr;
-		}
-
-		.grid-image-gallery {
-			grid-template-columns: 1fr 1fr;
-		}
-	}
-
-	@media (min-width: 1400px) {
-		.grid-image-gallery {
-			grid-template-columns: 1fr 1fr 1fr;
-		}
 	}
 </style>
