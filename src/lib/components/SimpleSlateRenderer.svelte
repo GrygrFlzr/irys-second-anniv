@@ -70,6 +70,14 @@
 		text-decoration: underline 0.15em rgba(0, 0, 0, 0);
 		transition: text-decoration-color 300ms;
 	}
+
+	/* Always show links in non-hover devices */
+	@media (hover: none) {
+		a:link {
+			text-decoration-color: rgb(255, 182, 209);
+		}
+	}
+
 	a:link {
 		color: rgb(255, 182, 209);
 	}
@@ -85,6 +93,7 @@
 	a:active {
 		text-decoration: none;
 	}
+
 	.bold {
 		font-weight: bold;
 	}
