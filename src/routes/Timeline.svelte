@@ -18,12 +18,14 @@
 
 	function handleFoldoutOpen() {
 		foldoutOpen = true;
+		document.body.style.overflow = "hidden";
 		document.body.addEventListener('click', handleMenuClose);
 		tick().then(scrollFoldoutEvent);
 	}
 
 	function handleMenuClose() {
 		foldoutOpen = false;
+		document.body.style.overflow = "auto";
 		document.body.removeEventListener('click', handleMenuClose);
 	}
 
@@ -164,8 +166,9 @@
 		bottom: 0;
 		left: 0;
 		z-index: 400;
+		width:auto;
 		display: flex;
-		transform: translateX(-3000px);
+		transform: translateX(-10000px);
 		background-color: rgba(0,0,0,0.4);
 		transition: transform 0.5s, top 0.15s;
 	}
@@ -189,6 +192,7 @@
 		transform: translateX(0px);
 		z-index: 1001;
 		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
 		scrollbar-width: thin;
 		scrollbar-color: #b90b8c #e5e5e5;
 	}
@@ -282,7 +286,7 @@
 	/*		border-left: 2px solid #ccc;*/
 	.sidebar {
 		position: fixed;
-		top: 100px;
+		top: 80px;
 		left: 300px;
 		bottom: 0;
 		margin: 0 0 0 18px;
@@ -320,7 +324,7 @@
 	}
 	.sidebar .links .content-jump {
 		margin: 0px 0px;
-		height: 50px;
+		height: 25px;
 		color: #888;
 		display: flex;
 		align-items: center;
@@ -391,10 +395,14 @@
 			font-size: 1.5em;
 		}
 		.sidebar {
+			top: 60px;
 			left: 285px;
 		}
 		.year-num.active{
 			text-shadow: none;
+		}
+		.foldout{
+			height: 100svh;
 		}
 	}
 	@media (min-width: 481px) {
@@ -404,6 +412,7 @@
 	}
 	@media (min-width: 769px) {
 		.foldout {
+			height: 95svh;
 			width: 200px;
 		}
 		.arrow.hide {
@@ -420,6 +429,7 @@
 		.sidebar {
 			margin-left: 25px;
 			left: 300px;
+			top: 100px;
 		}
 
 		.year::before {

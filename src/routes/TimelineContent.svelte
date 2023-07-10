@@ -170,7 +170,7 @@
 			const boundingClientRect = currentIntersectingYear.getBoundingClientRect();
 			diamondY = Math.max(
 				0,
-				((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100 * 0.9
+				((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100 * 0.85
 			);
 		}
 	}
@@ -219,7 +219,6 @@
 	.timeline {
 		margin: 1rem;
 		padding: 0 20px 0 30px;
-		scroll-snap-align: start;
 	}
 	.year-css {
 		display: flex;
@@ -230,7 +229,6 @@
 		padding-bottom: 20px;
 		text-decoration: underline;
 		text-underline-position: under;
-		scroll-snap-align: start;
 		align-items: center;
 		justify-content: center;
 	}
@@ -411,6 +409,7 @@
 		.timeline {
 			margin: 0px 0px 0px 135px;
 			padding: 50px 30px 0px 30px;
+			scroll-snap-align: start;
 		}
 		.extra-space {
 			margin-left: 10px;
@@ -433,7 +432,9 @@
 		.date {
 			font-size: 1.5em;
 		}
-
+		.year-css{
+			scroll-snap-align: start;
+		}
 		.year-css::before {
 			width: 25%;
 			left: 5%;
