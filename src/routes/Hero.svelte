@@ -112,7 +112,11 @@
 	</div>
 
 	{#if showTitle}
-		<div class="title title-glow" class:title-show={showTitle} in:fade={{ duration: 500, easing: quadInOut }}>
+		<div
+			class="title title-glow"
+			class:title-show={showTitle}
+			in:fade={{ duration: 500, easing: quadInOut }}
+		>
 			THE PANDORA LOGS OF HOPE
 		</div>
 
@@ -183,21 +187,21 @@
 
 	@keyframes glow {
 		from {
-			text-shadow: 0 0 0px rgba(255, 255, 255, 0), 0 0 3px rgba(255, 255, 255, 1);
+			text-shadow: 0 0 0px rgba(255, 255, 255, 0), 0 0 2px rgba(255, 255, 255, 0.6);
 		}
 
 		to {
-			text-shadow: 0 0 3px rgba(255, 255, 255, 1), 0 0 0px rgba(255, 255, 255, 0);
+			text-shadow: 0 0 2px rgba(255, 255, 255, 0.6), 0 0 0px rgba(255, 255, 255, 0);
 		}
 	}
 
 	@keyframes title-glow {
 		from {
-			text-shadow: 0 0 5px rgba(255, 255, 255, 0), 0 0 20px rgba(255, 255, 255, 1);
+			text-shadow: 0 0 5px rgba(255, 255, 255, 0), 0 0 10px rgba(255, 255, 255, 0.6);
 		}
 
 		to {
-			text-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 5px rgba(255, 255, 255, 0);
+			text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 5px rgba(255, 255, 255, 0);
 		}
 	}
 
