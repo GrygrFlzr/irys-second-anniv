@@ -221,7 +221,7 @@
 		padding: 2rem 10%;
 		opacity: 0;
 		transition: all 150ms ease-in-out;
-		color: rgba(255, 255, 255, 0.5);
+		color: rgba(255, 255, 255, 0.95);
 		/* 
 			reminder: if this is changed to whitespace sensitive
 			we need to dedent the poem array
@@ -232,6 +232,8 @@
 		flex-direction: column;
 		align-items: center;
 		min-height: 58rem;
+		background-color: rgb(41, 38, 38);
+		box-shadow: inset 0px 5px 5px rgb(31, 28, 28), 0px 2px 1px rgb(31, 28, 28);
 	}
 
 	.fit-content {
