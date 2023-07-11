@@ -16,11 +16,9 @@ function getProxyImageURL(
 }
 
 function getDownscaledProxyImageURL(cmsImage: any): string {
-	if (cmsImage.width > 800) {
-		return getProxyImageURL(cmsImage.url, 800, undefined);
-	} else {
-		return getProxyImageURL(cmsImage.url, undefined, 800);
-	}
+	return cmsImage.width > cmsImage.height
+		? getProxyImageURL(cmsImage.url, 800, undefined)
+		: getProxyImageURL(cmsImage.url, undefined, 800);
 }
 
 function getImageObject(cmsImageObj: any): Image {
