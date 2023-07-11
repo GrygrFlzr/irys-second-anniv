@@ -253,7 +253,7 @@
 
 	.poem-content {
 		width: fit-content;
-		min-width: 22em;
+		min-width: 23em;
 		max-width: 80vw;
 	}
 
