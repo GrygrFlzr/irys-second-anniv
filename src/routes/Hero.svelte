@@ -177,6 +177,7 @@
 		transition: all 150ms ease-in-out;
 		opacity: 0;
 		text-align: center;
+		padding: 0 0.75rem 0 0.75rem;
 	}
 
 	.title-show {
@@ -215,6 +216,7 @@
 		font-size: 22px;
 		text-align: center;
 		color: rgb(255, 255, 255, 0.5);
+		padding: 0 0.75rem 0 0.75rem;
 	}
 
 	.sub-title-emphasis {
