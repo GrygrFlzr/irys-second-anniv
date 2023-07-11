@@ -97,7 +97,7 @@
 		intersectingEvents = intersectingMap;
 	}
 
-	function getEventIdFromObserverEntry(entry: IntersectionObserverEntry) : string {
+	function getEventIdFromObserverEntry(entry: IntersectionObserverEntry): string {
 		return entry.target.id.replace(TIMELINE_ID_PREFIX, '');
 	}
 
@@ -198,7 +198,6 @@
 			src = event?.images[0].src;
 		}
 	}
-
 </script>
 
 <svelte:window on:scroll={handleScroll} />
