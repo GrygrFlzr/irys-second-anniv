@@ -2,6 +2,7 @@ import type { Element, Text } from 'slate';
 
 type Image = {
 	src: string;
+	smallSrc?: string; // Used in cases where we need a smaller version if the base image is too big!
 	alt: string;
 	height: number;
 	width: number;

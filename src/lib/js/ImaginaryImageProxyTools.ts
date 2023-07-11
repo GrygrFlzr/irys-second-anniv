@@ -8,21 +8,22 @@ import { createHmac } from 'node:crypto';
 
 export default function getImaginaryProxyImageURL(
 	src: string,
-	width: number,
-	height: number,
+	width: number | undefined,
+	height: number | undefined,
 	quality = 90
 ): string {
 	if (typeof src !== 'string') throw new Error('Cannot optimize static import');
 
 	if (src.toLowerCase().endsWith('.gif')) return src;
 
-	const query = [
-		'type=webp',
-		'stripmeta=true',
-		`width=${width}`,
-		`height=${height}`,
-		`quality=${quality}`
-	];
+	const query = ['type=webp', 'stripmeta=true', `quality=${quality}`];
+	if (width !== undefined) {
+		query.push(`width=${width}`);
+	}
+
+	if (height !== undefined) {
+		query.push(`height=${height}`);
+	}
 
 	const urlParam = encodeURIComponent(src.replace('localhost', 'host.docker.internal'));
 

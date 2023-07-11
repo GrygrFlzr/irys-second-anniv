@@ -38,7 +38,7 @@
 			target="_blank"
 			rel="noreferrer"
 		>
-			<img class="thumbnail" src={image.src} alt={image.alt} loading="lazy" />
+			<img class="thumbnail" src={image.smallSrc ?? image.src} alt={image.alt} loading="lazy" />
 		</a>
 	{/each}
 </div>
