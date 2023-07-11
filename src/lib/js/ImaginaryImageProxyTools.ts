@@ -8,7 +8,7 @@ import { createHmac } from 'node:crypto';
 
 export default function getImaginaryProxyImageURL(
 	src: string,
-	width: number,
+	width: number | undefined,
 	height: number | undefined,
 	quality = 90
 ): string {
@@ -16,7 +16,11 @@ export default function getImaginaryProxyImageURL(
 
 	if (src.toLowerCase().endsWith('.gif')) return src;
 
-	const query = ['type=webp', 'stripmeta=true', `width=${width}`, `quality=${quality}`];
+	const query = ['type=webp', 'stripmeta=true', `quality=${quality}`];
+	if (width !== undefined) {
+		query.push(`width=${width}`);
+	}
+
 	if (height !== undefined) {
 		query.push(`height=${height}`);
 	}
