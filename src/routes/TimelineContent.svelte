@@ -18,7 +18,7 @@
 	let confettiObserver: IntersectionObserver;
 	let confettiElements: Map<string, boolean> = new Map();
 	let throttling = false;
-	let currentBackgroundTracker: Set<string> = new Set();
+	let validBackgroundElements: Set<string> = new Set();
 
 	const yearElements: Record<number, HTMLElement> = {};
 	const revealSections: Record<string, HTMLElement> = {};
@@ -76,26 +76,57 @@
 			...intersectingEvents
 		};
 
-		entries.forEach((entry) => {
-			const eventId = getEventIdFromObserverEntry(entry);
-			const event = idFromEvent.get(eventId);
-			const isVisible = entry.isIntersecting;
+		const sortedEntries = entries.sort((a, b) => {
+			const aTop = a.target.getBoundingClientRect().top;
+			const bTop = b.target.getBoundingClientRect().top;
 
-			updateBackground(event, isVisible);
-
-			intersectingMap[eventId] = isVisible;
+			return aTop - bTop;
 		});
 
-		// Always keep the first element loaded in the tracker.
-		if (currentBackgroundTracker.size == 0) {
-			if (entries.length > 0) {
-				const firstEventId = getEventIdFromObserverEntry(entries[0]);
-				const firstEvent = idFromEvent.get(firstEventId);
-				updateBackground(firstEvent, true);
+		sortedEntries.forEach((entry) => {
+			const eventId = getEventIdFromObserverEntry(entry);
+			const event = idFromEvent.get(eventId);
+			const isIntersecting = entry.isIntersecting;
+
+			updateBackground(event, isIntersecting);
+
+			intersectingMap[eventId] = isIntersecting;
+		});
+
+		intersectingEvents = intersectingMap;
+	}
+
+	function extractBackgroundImage(event: TimelineData | undefined): string | undefined {
+		if (event?.background_image != null) {
+			return event.background_image.src;
+		} else if (event?.images != null) {
+			return event?.images[0].src;
+		} else {
+			return undefined;
+		}
+	}
+
+	function updateBackground(event: TimelineData | undefined, isEntering: boolean) {
+		if ($prefersReducedMotion) {
+			return;
+		}
+
+		let val = extractBackgroundImage(event);
+
+		if (val !== undefined) {
+			if (isEntering) {
+				validBackgroundElements.add(val);
+			} else {
+				validBackgroundElements.delete(val);
 			}
 		}
 
-		intersectingEvents = intersectingMap;
+		if (validBackgroundElements.size > 0) {
+			const newSrc = [...validBackgroundElements][0];
+			if (newSrc !== undefined) {
+				src = newSrc;
+			}
+		}
 	}
 
 	function getEventIdFromObserverEntry(entry: IntersectionObserverEntry): string {
@@ -104,6 +135,20 @@
 
 	function useConfetti(item: TimelineData) {
 		return item.vfx != undefined && item.vfx == 'confetti';
+	}
+
+	function initBackgroundImage(element: HTMLElement, event: TimelineData) {
+		const rect = element.getBoundingClientRect();
+		const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+		const isInBounds = !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+
+		if (isInBounds && !$prefersReducedMotion) {
+			let val = extractBackgroundImage(event);
+			if (val !== undefined) {
+				validBackgroundElements.add(val);
+				src = val;
+			}
+		}
 	}
 
 	function confettiTagger(item: HTMLElement, enabled: boolean) {
@@ -187,32 +232,6 @@
 			);
 		}
 	}
-
-	function updateBackground(event: TimelineData | undefined, isEntering: boolean) {
-		if ($prefersReducedMotion) {
-			return;
-		}
-
-		let val = undefined;
-		if (event?.background_image != null) {
-			val = event.background_image.src;
-		} else if (event?.images != null) {
-			val = event?.images[0].src;
-		}
-
-		if (val !== undefined) {
-			if (isEntering) {
-				currentBackgroundTracker.add(val);
-			} else {
-				currentBackgroundTracker.delete(val);
-			}
-		}
-
-		const newSrc = [...currentBackgroundTracker].pop();
-		if (newSrc !== undefined) {
-			src = newSrc;
-		}
-	}
 </script>
 
 <svelte:window on:scroll={handleScroll} />
@@ -227,6 +246,7 @@
 						class="timeline-item"
 						id={toDomId(item.id)}
 						use:timelineTimeObserverAction
+						use:initBackgroundImage={item}
 						use:confettiTagger={useConfetti(item)}
 					>
 						<div class="timeline-extra">
