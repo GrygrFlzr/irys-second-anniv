@@ -27,7 +27,7 @@
 		`For eight hours they wonder
 		Until the sixth zodiac sign
 		Then fourteen bell chimes thunder
-		And after it, a repeat sign ||:`,
+		And after it, a repeat sign 𝄆`,
 
 		`"As long as we are with hope,
 		we live. We stand tall."
@@ -52,7 +52,7 @@
 		`In four days she will be here
 		In four days she will shine
 		And through the bird in blue we hear
-		She tweets a repeat sign ||:`
+		She tweets a repeat sign 𝄆`
 	];
 
 	$: textTransition = $reducedMotion || !showPoem ? () => ({}) : typewriter;
@@ -144,7 +144,7 @@
 			bind:this={poemElement}
 			in:fade={{ delay: 300, duration: 500 }}
 		>
-			<div class="poem-symbol">||:</div>
+			<div class="poem-symbol">𝄆</div>
 			<div class="fit-content">
 				{#each poem as line}
 					<!--typewriter need exactly one text node-->
@@ -223,7 +223,7 @@
 	}
 
 	.poem-symbol {
-		font-size: 5rem;
+		font-size: 6rem;
 		text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 		margin-bottom: 1rem;
 		margin-left: 3rem;
@@ -255,17 +255,17 @@
 		max-width: 80vw;
 	}
 
-	@media (min-width: 30em) {
+	@media (min-width: 768px) {
 		.poem {
-			align-items: center;
+			display: grid;
+			column-gap: 100px;
+			grid-template-columns: 1fr 5fr;
+			min-height: 55rem;
 		}
 
 		.poem-symbol {
-			margin-left: initial;
-		}
-
-		.fit-content {
-			margin-left: 110px;
+			font-size: 10rem;
+			text-align: right;
 		}
 	}
 
