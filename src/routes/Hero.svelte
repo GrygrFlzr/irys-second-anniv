@@ -226,6 +226,7 @@
 		font-size: 5rem;
 		text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 		margin-bottom: 1rem;
+		margin-left: 3rem;
 	}
 
 	.poem {
@@ -242,7 +243,7 @@
 		line-height: 1.5;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
+		align-items: left;
 		min-height: 64rem;
 		background-color: rgb(41, 38, 38);
 		box-shadow: inset 0px 5px 5px rgb(31, 28, 28), 0px 2px 1px rgb(31, 28, 28);
@@ -252,6 +253,20 @@
 		width: fit-content;
 		min-width: 22em;
 		max-width: 80vw;
+	}
+
+	@media (min-width: 30em) {
+		.poem {
+			align-items: center;
+		}
+
+		.poem-symbol {
+			margin-left: initial;
+		}
+
+		.fit-content {
+			margin-left: 110px;
+		}
 	}
 
 	.show {
