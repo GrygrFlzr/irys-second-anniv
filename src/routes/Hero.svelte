@@ -226,7 +226,6 @@
 		font-size: 6rem;
 		text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 		margin-bottom: 1rem;
-		margin-left: 3rem;
 	}
 
 	.poem {
