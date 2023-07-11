@@ -103,8 +103,18 @@
 				<div class="links" class:active={currentYear === year}>
 					{#if year === currentYear}
 						{#each events as content}
+							{@const target = toDomId(content.id)}
 							<div class="get-tabled">
-								<div class="content-jump" class:active={intersectingEvents[content.id]} />
+								<a 
+									class="content-jump" 
+									class:active={intersectingEvents[content.id]} 
+									bind:this={foldoutEventElements[content.id]}
+									id="foldout-content{content.id}"
+									href="#{target}"
+									on:click|preventDefault={() => scrollToElement(target)}
+								>
+								 	<p class="hide-text">{content.title}</p>
+								</a>
 							</div>
 						{/each}
 					{/if}
@@ -381,6 +391,21 @@
 		position: absolute;
 		left: -9px;
 	}
+	.content-jump .hide-text{
+		color: #ddd;
+		filter: text-shadow(0px, 2px, 2px, rgba(0, 0, 0, 0.5));
+		display: none;
+	}
+	.content-jump:hover .hide-text{
+		width: 11em;
+		text-overflow: ellipsis;
+		overflow-x: hidden;
+		white-space: nowrap;
+		display: block;
+	}
+	.content-jump:hover{
+		text-decoration: none;
+	}
 	.last-circle::before {
 		content: '';
 		background: #e1cbd2;
@@ -401,12 +426,19 @@
 		background-color: #ddd;
 		border: 3px solid #ddd;
 		position: absolute;
-		left: -8px;
+		left: -7px;
 	}
 	/* .content-jump.border {
 		border-left: 3px solid #b90b8c;
 		transition: all 500ms ease-in-out;
 	} */
+	.content-jump:hover::after{
+		width:14px;
+		height: 14px;
+		left: -11px;
+		border: 3px solid #b90b8c;
+		transition: all 500ms ease-in-out;
+	}
 	.content-jump.active::after {
 		background-color: #b90b8c;
 		transition: all 500ms ease-in-out;
@@ -464,7 +496,7 @@
 			background-color: #ddd;
 			border: 3px solid #ddd;
 			position: absolute;
-			left: -8px;
+			left: -7px;
 			transition: all 300ms ease-in-out;
 		}
 
