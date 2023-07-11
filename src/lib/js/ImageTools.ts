@@ -10,6 +10,13 @@ function getProxyImageURL(src: string, width: number, height: number, quality = 
 	}
 }
 
+function getDownscaledProxyImageURL(cmsImage: any): string {
+	const width = 800;
+	const height = Math.round((width * cmsImage.height) / cmsImage.width);
+
+	return getProxyImageURL(cmsImage.url, width, height);
+}
+
 function getImageObject(cmsImageObj: any): Image {
 	let cmsImage;
 	if ('image' in cmsImageObj) {
@@ -19,6 +26,10 @@ function getImageObject(cmsImageObj: any): Image {
 	}
 	return {
 		src: getProxyImageURL(cmsImage.url, cmsImage.width, cmsImage.height),
+		smallSrc:
+			cmsImage.width > 800 || cmsImage.height > 800
+				? getDownscaledProxyImageURL(cmsImage)
+				: undefined,
 		alt: cmsImage.alt ?? '',
 		height: cmsImage.height,
 		width: cmsImage.width
