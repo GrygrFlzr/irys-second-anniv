@@ -226,7 +226,8 @@
 
 	.poem-symbol {
 		font-size: 6rem;
-		text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+		color: #b6095a;
+		text-shadow: 0 0 8px #2d080c;
 		margin-bottom: 1rem;
 	}
 
@@ -236,7 +237,7 @@
 		opacity: 0;
 		transition: all 150ms ease-in-out;
 		color: rgba(255, 255, 255, 0.95);
-		/* 
+		/*
 			reminder: if this is changed to whitespace sensitive
 			we need to dedent the poem array
 		*/
@@ -260,7 +261,7 @@
 		.poem {
 			display: grid;
 			column-gap: 100px;
-			grid-template-columns: 2fr 3.2fr;
+			grid-template-columns: auto auto;
 			min-height: 57rem;
 		}
 
@@ -283,7 +284,24 @@
 			padding-top: 0;
 			display: flex;
 			flex-direction: column;
-			justify-content: end;
+		}
+
+		@media (min-width: 768px) {
+			.poem {
+				display: grid;
+				column-gap: 100px;
+				grid-template-columns: auto auto;
+				min-height: 57rem;
+			}
+
+			.poem-symbol {
+				font-size: 10rem;
+				text-align: right;
+			}
+
+			.poem-content {
+				padding-top: 30px;
+			}
 		}
 	}
 </style>
