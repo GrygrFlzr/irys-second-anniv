@@ -4,6 +4,8 @@
 	import ScrollHint from './ScrollHint.svelte';
 	import { getGlobalStore } from '$lib/js/globalStore';
 	import type { TransitionConfig } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
+	import { quadInOut } from 'svelte/easing';
 	import { createReducedMotionStore } from '$lib/js/createMediaQueryStore';
 
 	let showTitle = false;
@@ -58,7 +60,7 @@
 	onMount(() => {
 		setTimeout(() => {
 			showTitle = true;
-		}, 500);
+		}, 900);
 
 		setTimeout(() => {
 			showPoem = true;
@@ -110,9 +112,11 @@
 	</div>
 
 	{#if showTitle}
-		<div class="title title-glow" class:title-show={showTitle}>THE PANDORA LOGS OF HOPE</div>
+		<div class="title title-glow" class:title-show={showTitle} in:fade={{ duration: 500, easing: quadInOut }}>
+			THE PANDORA LOGS OF HOPE
+		</div>
 
-		<div class="sub-title">
+		<div class="sub-title" in:fade={{ delay: 500, duration: 500, easing: quadInOut }}>
 			<p>
 				The world had been riddled with despair and desperation.<br />
 				But it would not stay that way for long.<br />
@@ -124,7 +128,9 @@
 			<p class="sub-title-emphasis glow"><b>This is her journey.</b></p>
 		</div>
 
-		<ScrollHint />
+		<div in:fade={{ delay: 1000, duration: 500, easing: quadInOut }}>
+			<ScrollHint />
+		</div>
 	{/if}
 
 	{#key showPoem}
