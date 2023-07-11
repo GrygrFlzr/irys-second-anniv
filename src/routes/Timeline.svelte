@@ -29,10 +29,13 @@
 		document.body.removeEventListener('click', handleMenuClose);
 	}
 
-	//Allows the user to scroll into the timeline content on click
+	/**
+	 * Allows the user to scroll into the timeline content on click.
+	 * @param id
+	 */
 	function scrollToElement(id: string) {
 		const element = document.getElementById(id);
-		element?.scrollIntoView({ behavior: 'smooth' });
+		element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 	}
 
 	function scrollFoldoutEvent() {
