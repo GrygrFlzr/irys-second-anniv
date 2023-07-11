@@ -30,6 +30,7 @@
 	.confetti-wrapper {
 		display: none;
 		overflow: hidden;
+		pointer-events: none;
 	}
 
 	@media (prefers-reduced-motion: no-preference) {
