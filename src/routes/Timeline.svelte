@@ -452,13 +452,6 @@
 		border-left: 3px solid #b90b8c;
 		transition: all 500ms ease-in-out;
 	} */
-	.content-jump:hover::after {
-		width: 14px;
-		height: 14px;
-		left: -11px;
-		border: 3px solid #b90b8c;
-		transition: all 500ms ease-in-out;
-	}
 	.content-jump.active::after {
 		background-color: #b90b8c;
 		transition: all 500ms ease-in-out;
@@ -540,6 +533,14 @@
 		.content-jump:hover .tooltip {
 			white-space: nowrap;
 			display: block;
+		}
+
+		.content-jump:hover::after {
+			width: 14px;
+			height: 14px;
+			left: -11px;
+			border: 3px solid #b90b8c;
+			transition: all 500ms ease-in-out;
 		}
 	}
 
