@@ -17,7 +17,6 @@
 	let currentYear = data.data[0].year;
 	let src = '/img/timeline-bg.jpg';
 	let startPos = 0;
-	let bgTransform = 0;
 	let showConfettiElements = new Set<string>();
 	let crossFading = false;
 
@@ -30,7 +29,6 @@
 	const prefersReducedMotion = createReducedMotionStore();
 
 	$: src, resetBgTransform();
-	$: diamondY, transformBg();
 
 	function resetBgTransform() {
 		if ($prefersReducedMotion || !browser) {
@@ -39,14 +37,6 @@
 
 		crossFading = true;
 		startPos = globalThis.scrollY;
-	}
-
-	function transformBg() {
-		if ($prefersReducedMotion || !browser || crossFading) {
-			return;
-		}
-
-		bgTransform = Math.min(80, (startPos - globalThis.scrollY) / 20);
 	}
 </script>
 
@@ -66,7 +56,6 @@
 			out:receive={{ key }}
 			class="background-img"
 			alt=""
-			style:transform="translateY({bgTransform}px)"
 			on:introend={() => (crossFading = false)}
 		/>
 	{/key}
