@@ -32,7 +32,7 @@
 			target="_blank"
 			rel="noreferrer"
 		>
-			<img class="thumbnail" src={image.src} alt={image.alt} />
+			<img class="thumbnail" src={image.smallSrc ?? image.src} alt={image.alt} />
 		</a>
 	{/each}
 </div>
