@@ -35,7 +35,6 @@
 	 */
 	function scrollToElement(id: string) {
 		const element = document.getElementById(id);
-		element?.click();
 		element?.querySelector('a')?.focus({ preventScroll: true });
 		element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 	}
@@ -404,10 +403,6 @@
 		left: 1rem;
 		position: absolute;
 	}
-	.content-jump:hover .tooltip {
-		white-space: nowrap;
-		display: block;
-	}
 
 	.content-jump .tooltip span {
 		text-overflow: ellipsis;
@@ -538,6 +533,13 @@
 	@media (min-width: 1400px) {
 		.foldout {
 			width: 250px;
+		}
+	}
+
+	@media (hover: hover) {
+		.content-jump:hover .tooltip {
+			white-space: nowrap;
+			display: block;
 		}
 	}
 
