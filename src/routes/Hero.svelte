@@ -110,7 +110,7 @@
 	</div>
 
 	{#if showTitle}
-		<div class="title" class:title-show={showTitle}>THE PANDORA LOGS OF HOPE</div>
+		<div class="title title-glow" class:title-show={showTitle}>THE PANDORA LOGS OF HOPE</div>
 
 		<div class="sub-title">
 			<p>
@@ -121,7 +121,7 @@
 
 				And thus, Hope descended on July 11, 2021.
 			</p>
-			<p class="sub-title-emphasis"><b>This is her journey.</b></p>
+			<p class="sub-title-emphasis glow"><b>This is her journey.</b></p>
 		</div>
 
 		<ScrollHint />
@@ -165,6 +165,34 @@
 
 	.title-show {
 		opacity: 1;
+	}
+
+	.glow {
+		animation: glow 3s ease-in-out infinite alternate;
+	}
+
+	.title-glow {
+		animation: title-glow 3s ease-in-out infinite alternate;
+	}
+
+	@keyframes glow {
+		from {
+			text-shadow: 0 0 0px rgba(255, 255, 255, 0), 0 0 3px rgba(255, 255, 255, 1);
+		}
+
+		to {
+			text-shadow: 0 0 3px rgba(255, 255, 255, 1), 0 0 0px rgba(255, 255, 255, 0);
+		}
+	}
+
+	@keyframes title-glow {
+		from {
+			text-shadow: 0 0 5px rgba(255, 255, 255, 0), 0 0 20px rgba(255, 255, 255, 1);
+		}
+
+		to {
+			text-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 5px rgba(255, 255, 255, 0);
+		}
 	}
 
 	.sub-title {
