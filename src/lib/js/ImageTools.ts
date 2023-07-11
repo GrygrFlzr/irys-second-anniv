@@ -6,7 +6,7 @@ function getProxyImageURL(
 	src: string,
 	width: number | undefined,
 	height: number | undefined,
-	quality = 90
+	quality = 80
 ): string {
 	if (env.BYPASS_IMAGINARY_PROXY && env.BYPASS_IMAGINARY_PROXY === 'true') {
 		return new URL(src, env.CMS_REST_API_URL).toString();
@@ -29,7 +29,10 @@ function getImageObject(cmsImageObj: any): Image {
 		cmsImage = cmsImageObj;
 	}
 	return {
-		src: getProxyImageURL(cmsImage.url, cmsImage.width, cmsImage.height),
+		src:
+			cmsImage.width > cmsImage.height
+				? getProxyImageURL(cmsImage.url, 1920, undefined)
+				: getProxyImageURL(cmsImage.url, undefined, 1080),
 		smallSrc:
 			cmsImage.width > 800 || cmsImage.height > 800
 				? getDownscaledProxyImageURL(cmsImage)
