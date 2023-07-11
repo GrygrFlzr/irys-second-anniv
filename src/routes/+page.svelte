@@ -16,10 +16,7 @@
 	let diamondY = 0;
 	let currentYear = data.data[0].year;
 	let src = '/img/timeline-bg.jpg';
-	let startPos = 0;
-	let bgTransform = 0;
 	let showConfettiElements = new Set<string>();
-	let crossFading = false;
 
 	const [send, receive] = crossfade({
 		duration: 1000,
@@ -28,26 +25,6 @@
 
 	const key = 'WHAT_EVER';
 	const prefersReducedMotion = createReducedMotionStore();
-
-	$: src, resetBgTransform();
-	$: diamondY, transformBg();
-
-	function resetBgTransform() {
-		if ($prefersReducedMotion || !browser) {
-			return;
-		}
-
-		crossFading = true;
-		startPos = globalThis.scrollY;
-	}
-
-	function transformBg() {
-		if ($prefersReducedMotion || !browser || crossFading) {
-			return;
-		}
-
-		bgTransform = Math.min(80, (startPos - globalThis.scrollY) / 20);
-	}
 </script>
 
 <svelte:head>
@@ -60,15 +37,7 @@
 
 <div class="background">
 	{#key src}
-		<img
-			{src}
-			in:send={{ key }}
-			out:receive={{ key }}
-			class="background-img"
-			alt=""
-			style:transform="translateY({bgTransform}px)"
-			on:introend={() => (crossFading = false)}
-		/>
+		<img {src} in:send={{ key }} out:receive={{ key }} class="background-img" alt="" />
 	{/key}
 	<div class="stream-idol blur">
 		<a href="https://www.youtube.com/watch?v=UpbpwXAEJl4" class="timeHeader"
