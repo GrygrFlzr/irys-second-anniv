@@ -26,16 +26,20 @@
 			class:bold={elem.bold}
 			class:italic={elem.italic}
 			class:underline={elem.underline}
-			class:strikethrough={elem.strikethrough}>{elem.text.trim()}</span
+			class:strikethrough={elem.strikethrough}>{elem.text}</span
 		>
 	{:else if elem.type === 'link'}
+		<!--
+			Similarly, don't add a line break between the text element and the
+			</a> as it adds a random whitespace.
+		-->
 		<a
 			href={toRichtextLinkElement(elem).url}
 			target={toRichtextLinkElement(elem).newTab ? '_blank' : '_self'}
 			class="richTextLink"
 		>
-			<svelte:self richTextElements={elem.children} />
-		</a>
+			<svelte:self richTextElements={elem.children} /></a
+		>
 	{:else if elem.type === 'ul'}
 		<ul>
 			<svelte:self richTextElements={elem.children} />
@@ -124,9 +128,5 @@
 
 	.text {
 		white-space: pre-line;
-	}
-
-	.richTextLink {
-		margin: 0.2rem;
 	}
 </style>
