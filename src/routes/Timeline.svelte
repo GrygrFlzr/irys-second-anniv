@@ -105,15 +105,15 @@
 						{#each events as content}
 							{@const target = toDomId(content.id)}
 							<div class="get-tabled">
-								<a 
-									class="content-jump" 
-									class:active={intersectingEvents[content.id]} 
+								<a
+									class="content-jump"
+									class:active={intersectingEvents[content.id]}
 									bind:this={foldoutEventElements[content.id]}
 									id="foldout-content{content.id}"
 									href="#{target}"
 									on:click|preventDefault={() => scrollToElement(target)}
 								>
-								 	<p class="hide-text">{content.title}</p>
+									<p class="tooltip"><span>{content.title}</span></p>
 								</a>
 							</div>
 						{/each}
@@ -287,6 +287,7 @@
 	}
 	.get-tabled {
 		display: table-row;
+		position: relative;
 	}
 	.year .year-num {
 		margin: inherit;
@@ -391,19 +392,41 @@
 		position: absolute;
 		left: -9px;
 	}
-	.content-jump .hide-text{
+	.content-jump .tooltip {
 		color: #ddd;
 		filter: text-shadow(0px, 2px, 2px, rgba(0, 0, 0, 0.5));
 		display: none;
+		background-color: rgb(25, 25, 25, 0.8);
+		padding: 0.5rem;
+		border-radius: 0.5rem;
+		left: 1rem;
+		position: absolute;
 	}
-	.content-jump:hover .hide-text{
-		width: 11em;
-		text-overflow: ellipsis;
-		overflow-x: hidden;
+	.content-jump:hover .tooltip {
 		white-space: nowrap;
 		display: block;
 	}
-	.content-jump:hover{
+
+	.content-jump .tooltip span {
+		text-overflow: ellipsis;
+		min-width: 10em;
+		max-width: 15em;
+		display: inline-block;
+		overflow: hidden;
+	}
+
+	.content-jump .tooltip::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		border-top: 5px solid transparent;
+		border-bottom: 5px solid transparent;
+		border-right: 5px solid rgba(25, 25, 25, 0.8);
+		left: -5px;
+	}
+
+	.content-jump:hover {
 		text-decoration: none;
 	}
 	.last-circle::before {
@@ -432,8 +455,8 @@
 		border-left: 3px solid #b90b8c;
 		transition: all 500ms ease-in-out;
 	} */
-	.content-jump:hover::after{
-		width:14px;
+	.content-jump:hover::after {
+		width: 14px;
 		height: 14px;
 		left: -11px;
 		border: 3px solid #b90b8c;
