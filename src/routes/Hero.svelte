@@ -145,7 +145,7 @@
 			in:fade={{ delay: 300, duration: 500 }}
 		>
 			<div class="poem-symbol">𝄆</div>
-			<div class="fit-content">
+			<div class="poem-content">
 				{#each poem as line}
 					<!--typewriter need exactly one text node-->
 					<!--prettier-ignore-->
@@ -250,7 +250,7 @@
 		box-shadow: inset 0px 5px 5px rgb(31, 28, 28), 0px 2px 1px rgb(31, 28, 28);
 	}
 
-	.fit-content {
+	.poem-content {
 		width: fit-content;
 		min-width: 22em;
 		max-width: 80vw;
@@ -260,13 +260,17 @@
 		.poem {
 			display: grid;
 			column-gap: 100px;
-			grid-template-columns: 1fr 5fr;
-			min-height: 55rem;
+			grid-template-columns: 2fr 3.2fr;
+			min-height: 57rem;
 		}
 
 		.poem-symbol {
 			font-size: 10rem;
 			text-align: right;
+		}
+
+		.poem-content {
+			padding-top: 30px;
 		}
 	}
 
