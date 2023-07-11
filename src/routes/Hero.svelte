@@ -55,7 +55,7 @@
 		She tweets a repeat sign ||:`
 	];
 
-	$: textTransition = $reducedMotion ? () => ({}) : typewriter;
+	$: textTransition = $reducedMotion || !showPoem ? () => ({}) : typewriter;
 
 	onMount(() => {
 		setTimeout(() => {
