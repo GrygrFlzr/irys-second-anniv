@@ -59,7 +59,7 @@
 
 	function timelineTimeObserverAction(item: HTMLElement) {
 		timelineItemObserver ??= new IntersectionObserver(timelineItemObserverCallback, {
-			threshold: 0.9
+			threshold: 0.4
 		});
 
 		timelineItemObserver.observe(item);

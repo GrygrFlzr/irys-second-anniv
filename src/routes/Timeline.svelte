@@ -51,7 +51,7 @@
 	}
 
 	$: currentYearIndex = years.findIndex((y) => y.year === currentYear);
-	$: currentYearDiamondOffset = (currentYearIndex + 2) * 28;
+	$: currentYearDiamondOffset = (currentYearIndex + 1) * 28;
 </script>
 
 <!--Might be bad practice-->
