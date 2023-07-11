@@ -10,7 +10,7 @@
 	export let intersectingEvents: Record<string, boolean>;
 	export let diamondY: number;
 	export let currentYear: number;
-	export let src: string | undefined;
+	export let src: string;
 	export let showConfettiElements: Set<string>;
 	export let prefersReducedMotion: Readable<boolean>;
 
@@ -18,7 +18,7 @@
 	let confettiObserver: IntersectionObserver;
 	let confettiElements: Map<string, boolean> = new Map();
 	let throttling = false;
-	let isFirstItemObserverCallback = true;
+	let currentBackgroundTracker: Set<string> = new Set();
 
 	const yearElements: Record<number, HTMLElement> = {};
 	const revealSections: Record<string, HTMLElement> = {};
@@ -79,18 +79,19 @@
 		entries.forEach((entry) => {
 			const eventId = getEventIdFromObserverEntry(entry);
 			const event = idFromEvent.get(eventId);
-			updateBackground(event);
+			const isVisible = entry.isIntersecting;
 
-			intersectingMap[eventId] = entry.isIntersecting;
+			updateBackground(event, isVisible);
+
+			intersectingMap[eventId] = isVisible;
 		});
 
-		if (isFirstItemObserverCallback) {
-			isFirstItemObserverCallback = false;
-			/* Update the background with the first item as initialization */
+		// Always keep the first element loaded in the tracker.
+		if (currentBackgroundTracker.size == 0) {
 			if (entries.length > 0) {
 				const firstEventId = getEventIdFromObserverEntry(entries[0]);
 				const firstEvent = idFromEvent.get(firstEventId);
-				updateBackground(firstEvent);
+				updateBackground(firstEvent, true);
 			}
 		}
 
@@ -187,15 +188,29 @@
 		}
 	}
 
-	function updateBackground(event: TimelineData | undefined) {
+	function updateBackground(event: TimelineData | undefined, isEntering: boolean) {
 		if ($prefersReducedMotion) {
 			return;
 		}
 
+		let val = undefined;
 		if (event?.background_image != null) {
-			src = event.background_image.src;
+			val = event.background_image.src;
 		} else if (event?.images != null) {
-			src = event?.images[0].src;
+			val = event?.images[0].src;
+		}
+
+		if (val !== undefined) {
+			if (isEntering) {
+				currentBackgroundTracker.add(val);
+			} else {
+				currentBackgroundTracker.delete(val);
+			}
+		}
+
+		const newSrc = [...currentBackgroundTracker].pop();
+		if (newSrc !== undefined) {
+			src = newSrc;
 		}
 	}
 </script>
