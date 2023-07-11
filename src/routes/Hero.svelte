@@ -143,7 +143,7 @@
 				{#each poem as line}
 					<!--typewriter need exactly one text node-->
 					<!--prettier-ignore-->
-					<p class="poem-paragraph" in:textTransition={{ speed: 4 }} on:introend={updateHeroHeight}>{line}</p>
+					<p class="poem-paragraph" in:textTransition={{ speed: 8 }} on:introend={updateHeroHeight}>{line}</p>
 				{/each}
 			</div>
 		</div>
@@ -242,34 +242,6 @@
 
 	.show {
 		opacity: 1;
-	}
-
-	@media (min-width: 1500px) {
-		.poem {
-			position: absolute;
-			right: 1rem;
-			top: 6rem;
-			width: 25%;
-			padding: 1rem;
-			scrollbar-width: thin;
-			overflow-y: scroll;
-			height: calc(100vh - 12rem);
-			padding-top: 50vh;
-			min-height: initial;
-		}
-
-		.poem::-webkit-scrollbar {
-			width: 0.5rem;
-		}
-
-		.poem:hover::-webkit-scrollbar-track {
-			background: #3d3d3d;
-		}
-
-		.poem::-webkit-scrollbar-thumb {
-			background-color: #888;
-			border-radius: 0.5rem;
-		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
