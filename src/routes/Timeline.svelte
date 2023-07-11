@@ -35,7 +35,8 @@
 	 */
 	function scrollToElement(id: string) {
 		const element = document.getElementById(id);
-		element?.querySelector('a')?.focus({ preventScroll: true })
+		element?.click();
+		element?.querySelector('a')?.focus({ preventScroll: true });
 		element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 	}
 
