@@ -18,7 +18,6 @@
 	let confettiObserver: IntersectionObserver;
 	let confettiElements: Map<string, boolean> = new Map();
 	let throttling = false;
-	let isFirstItemObserverCallback = true;
 
 	const yearElements: Record<number, HTMLElement> = {};
 	const revealSections: Record<string, HTMLElement> = {};
@@ -59,7 +58,7 @@
 
 	function timelineTimeObserverAction(item: HTMLElement) {
 		timelineItemObserver ??= new IntersectionObserver(timelineItemObserverCallback, {
-			threshold: 0.9
+			threshold: 0.4
 		});
 
 		timelineItemObserver.observe(item);
@@ -78,21 +77,14 @@
 
 		entries.forEach((entry) => {
 			const eventId = getEventIdFromObserverEntry(entry);
-			const event = idFromEvent.get(eventId);
-			updateBackground(event);
+
+			if (entry.isIntersecting) {
+				const event = idFromEvent.get(eventId);
+				updateBackground(event);
+			}
 
 			intersectingMap[eventId] = entry.isIntersecting;
 		});
-
-		if (isFirstItemObserverCallback) {
-			isFirstItemObserverCallback = false;
-			/* Update the background with the first item as initialization */
-			if (entries.length > 0) {
-				const firstEventId = getEventIdFromObserverEntry(entries[0]);
-				const firstEvent = idFromEvent.get(firstEventId);
-				updateBackground(firstEvent);
-			}
-		}
 
 		intersectingEvents = intersectingMap;
 	}
