@@ -138,7 +138,13 @@
 	{/if}
 
 	{#key showPoem}
-		<div class="poem" class:show={showPoem} bind:this={poemElement}>
+		<div
+			class="poem"
+			class:show={showPoem}
+			bind:this={poemElement}
+			in:fade={{ delay: 300, duration: 500 }}
+		>
+			<div class="poem-symbol">||:</div>
 			<div class="fit-content">
 				{#each poem as line}
 					<!--typewriter need exactly one text node-->
@@ -216,6 +222,12 @@
 		color: rgb(255, 255, 255, 1);
 	}
 
+	.poem-symbol {
+		font-size: 5rem;
+		text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+		margin-bottom: 1rem;
+	}
+
 	.poem {
 		scroll-snap-align: start;
 		padding: 2rem 10%;
@@ -231,7 +243,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		min-height: 58rem;
+		min-height: 64rem;
 		background-color: rgb(41, 38, 38);
 		box-shadow: inset 0px 5px 5px rgb(31, 28, 28), 0px 2px 1px rgb(31, 28, 28);
 	}
