@@ -27,7 +27,7 @@
 		`For eight hours they wonder
 		Until the sixth zodiac sign
 		Then fourteen bell chimes thunder
-		And after it, a repeat sign ||:`,
+		And after it, a repeat sign 𝄆`,
 
 		`"As long as we are with hope,
 		we live. We stand tall."
@@ -52,7 +52,7 @@
 		`In four days she will be here
 		In four days she will shine
 		And through the bird in blue we hear
-		She tweets a repeat sign ||:`
+		She tweets a repeat sign 𝄆`
 	];
 
 	$: textTransition = $reducedMotion || !showPoem ? () => ({}) : typewriter;
@@ -138,8 +138,14 @@
 	{/if}
 
 	{#key showPoem}
-		<div class="poem" class:show={showPoem} bind:this={poemElement}>
-			<div class="fit-content">
+		<div
+			class="poem"
+			class:show={showPoem}
+			bind:this={poemElement}
+			in:fade={{ delay: 300, duration: 500 }}
+		>
+			<div class="poem-symbol">𝄆</div>
+			<div class="poem-content">
 				{#each poem as line}
 					<!--typewriter need exactly one text node-->
 					<!--prettier-ignore-->
@@ -171,6 +177,7 @@
 		transition: all 150ms ease-in-out;
 		opacity: 0;
 		text-align: center;
+		padding: 0 0.75rem 0 0.75rem;
 	}
 
 	.title-show {
@@ -209,6 +216,7 @@
 		font-size: 22px;
 		text-align: center;
 		color: rgb(255, 255, 255, 0.5);
+		padding: 0 0.75rem 0 0.75rem;
 	}
 
 	.sub-title-emphasis {
@@ -216,13 +224,20 @@
 		color: rgb(255, 255, 255, 1);
 	}
 
+	.poem-symbol {
+		font-size: 6rem;
+		color: #b6095a;
+		text-shadow: 0 0 8px #2d080c;
+		margin-bottom: 1rem;
+	}
+
 	.poem {
 		scroll-snap-align: start;
 		padding: 2rem 10%;
 		opacity: 0;
 		transition: all 150ms ease-in-out;
-		color: rgba(255, 255, 255, 0.5);
-		/* 
+		color: rgba(255, 255, 255, 0.95);
+		/*
 			reminder: if this is changed to whitespace sensitive
 			we need to dedent the poem array
 		*/
@@ -230,14 +245,34 @@
 		line-height: 1.5;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		min-height: 58rem;
+		align-items: left;
+		min-height: 64rem;
+		background-color: rgb(41, 38, 38);
+		box-shadow: inset 0px 5px 5px rgb(31, 28, 28), 0px 2px 1px rgb(31, 28, 28);
 	}
 
-	.fit-content {
+	.poem-content {
 		width: fit-content;
-		min-width: 22em;
+		min-width: 23em;
 		max-width: 80vw;
+	}
+
+	@media (min-width: 768px) {
+		.poem {
+			display: grid;
+			column-gap: 100px;
+			grid-template-columns: auto auto;
+			min-height: 57rem;
+		}
+
+		.poem-symbol {
+			font-size: 10rem;
+			text-align: right;
+		}
+
+		.poem-content {
+			padding-top: 30px;
+		}
 	}
 
 	.show {
@@ -249,7 +284,24 @@
 			padding-top: 0;
 			display: flex;
 			flex-direction: column;
-			justify-content: end;
+		}
+
+		@media (min-width: 768px) {
+			.poem {
+				display: grid;
+				column-gap: 100px;
+				grid-template-columns: auto auto;
+				min-height: 57rem;
+			}
+
+			.poem-symbol {
+				font-size: 10rem;
+				text-align: right;
+			}
+
+			.poem-content {
+				padding-top: 30px;
+			}
 		}
 	}
 </style>
