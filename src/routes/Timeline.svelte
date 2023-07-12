@@ -391,7 +391,7 @@
 		background-color: #ddd;
 		border: 3px solid #ddd;
 		position: absolute;
-		left: -9px;
+		left: -9.5px;
 	}
 	.content-jump .tooltip {
 		color: #ddd;
