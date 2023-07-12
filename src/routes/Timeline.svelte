@@ -271,6 +271,9 @@
 		height: auto;
 		width: auto;
 	}
+	.year {
+		border-left: 3px solid #ddd;
+	}
 
 	.links {
 		transition: 750ms ease-out;
@@ -278,7 +281,6 @@
 		table-layout: fixed;
 		height: 0vh; /*Fallback for some devices*/
 		height: 0svh;
-		border-left: 3px solid #ddd;
 		position: relative;
 	}
 	.links.active {
@@ -293,7 +295,6 @@
 		margin: inherit;
 		padding: 5px 0px 0px 15px;
 		color: #ddd;
-		border-left: 3px solid #ddd;
 		transform: translateX(0px);
 	}
 	.year .year-num-mobile {
@@ -342,7 +343,7 @@
 		color: #ddd;
 		font-size: 32px;
 		position: absolute;
-		left: -7px;
+		left: -10px;
 		line-height: 1;
 	}
 
