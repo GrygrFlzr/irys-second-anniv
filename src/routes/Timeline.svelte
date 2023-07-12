@@ -529,7 +529,7 @@
 		}
 	}
 
-	@media (hover: hover) {
+	@media (hover: hover) and (pointer: fine) {
 		.content-jump:hover .tooltip {
 			white-space: nowrap;
 			display: block;
