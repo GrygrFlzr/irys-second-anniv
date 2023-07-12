@@ -297,7 +297,7 @@
 		-ms-user-select: none;
 		user-select: none;
 	}
-	.year-link:focus{
+	.year-link:focus {
 		outline: none;
 	}
 	.year-link:hover::before {
