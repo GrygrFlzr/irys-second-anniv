@@ -107,6 +107,9 @@
 </script>
 
 <div class="hero-section" bind:this={heroSection}>
+	{#if !showTitle}
+		<div class="hero-section-cover" out:fade={{ delay: 500, duration: 600, easing: quadInOut }} />
+	{/if}
 	<div class="hero-image">
 		<HeroImage />
 	</div>
@@ -120,7 +123,7 @@
 			THE PANDORA LOGS OF HOPE
 		</div>
 
-		<div class="sub-title" in:fade={{ delay: 500, duration: 500, easing: quadInOut }}>
+		<div class="sub-title" in:fade={{ delay: 500, duration: 600, easing: quadInOut }}>
 			<p>
 				The world had been riddled with despair and desperation.<br />
 				But it would not stay that way for long.<br />
@@ -161,10 +164,23 @@
 		padding-top: 15vh;
 		min-height: 100vh;
 		background-color: #242424;
+		background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+			url('img/timeline-bg.jpg');
+		background-size: cover;
+		background-position: top;
 		color: #fff;
 		scroll-snap-align: start;
 		position: relative;
 		z-index: 499;
+	}
+
+	.hero-section-cover {
+		width: 100%;
+		height: 100%;
+		background-color: #1a1a1a;
+		position: absolute;
+		top: 0px;
+		z-index: -1;
 	}
 
 	.hero-image {
@@ -247,7 +263,7 @@
 		flex-direction: column;
 		align-items: left;
 		min-height: 64rem;
-		background-color: rgb(41, 38, 38);
+		background-color: rgba(0, 0, 0, 0.2);
 		box-shadow: inset 0px 5px 5px rgb(31, 28, 28), 0px 2px 1px rgb(31, 28, 28);
 	}
 
