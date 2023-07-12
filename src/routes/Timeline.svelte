@@ -50,9 +50,6 @@
 		const [id] = intersectingEvent;
 		foldoutEventElements[id].scrollIntoView();
 	}
-
-	$: currentYearIndex = years.findIndex((y) => y.year === currentYear);
-	$: currentYearDiamondOffset = (currentYearIndex + 1) * 28;
 </script>
 
 <!--Might be bad practice-->
@@ -92,9 +89,6 @@
 
 <div class="sidebar" class:active={foldoutOpen} class:display={scrollY > $globalStore.heroHeight}>
 	<div class="wrapper">
-		<span class="diamond" style:top="calc({diamondY}% + {currentYearDiamondOffset}px)">
-			<Diamond />
-		</span>
 		{#each years as { year, events }}
 			<div class="year" id="x">
 				<p class="year-num" class:active={currentYear === year}>
@@ -103,6 +97,10 @@
 				</p>
 				<div class="links" class:active={currentYear === year}>
 					{#if year === currentYear}
+						<span class="diamond" style:top="calc({diamondY}% - 2px)">
+							<Diamond />
+						</span>
+
 						{#each events as content}
 							{@const target = toDomId(content.id)}
 							<div class="get-tabled">
@@ -281,6 +279,7 @@
 		height: 0vh; /*Fallback for some devices*/
 		height: 0svh;
 		border-left: 3px solid #ddd;
+		position: relative;
 	}
 	.links.active {
 		height: 70vh; /*Fallback for some devices*/
