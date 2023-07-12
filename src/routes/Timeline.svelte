@@ -364,7 +364,7 @@
 		padding: 0px 12px;
 		transition: all 300ms ease-in-out;
 	}
-	
+
 	.content-jump {
 		display: table-cell;
 		vertical-align: middle;
@@ -430,7 +430,7 @@
 		border-right: 5px solid rgba(25, 25, 25, 0.8);
 		left: -5px;
 	}
-	.content-jump:focus{
+	.content-jump:focus {
 		outline: none;
 	}
 	.content-jump:hover {
