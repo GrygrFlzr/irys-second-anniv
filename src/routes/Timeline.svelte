@@ -35,6 +35,7 @@
 	 */
 	function scrollToElement(id: string) {
 		const element = document.getElementById(id);
+		element?.querySelector('a')?.focus({ preventScroll: true });
 		element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 	}
 
@@ -103,8 +104,18 @@
 				<div class="links" class:active={currentYear === year}>
 					{#if year === currentYear}
 						{#each events as content}
+							{@const target = toDomId(content.id)}
 							<div class="get-tabled">
-								<div class="content-jump" class:active={intersectingEvents[content.id]} />
+								<a
+									class="content-jump"
+									class:active={intersectingEvents[content.id]}
+									bind:this={foldoutEventElements[content.id]}
+									id="foldout-content{content.id}"
+									href="#{target}"
+									on:click|preventDefault={() => scrollToElement(target)}
+								>
+									<p class="tooltip"><span>{content.title}</span></p>
+								</a>
 							</div>
 						{/each}
 					{/if}
@@ -277,6 +288,7 @@
 	}
 	.get-tabled {
 		display: table-row;
+		position: relative;
 	}
 	.year .year-num {
 		margin: inherit;
@@ -381,6 +393,39 @@
 		position: absolute;
 		left: -9px;
 	}
+	.content-jump .tooltip {
+		color: #ddd;
+		filter: text-shadow(0px, 2px, 2px, rgba(0, 0, 0, 0.5));
+		display: none;
+		background-color: rgb(25, 25, 25, 0.8);
+		padding: 0.5rem;
+		border-radius: 0.5rem;
+		left: 1rem;
+		position: absolute;
+	}
+
+	.content-jump .tooltip span {
+		text-overflow: ellipsis;
+		min-width: 10em;
+		max-width: 15em;
+		display: inline-block;
+		overflow: hidden;
+	}
+
+	.content-jump .tooltip::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		border-top: 5px solid transparent;
+		border-bottom: 5px solid transparent;
+		border-right: 5px solid rgba(25, 25, 25, 0.8);
+		left: -5px;
+	}
+
+	.content-jump:hover {
+		text-decoration: none;
+	}
 	.last-circle::before {
 		content: '';
 		background: #e1cbd2;
@@ -401,7 +446,7 @@
 		background-color: #ddd;
 		border: 3px solid #ddd;
 		position: absolute;
-		left: -8px;
+		left: -7px;
 	}
 	/* .content-jump.border {
 		border-left: 3px solid #b90b8c;
@@ -464,7 +509,7 @@
 			background-color: #ddd;
 			border: 3px solid #ddd;
 			position: absolute;
-			left: -8px;
+			left: -7px;
 			transition: all 300ms ease-in-out;
 		}
 
@@ -481,6 +526,21 @@
 	@media (min-width: 1400px) {
 		.foldout {
 			width: 250px;
+		}
+	}
+
+	@media (hover: hover) {
+		.content-jump:hover .tooltip {
+			white-space: nowrap;
+			display: block;
+		}
+
+		.content-jump:hover::after {
+			width: 14px;
+			height: 14px;
+			left: -11px;
+			border: 3px solid #b90b8c;
+			transition: all 500ms ease-in-out;
 		}
 	}
 
