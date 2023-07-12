@@ -364,12 +364,20 @@
 		padding: 0px 12px;
 		transition: all 300ms ease-in-out;
 	}
-
+	
 	.content-jump {
 		display: table-cell;
 		vertical-align: middle;
 		padding-left: 6px;
 		transform: translateX(0px);
+		/*https://stackoverflow.com/questions/21003535/anyway-to-prevent-the-blue-highlighting-of-elements-in-chrome-when-clicking-quic*/
+		-webkit-tap-highlight-color: transparent;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
 	}
 	.content-jump::before {
 		content: '';
@@ -422,7 +430,9 @@
 		border-right: 5px solid rgba(25, 25, 25, 0.8);
 		left: -5px;
 	}
-
+	.content-jump:focus{
+		outline: none;
+	}
 	.content-jump:hover {
 		text-decoration: none;
 	}
