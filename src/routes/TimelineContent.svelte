@@ -223,14 +223,36 @@
 	}
 
 	function checkDiamond() {
-		const currentIntersectingYear = yearElements[currentYear];
-		if (currentIntersectingYear && !$prefersReducedMotion) {
-			const boundingClientRect = currentIntersectingYear.getBoundingClientRect();
-			diamondY = Math.max(
-				0,
-				((scrollY - (boundingClientRect.top + scrollY)) / boundingClientRect.height) * 100 * 0.8
-			);
+		const intersectingEventsArray = Object.entries(intersectingEvents)
+			.filter(([_, intersecting]) => intersecting)
+			.map(([id]) => {
+				const element = revealSections[id];
+				return { rect: element.getBoundingClientRect(), id };
+			});
+
+		if (intersectingEventsArray.length === 0) {
+			return;
 		}
+
+		const topThird = innerHeight / 3;
+		const lastOnTop = intersectingEventsArray
+			.filter(({ rect }) => rect.top < topThird)
+			.sort((a, b) => b.rect.top - a.rect.top)[0];
+		if (lastOnTop == null) {
+			return;
+		}
+		const year = years.find((year) => year.year === currentYear);
+		if (!year?.events.length) {
+			return;
+		}
+		const index = year.events.findIndex((event) => event.id === lastOnTop.id);
+		const eventPercent = index > 0 ? (index / year.events.length) * 100 : 0;
+		const progressWithinEvent = Math.min(
+			100,
+			((topThird - lastOnTop.rect.top) / lastOnTop.rect.height) * 100
+		);
+
+		diamondY = Math.max(0, eventPercent + progressWithinEvent / year.events.length);
 	}
 </script>
 
@@ -239,7 +261,9 @@
 <section class="timeline">
 	{#each years as year}
 		<section class="year-divider" bind:this={yearElements[year.year]}>
-			<p class="year-css" id={year.id}>{year.year}</p>
+			<p class="year-css" id={toDomId(year.id)}>
+				{year.year}
+			</p>
 			{#each year.events as item}
 				<section class="timeline-section reveal-section active" bind:this={revealSections[item.id]}>
 					<div

@@ -38,6 +38,11 @@
 		element?.querySelector('a')?.focus({ preventScroll: true });
 		element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 	}
+	function scrollToYear(id: string) {
+		const element = document.getElementById(id);
+		element?.querySelector('a')?.focus({ preventScroll: true });
+		element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	}
 
 	function scrollFoldoutEvent() {
 		const intersectingEvent = Object.entries(intersectingEvents).find(
@@ -50,9 +55,6 @@
 		const [id] = intersectingEvent;
 		foldoutEventElements[id].scrollIntoView();
 	}
-
-	$: currentYearIndex = years.findIndex((y) => y.year === currentYear);
-	$: currentYearDiamondOffset = (currentYearIndex + 1) * 28;
 </script>
 
 <!--Might be bad practice-->
@@ -92,17 +94,26 @@
 
 <div class="sidebar" class:active={foldoutOpen} class:display={scrollY > $globalStore.heroHeight}>
 	<div class="wrapper">
-		<span class="diamond" style:top="calc({diamondY}% + {currentYearDiamondOffset}px)">
-			<Diamond />
-		</span>
-		{#each years as { year, events }}
+		{#each years as { year, events, id }}
+			{@const yearTarget = toDomId(id)}
 			<div class="year" id="x">
-				<p class="year-num" class:active={currentYear === year}>
-					<span class="year-num-mobile">{year}</span>
-					<span class="year-num-large">{year}</span>
-				</p>
+				<a
+					class="year-link"
+					href="#{yearTarget}"
+					on:click|preventDefault={() => scrollToYear(yearTarget)}
+				>
+					<p class="year-num" class:active={currentYear === year}>
+						<span class="year-num-mobile">{year}</span>
+						<span class="year-num-large">{year}</span>
+					</p>
+				</a>
+
 				<div class="links" class:active={currentYear === year}>
 					{#if year === currentYear}
+						<span class="diamond" style:top="calc({diamondY}% - 2px)">
+							<Diamond />
+						</span>
+
 						{#each events as content}
 							{@const target = toDomId(content.id)}
 							<div class="get-tabled">
@@ -273,14 +284,36 @@
 		height: auto;
 		width: auto;
 	}
-
+	.year {
+		border-left: 3px solid #ddd;
+	}
+	.year-link {
+		text-decoration: none;
+		-webkit-tap-highlight-color: transparent;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	.year-link:focus {
+		outline: none;
+	}
+	.year-link:hover::before {
+		width: 16px;
+		height: 16px;
+		left: -9px;
+		border: 3px solid #c04d83;
+		transition: all 500ms ease-in-out;
+	}
 	.links {
 		transition: 750ms ease-out;
 		display: table;
 		table-layout: fixed;
 		height: 0vh; /*Fallback for some devices*/
 		height: 0svh;
-		border-left: 3px solid #ddd;
+		position: relative;
 	}
 	.links.active {
 		height: 70vh; /*Fallback for some devices*/
@@ -294,7 +327,6 @@
 		margin: inherit;
 		padding: 5px 0px 0px 15px;
 		color: #ddd;
-		border-left: 3px solid #ddd;
 		transform: translateX(0px);
 	}
 	.year .year-num-mobile {
@@ -343,7 +375,7 @@
 		color: #ddd;
 		font-size: 32px;
 		position: absolute;
-		left: -7px;
+		left: -10px;
 		line-height: 1;
 	}
 
@@ -370,6 +402,14 @@
 		vertical-align: middle;
 		padding-left: 6px;
 		transform: translateX(0px);
+		/*https://stackoverflow.com/questions/21003535/anyway-to-prevent-the-blue-highlighting-of-elements-in-chrome-when-clicking-quic*/
+		-webkit-tap-highlight-color: transparent;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
 	}
 	.content-jump::before {
 		content: '';
@@ -422,7 +462,9 @@
 		border-right: 5px solid rgba(25, 25, 25, 0.8);
 		left: -5px;
 	}
-
+	.content-jump:focus {
+		outline: none;
+	}
 	.content-jump:hover {
 		text-decoration: none;
 	}
@@ -500,7 +542,7 @@
 			top: 100px;
 		}
 
-		.year::before {
+		.year-link::before {
 			content: '';
 			display: block;
 			width: 12px;
@@ -529,7 +571,7 @@
 		}
 	}
 
-	@media (hover: hover) {
+	@media (hover: hover) and (pointer: fine) {
 		.content-jump:hover .tooltip {
 			white-space: nowrap;
 			display: block;
