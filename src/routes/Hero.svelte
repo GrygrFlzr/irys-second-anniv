@@ -165,7 +165,7 @@
 		min-height: 100vh;
 		background-color: #242424;
 		background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
-			url('img/timeline-bg.jpg');
+			url('/img/timeline-bg.jpg');
 		background-size: cover;
 		background-position: top;
 		color: #fff;
