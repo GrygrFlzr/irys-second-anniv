@@ -58,15 +58,16 @@
 <!--Might be bad practice-->
 <svelte:window bind:scrollY />
 
-<div class="toggle" class:active={foldoutOpen} class:display={scrollY > $globalStore.heroHeight}>
-	<button
-		type="button"
-		class="arrow glow"
-		class:hide={$globalStore.navLinksVisible}
-		id="toggle_button"
-		on:click|stopPropagation={handleFoldoutOpen}>&#8250</button
+<button
+	type="button"
+	class="toggle"
+	class:active={foldoutOpen}
+	class:display={scrollY > $globalStore.heroHeight}
+	on:click|stopPropagation={handleFoldoutOpen}
+>
+	<span class="arrow glow" class:hide={$globalStore.navLinksVisible} id="toggle_button">&#8250</span
 	>
-</div>
+</button>
 <div class="modal-container" class:active={foldoutOpen}>
 	<div class="foldout" class:active={foldoutOpen} style:top="{$globalStore.headerHeight}px">
 		{#each years as { year, events }}
@@ -140,13 +141,19 @@
 		cursor: pointer;
 		transition: 0.2s;
 		z-index: 300;
+		border: none;
+		padding: 0;
 	}
 	.toggle.active {
 		transform: translateX(-30px);
 	}
-	.toggle.display {
+	.toggle.display,
+	.toggle:focus {
 		opacity: 1;
 		transition: 500ms ease-in-out;
+	}
+	.toggle:focus {
+		z-index: 600;
 	}
 	.arrow {
 		background: transparent;
