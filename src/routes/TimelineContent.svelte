@@ -234,9 +234,9 @@
 			return;
 		}
 
-		const center = innerHeight / 2;
+		const topThird = innerHeight / 3;
 		const lastOnTop = intersectingEventsArray
-			.filter(({ rect }) => rect.top < center)
+			.filter(({ rect }) => rect.top < topThird)
 			.sort((a, b) => b.rect.top - a.rect.top)[0];
 		if (lastOnTop == null) {
 			return;
@@ -249,7 +249,7 @@
 		const eventPercent = index > 0 ? (index / year.events.length) * 100 : 0;
 		const progressWithinEvent = Math.min(
 			100,
-			((center - lastOnTop.rect.top) / lastOnTop.rect.height) * 100
+			((topThird - lastOnTop.rect.top) / lastOnTop.rect.height) * 100
 		);
 
 		diamondY = Math.max(0, eventPercent + progressWithinEvent / year.events.length);
