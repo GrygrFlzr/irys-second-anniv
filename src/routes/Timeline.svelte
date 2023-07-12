@@ -481,14 +481,13 @@
 	.last-circle::after {
 		content: '';
 		display: block;
-		width: 12px;
-		height: 12px;
+		width: 11px;
+		height: 11px;
 		border-radius: 50%;
 		/*background-color: #b90b8c;*/
 		background-color: #ddd;
-		border: 3px solid #ddd;
 		position: absolute;
-		left: -7px;
+		left: -4px;
 	}
 	/* .content-jump.border {
 		border-left: 3px solid #b90b8c;
