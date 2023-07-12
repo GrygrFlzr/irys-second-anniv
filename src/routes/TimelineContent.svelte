@@ -261,12 +261,9 @@
 <section class="timeline">
 	{#each years as year}
 		<section class="year-divider" bind:this={yearElements[year.year]}>
-			<p 
-                class="year-css" 
-                id={toDomId(year.id)}
-            >
-                {year.year}
-            </p>
+			<p class="year-css" id={toDomId(year.id)}>
+				{year.year}
+			</p>
 			{#each year.events as item}
 				<section class="timeline-section reveal-section active" bind:this={revealSections[item.id]}>
 					<div

@@ -97,7 +97,7 @@
 		{#each years as { year, events, id }}
 			{@const yearTarget = toDomId(id)}
 			<div class="year" id="x">
-				<a 
+				<a
 					class="year-link"
 					href="#{yearTarget}"
 					on:click|preventDefault={() => scrollToYear(yearTarget)}
@@ -107,7 +107,7 @@
 						<span class="year-num-large">{year}</span>
 					</p>
 				</a>
-				
+
 				<div class="links" class:active={currentYear === year}>
 					{#if year === currentYear}
 						<span class="diamond" style:top="calc({diamondY}% - 2px)">
