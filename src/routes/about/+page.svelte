@@ -28,7 +28,7 @@
 	<meta name="twitter:title" content="About - AnniversaRyS 2023" />
 </svelte:head>
 
-<div>
+<div class="background">
 	<img src="/img/bg.webp" class="background-img" alt="" />
 	<span class="background-overlay" />
 	<div class="content">
@@ -108,6 +108,10 @@
 </div>
 
 <style>
+	.background {
+		background-color: black;
+	}
+
 	.background-img {
 		object-fit: cover;
 		object-position: center;
@@ -115,7 +119,6 @@
 		top: 0;
 		width: 100vw;
 		height: 100vh;
-		z-index: -2;
 	}
 
 	.background-overlay {
@@ -127,11 +130,13 @@
 		top: 0;
 		width: 100%;
 		height: 100%;
-		z-index: -1;
+		z-index: 1;
 	}
 
 	.content {
 		padding-top: 84px;
+		position: relative;
+		z-index: 2;
 	}
 
 	.about-container {
