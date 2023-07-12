@@ -38,6 +38,11 @@
 		element?.querySelector('a')?.focus({ preventScroll: true });
 		element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 	}
+	function scrollToYear(id: string) {
+		const element = document.getElementById(id);
+		element?.querySelector('a')?.focus({ preventScroll: true });
+		element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	}
 
 	function scrollFoldoutEvent() {
 		const intersectingEvent = Object.entries(intersectingEvents).find(
@@ -89,12 +94,20 @@
 
 <div class="sidebar" class:active={foldoutOpen} class:display={scrollY > $globalStore.heroHeight}>
 	<div class="wrapper">
-		{#each years as { year, events }}
+		{#each years as { year, events, id }}
+			{@const yearTarget = toDomId(id)}
 			<div class="year" id="x">
-				<p class="year-num" class:active={currentYear === year}>
-					<span class="year-num-mobile">{year}</span>
-					<span class="year-num-large">{year}</span>
-				</p>
+				<a 
+					class="year-link"
+					href="#{yearTarget}"
+					on:click|preventDefault={() => scrollToYear(yearTarget)}
+				>
+					<p class="year-num" class:active={currentYear === year}>
+						<span class="year-num-mobile">{year}</span>
+						<span class="year-num-large">{year}</span>
+					</p>
+				</a>
+				
 				<div class="links" class:active={currentYear === year}>
 					{#if year === currentYear}
 						<span class="diamond" style:top="calc({diamondY}% - 2px)">
@@ -274,7 +287,16 @@
 	.year {
 		border-left: 3px solid #ddd;
 	}
-
+	.year-link {
+		text-decoration: none;
+	}
+	.year-link:hover::before {
+		width: 16px;
+		height: 16px;
+		left: -9px;
+		border: 3px solid #c04d83;
+		transition: all 500ms ease-in-out;
+	}
 	.links {
 		transition: 750ms ease-out;
 		display: table;
@@ -399,7 +421,7 @@
 		background-color: #ddd;
 		border: 3px solid #ddd;
 		position: absolute;
-		left: -9.5px;
+		left: -9px;
 	}
 	.content-jump .tooltip {
 		color: #ddd;
@@ -510,7 +532,7 @@
 			top: 100px;
 		}
 
-		.year::before {
+		.year-link::before {
 			content: '';
 			display: block;
 			width: 12px;
