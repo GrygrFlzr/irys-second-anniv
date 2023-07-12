@@ -289,6 +289,16 @@
 	}
 	.year-link {
 		text-decoration: none;
+		-webkit-tap-highlight-color: transparent;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	.year-link:focus{
+		outline: none;
 	}
 	.year-link:hover::before {
 		width: 16px;
