@@ -3,7 +3,7 @@
 	export let href;
 </script>
 
-<a class="nav-link" {href}>
+<a class="nav-link" {href} on:click>
 	<span class="nav-link-text">
 		<slot />
 	</span>
@@ -28,6 +28,7 @@
 		overflow: hidden;
 		align-items: center;
 		justify-content: space-between;
+		font-weight: bold;
 	}
 
 	.nav-link-text::before {
@@ -48,7 +49,7 @@
 
 	@media (min-width: 768px) {
 		.nav-link {
-			min-width: 10rem;
+			min-width: 11rem;
 			width: fit-content;
 			margin: 0.5rem;
 		}

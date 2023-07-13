@@ -1,11 +1,23 @@
-<script>
+<script lang="ts">
+	import { getGlobalStore } from '$lib/js/globalStore';
 	import NavLink from './NavLink.svelte';
 
 	let navLinksVisible = false;
+	const globalStore = getGlobalStore();
+
+	function close() {
+		navLinksVisible = false;
+		$globalStore.navLinksVisible = false;
+	}
+
+	function toggle() {
+		navLinksVisible = !navLinksVisible;
+		$globalStore.navLinksVisible = navLinksVisible;
+	}
 </script>
 
 <nav class="nav">
-	<button class="nav-button" on:click={() => (navLinksVisible = !navLinksVisible)} title="menu">
+	<button class="nav-button" on:click={toggle} title="menu">
 		<svg viewBox="0 0 24 24" width="24" aria-hidden="true">
 			{#each [4, 12, 20] as y}
 				<rect x="0" {y} width="30" height="2" fill="currentColor" />
@@ -14,9 +26,9 @@
 	</button>
 
 	<div class="nav-links" class:navLinkActive={navLinksVisible}>
-		<NavLink href="/">Timeline</NavLink>
-		<NavLink href="/art">Fan Art</NavLink>
-		<NavLink href="/about">About Us</NavLink>
+		<NavLink href="/" on:click={close}>Timeline</NavLink>
+		<NavLink href="/art" on:click={close}>Fan Art</NavLink>
+		<NavLink href="/about" on:click={close}>About</NavLink>
 	</div>
 </nav>
 

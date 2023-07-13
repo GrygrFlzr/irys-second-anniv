@@ -1,6 +1,9 @@
 <script>
 	import '$lib/css/main.css';
+	import { createGlobalStore } from '$lib/js/globalStore';
 	import Header from './Header.svelte';
+
+	createGlobalStore();
 </script>
 
 <Header />
@@ -11,13 +14,12 @@
 
 <style>
 	main {
-		padding: 0.5rem;
-		margin-top: var(--header-height);
+		margin-top: var(--header-offset);
 	}
 
 	@media (min-width: 768px) {
 		main {
-			padding: 1rem;
+			padding: 0rem;
 		}
 	}
 </style>
