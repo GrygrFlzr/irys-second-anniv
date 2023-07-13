@@ -9,6 +9,13 @@
 	function toRichtextLinkElement(elem: RichtextElement) {
 		return elem as RichtextLinkElement;
 	}
+
+	/**
+	 * filter out links without any content
+	 */
+	function linkHasChild(link: RichtextElement) {
+		return link.children.filter((elem) => !Text.isText(elem) || elem.text).length > 0;
+	}
 </script>
 
 {#each richTextElements as elem}
@@ -33,13 +40,15 @@
 			Similarly, don't add a line break between the text element and the
 			</a> as it adds a random whitespace.
 		-->
-		<a
-			href={toRichtextLinkElement(elem).url}
-			target={toRichtextLinkElement(elem).newTab ? '_blank' : '_self'}
-			class="richTextLink"
-		>
-			<svelte:self richTextElements={elem.children} /></a
-		>
+		{#if linkHasChild(elem)}
+			<a
+				href={toRichtextLinkElement(elem).url}
+				target={toRichtextLinkElement(elem).newTab ? '_blank' : '_self'}
+				class="richTextLink"
+			>
+				<svelte:self richTextElements={elem.children} /></a
+			>
+		{/if}
 	{:else if elem.type === 'ul'}
 		<ul>
 			<svelte:self richTextElements={elem.children} />

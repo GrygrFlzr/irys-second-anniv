@@ -4,6 +4,7 @@
 	import Diamond from '$lib/components/DiamondIcon.svelte';
 	import { toDomId } from '$lib/js/timelineContentLink';
 	import { tick } from 'svelte';
+	import { modalAction } from '$lib/js/modalAction';
 
 	export let years: YearlyTimelineData[];
 	export let intersectingEvents: Record<string, boolean>;
@@ -18,15 +19,11 @@
 
 	function handleFoldoutOpen() {
 		foldoutOpen = true;
-		document.body.style.overflow = 'hidden';
-		document.body.addEventListener('click', handleMenuClose);
 		tick().then(scrollFoldoutEvent);
 	}
 
 	function handleMenuClose() {
 		foldoutOpen = false;
-		document.body.style.overflow = 'auto';
-		document.body.removeEventListener('click', handleMenuClose);
 	}
 
 	/**
@@ -34,6 +31,7 @@
 	 * @param id
 	 */
 	function scrollToElement(id: string) {
+		foldoutOpen = false;
 		const element = document.getElementById(id);
 		element?.querySelector('a')?.focus({ preventScroll: true });
 		element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -55,22 +53,34 @@
 		const [id] = intersectingEvent;
 		foldoutEventElements[id].scrollIntoView();
 	}
+
+	function scrollToEventsIfNotAlready() {
+		scrollY < $globalStore.heroHeight && scrollTo({ top: $globalStore.heroHeight + 10 });
+	}
 </script>
 
 <!--Might be bad practice-->
 <svelte:window bind:scrollY />
 
-<div class="toggle" class:active={foldoutOpen} class:display={scrollY > $globalStore.heroHeight}>
-	<button
-		type="button"
-		class="arrow glow"
-		class:hide={$globalStore.navLinksVisible}
-		id="toggle_button"
-		on:click|stopPropagation={handleFoldoutOpen}>&#8250</button
+<button
+	type="button"
+	class="toggle"
+	class:active={foldoutOpen}
+	class:display={scrollY > $globalStore.heroHeight}
+	on:focus={scrollToEventsIfNotAlready}
+	on:click|stopPropagation={handleFoldoutOpen}
+>
+	<span class="arrow glow" class:hide={$globalStore.navLinksVisible} id="toggle_button">&#8250</span
 	>
-</div>
+</button>
 <div class="modal-container" class:active={foldoutOpen}>
-	<div class="foldout" class:active={foldoutOpen} style:top="{$globalStore.headerHeight}px">
+	<div
+		class="foldout"
+		class:active={foldoutOpen}
+		style:top="{$globalStore.headerHeight}px"
+		use:modalAction={{ show: foldoutOpen }}
+		on:close-modal={handleMenuClose}
+	>
 		{#each years as { year, events }}
 			<section class="foldout-wrapper">
 				<h2 class="foldout-year">{year}</h2>
@@ -82,9 +92,10 @@
 						bind:this={foldoutEventElements[content.id]}
 						id="foldout-content{content.id}"
 						href="#{target}"
+						tabindex={foldoutOpen ? undefined : -1}
 						on:click|preventDefault={() => scrollToElement(target)}
 					>
-						<p class="content-title">{content.title}</p>
+						<p class="content-title" tabindex="-1">{content.title}</p>
 					</a>
 				{/each}
 			</section>
@@ -123,6 +134,7 @@
 									bind:this={foldoutEventElements[content.id]}
 									id="foldout-content{content.id}"
 									href="#{target}"
+									on:focus={scrollToEventsIfNotAlready}
 									on:click|preventDefault={() => scrollToElement(target)}
 								>
 									<p class="tooltip"><span>{content.title}</span></p>
@@ -145,12 +157,13 @@
 		position: fixed;
 		top: 40%;
 		left: 0px;
-		width: 30px;
 		height: auto;
 		background: transparent;
 		cursor: pointer;
 		transition: 0.2s;
 		z-index: 300;
+		border: none;
+		padding: 0;
 	}
 	.toggle.active {
 		transform: translateX(-30px);
@@ -158,6 +171,10 @@
 	.toggle.display {
 		opacity: 1;
 		transition: 500ms ease-in-out;
+	}
+	.toggle:focus {
+		outline: none;
+		box-shadow: 2px 0px 10px 0px var(--dark-pink);
 	}
 	.arrow {
 		background: transparent;
@@ -210,8 +227,6 @@
 		height: 100vh; /*Fallback for some devices*/
 		height: 100svh;
 		transform: translateX(-300px);
-
-		background: #e5e5e5;
 		z-index: 1001;
 		transition: transform 0.5s, top 0.15s;
 	}
@@ -270,7 +285,8 @@
 	.foldout-content.active:hover {
 		background: #ad0280;
 	}
-	.foldout-content:hover {
+	.foldout-content:hover,
+	.foldout-content:focus {
 		background: #c04d83;
 		cursor: pointer;
 		transition: 0.5s;
@@ -571,7 +587,8 @@
 	}
 
 	@media (hover: hover) and (pointer: fine) {
-		.content-jump:hover .tooltip {
+		.content-jump:hover .tooltip,
+		.content-jump:focus .tooltip {
 			white-space: nowrap;
 			display: block;
 		}

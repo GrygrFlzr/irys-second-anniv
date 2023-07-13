@@ -4,7 +4,11 @@
 	export let href: string;
 </script>
 
-<a {href} class="title-link">
+<a
+	{href}
+	class="title-link"
+	on:focusin={(e) => e.currentTarget.scrollIntoView({ block: 'center' })}
+>
 	<span class="icon">
 		<LinkIcon />
 	</span>

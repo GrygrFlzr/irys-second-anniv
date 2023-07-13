@@ -7,7 +7,6 @@
 	import Timeline from './Timeline.svelte';
 	import TimelineContent from './TimelineContent.svelte';
 	import { createReducedMotionStore } from '$lib/js/createMediaQueryStore';
-	import { browser } from '$app/environment';
 
 	// Prefilled by server data; assuming the data is sorted by server side code.
 	export let data: PageData;
