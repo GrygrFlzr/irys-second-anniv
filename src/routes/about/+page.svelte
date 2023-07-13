@@ -29,7 +29,7 @@
 </svelte:head>
 
 <div>
-	<img src="/img/about/about-bg.jpg" class="background-img" alt="" />
+	<img src="/img/bg.webp" class="background-img" alt="" />
 	<span class="background-overlay" />
 	<div class="content">
 		<div class="about-container">

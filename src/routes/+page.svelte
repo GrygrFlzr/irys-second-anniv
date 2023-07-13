@@ -14,7 +14,7 @@
 	let intersectingEvents: Record<string, boolean> = {};
 	let diamondY = 0;
 	let currentYear = data.data[0].year;
-	let src = '/img/timeline-bg.jpg';
+	let src = '/img/bg.webp';
 	let showConfettiElements = new Set<string>();
 
 	const [send, receive] = crossfade({
