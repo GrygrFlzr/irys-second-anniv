@@ -290,7 +290,11 @@
 			{/each}
 		</section>
 		<div class="extra-space">
-			<div class="year-end">End of {year.year}</div>
+			{#if year.year === years[years.length - 1].year}
+				<div class="year-end">Her journey continues...</div>
+			{:else}
+				<div class="year-end">End of {year.year}</div>
+			{/if}
 		</div>
 	{/each}
 	<div />
@@ -384,6 +388,8 @@
 	}
 	.year-end {
 		position: relative;
+		text-align: center;
+		width: 50%;
 	}
 	.year-end::before {
 		content: '';
@@ -533,12 +539,12 @@
 		}
 		.year-end::before {
 			right: 20px;
-			width: 60%;
-			left: -70%;
+			width: 40%;
+			left: -50%;
 		}
 		.year-end::after {
-			width: 60%;
-			right: -70%;
+			width: 40%;
+			right: -50%;
 		}
 	}
 
