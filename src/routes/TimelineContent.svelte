@@ -419,7 +419,7 @@
 }*/
 	h2,
 	.year-end {
-		font-size: 1.5rem;
+		font-size: 1.3rem;
 		margin: 10px;
 		text-transform: uppercase;
 	}
