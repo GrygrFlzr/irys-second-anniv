@@ -33,13 +33,18 @@
 	function scrollToElement(id: string) {
 		foldoutOpen = false;
 		const element = document.getElementById(id);
-		element?.querySelector('a')?.focus({ preventScroll: true });
+		moveFocusNavigationStartPoint(element?.querySelector('a'));
 		element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 	}
 	function scrollToYear(id: string) {
 		const element = document.getElementById(id);
-		element?.querySelector('a')?.focus({ preventScroll: true });
+		moveFocusNavigationStartPoint(element?.querySelector('a'));
 		element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	}
+
+	function moveFocusNavigationStartPoint(ele: HTMLElement | null | undefined) {
+		ele?.focus({ preventScroll: true });
+		ele?.blur();
 	}
 
 	function scrollFoldoutEvent() {
