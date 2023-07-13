@@ -262,8 +262,8 @@
 		flex-direction: column;
 		align-items: left;
 		min-height: 64rem;
-		background-color: rgba(0, 0, 0, 0.2);
-		box-shadow: inset 0px 5px 5px rgb(31, 28, 28), 0px 2px 1px rgb(31, 28, 28);
+		background-image: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.2) 15%);
+		box-shadow: 0px 2px 1px rgb(31, 28, 28);
 	}
 
 	.poem-content {
