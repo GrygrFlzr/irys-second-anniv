@@ -109,7 +109,7 @@
 
 <style>
 	.background {
-		background-color: black;
+		background-color: #242424;
 	}
 
 	.background-img {
