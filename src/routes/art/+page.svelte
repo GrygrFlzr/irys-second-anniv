@@ -71,7 +71,7 @@
 <style>
 	.background-image {
 		background-attachment: fixed;
-		background-image: url('/img/art/art-bg.jpg');
+		background-image: url('/img/bg.webp');
 		background-repeat: no-repeat;
 		background-size: cover;
 	}
